@@ -1,9 +1,13 @@
-export default function Home() {
+import HeroSection from "@/components/sections/HeroSection";
+import AtGlanceSection from "@/components/sections/Home/AtGlanceSection";
+import ContactSection from "@/components/sections/Home/ContactSection";
+
+export default function HomePage() {
   return (
-    <main className="flex items-center justify-center h-screen">
-      <h1 className="text-4xl font-bold">
-        Portfolio Coming Soon 🚀
-      </h1>
+    <main>
+      <HeroSection />
+      <AtGlanceSection />
+      <ContactSection />
     </main>
   );
 }
