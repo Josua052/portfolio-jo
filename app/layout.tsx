@@ -28,7 +28,10 @@ export default function RootLayout({
       className={`${montserrat.variable} ${poppins.variable}`}
       suppressHydrationWarning
     >
-      <body className="min-h-screen antialiased bg-white text-black dark:bg-black dark:text-white">
+      <body
+        suppressHydrationWarning
+        className="min-h-screen antialiased bg-background text-foreground"
+      >
         <ThemeProvider>
           <Navbar />
           <main className="pt-16">{children}</main>
