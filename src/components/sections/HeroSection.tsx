@@ -11,7 +11,7 @@ export default function HeroSection() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    setMounted(true);
+    const timer = setTimeout(() => setMounted(true), 0);
     const updateTime = () => {
       const now = new Date();
       const formatted = now.toLocaleTimeString("en-US", {

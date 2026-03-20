@@ -1,0 +1,38 @@
+[
+  {
+    "company": "PT. Global Service Indonesia",
+    "location": "Jakarta · Onsite",
+    "role": "Web Developer",
+    "period": "Dec 2025 – Present",
+    "index": "01",
+    "highlight": true,
+    "tags": ["React.js", "Vue.js", "Laravel", "RESTful API", "Git", "Scrum"],
+    "points": [
+      "Developed responsive web interfaces using React.js and Vue.js",
+      "Implemented UI/UX designs into reusable component systems",
+      "Integrated RESTful APIs with Laravel backend",
+      "Built backend features including CRUD, validation, and authentication",
+      "Debugged and tested both front-end and back-end features",
+      "Collaborated using Jira & Git in Agile/Scrum workflows",
+      "Documented development processes for team knowledge transfer"
+    ]
+  },
+  {
+    "company": "Infinite Learning (Apple Developer Academy)",
+    "location": "Batam · Hybrid",
+    "role": "Web Developer Intern",
+    "period": "Sep 2022 – Jan 2023",
+    "index": "02",
+    "highlight": false,
+    "tags": ["React.js", "Node.js", "MongoDB", "Figma", "Project Management"],
+    "points": [
+      "Completed intensive Web Development mentorship covering React, Node, and MongoDB",
+      "Shipped 3 real-world projects: OneClick Dokter, Freedom, and Unicate",
+      "Designed UI/UX in Figma — research, wireframes, and interactive prototypes",
+      "Led team as Project Manager for the Unicate project",
+      "Built responsive front-end interfaces using React.js",
+      "Published Unicate as a featured project at the Developer Festival",
+      "Applied design thinking methodologies in cross-functional teams"
+    ]
+  }
+]
