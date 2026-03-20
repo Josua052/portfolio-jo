@@ -14,7 +14,7 @@ const menus = [
   {
     name: "Gallery",
     children: [
-      { name: "Editing", href: "/gallery/editing" },
+      { name: "Editing", href: "/gallery-editing" },
       { name: "Live", href: "/gallery/live" },
     ],
   },
@@ -59,8 +59,8 @@ export default function Navbar() {
               <div key={menu.name} className="relative group">
                 {/* Parent */}
                 <span className="flex items-center gap-1 cursor-pointer hover:opacity-70 transition">
-                {menu.name}
-                <ChevronDown size={16} className="mt-[1px]" />
+                  {menu.name}
+                  <ChevronDown size={16} className="mt-[1px]" />
                 </span>
 
                 {/* Dropdown */}
