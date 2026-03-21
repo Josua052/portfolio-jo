@@ -15,7 +15,7 @@ const menus = [
     name: "Gallery",
     children: [
       { name: "Editing", href: "/gallery-editing" },
-      { name: "Live", href: "/gallery/live" },
+      { name: "Live", href: "/gallery-live" },
     ],
   },
   { name: "Contact", href: "/contact" },
