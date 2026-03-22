@@ -6,6 +6,7 @@ const EDUCATION = [
   {
     period: "2019 – 2025",
     institution: "Universitas Sumatera Utara",
+    research: "Image Classification of Tongue Lesion Types for Early Detection of Oral Cancer Using EfficientnetV2",
     degree: "Teknologi Informasi",
     grade: "GPA 3.57",
     gradeLabel: "GPA",
@@ -14,18 +15,6 @@ const EDUCATION = [
     quote:
       "Graduated with a Bachelor's degree in Information Technology from Universitas Sumatera Utara with a GPA of 3.57, laying a strong foundation for a career in design and software development.",
     tags: ["S1 / Bachelor", "Teknologi Informasi", "Medan, Indonesia"],
-  },
-  {
-    period: "2016 – 2019",
-    institution: "SMA Negeri 1 Tigalingga",
-    degree: "Ilmu Pengetahuan Alam",
-    grade: "92.5",
-    gradeLabel: "Nilai Akhir",
-    gradeValue: "92.5",
-    index: "02",
-    quote:
-      "Completed high school in Science at SMA Negeri 1 Tigalingga with a final score of 92.5, marking the initial steps toward a journey in technology and academic excellence.",
-    tags: ["SMA / High School", "Sains", "Dairi, Indonesia"],
   },
 ];
 
@@ -86,6 +75,12 @@ function EducationCard({
 
         {/* Degree */}
         <p className="edu-degree">{item.degree}</p>
+        {item.research && (
+        <p className="edu-research">
+          <span className="edu-research-label">Research:</span>{" "}
+          {item.research}
+        </p>
+      )}
 
         {/* Divider */}
         <div className="edu-divider" />
@@ -211,6 +206,16 @@ export function AboutEducation() {
           line-height: 1.7;
           color: var(--muted);
           padding-bottom: 0.25rem;
+        }
+          .edu-research {
+          font-size: 0.8rem;
+          line-height: 1.6;
+          color: var(--muted);
+        }
+
+        .edu-research-label {
+          font-weight: 600;
+          color: var(--foreground);
         }
 
         /* ── Timeline container ── */
