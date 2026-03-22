@@ -13,8 +13,8 @@ const MENUS = [
   { name: "Home", href: "/" },
   { name: "About", href: "/about" },
   { name: "Experience", href: "/experience" },
-  { name: "Project", href: "/project" },
-  { name: "Awards", href: "/awards" },
+  { name: "Project",    href: "/project" },
+  { name: "Awards",     href: "/awards" },
   {
     name: "Gallery",
     children: [
@@ -22,7 +22,7 @@ const MENUS = [
       { name: "Live", href: "/gallery-live" },
     ],
   },
-  { name: "Contact", href: "/contact" },
+  { name: "Contact",    href: "/contact" },
 ];
 
 export default function Navbar() {
@@ -310,7 +310,7 @@ export default function Navbar() {
                   <span className="navbar-drawer-active-badge">current</span>
                 )}
               </Link>
-            ),
+            )
           )}
         </nav>
 
