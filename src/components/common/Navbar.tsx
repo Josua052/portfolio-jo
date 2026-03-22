@@ -7,37 +7,41 @@ import { useTheme } from "next-themes";
 import { usePathname } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
 import { Sun, Moon, Laptop, ChevronDown, X, Menu } from "lucide-react";
+import { startTransition } from "react";
 
 const MENUS = [
-  { name: "Home",       href: "/" },
-  { name: "About",      href: "/about" },
+  { name: "Home", href: "/" },
+  { name: "About", href: "/about" },
   { name: "Experience", href: "/experience" },
-  { name: "Project",    href: "/project" },
-  { name: "Awards",     href: "/awards" },
+  { name: "Project", href: "/project" },
+  { name: "Awards", href: "/awards" },
   {
     name: "Gallery",
     children: [
       { name: "Editing", href: "/gallery-editing" },
-      { name: "Live",    href: "/gallery-live" },
+      { name: "Live", href: "/gallery-live" },
     ],
   },
-  { name: "Contact",    href: "/contact" },
+  { name: "Contact", href: "/contact" },
 ];
 
 export default function Navbar() {
   const { setTheme, resolvedTheme } = useTheme();
   const pathname = usePathname();
 
-  const [mounted,       setMounted]       = useState(false);
-  const [themeOpen,     setThemeOpen]     = useState(false);
-  const [mobileOpen,    setMobileOpen]    = useState(false);
-  const [galleryOpen,   setGalleryOpen]   = useState(false); // mobile gallery accordion
-  const [scrolled,      setScrolled]      = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const [themeOpen, setThemeOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [galleryOpen, setGalleryOpen] = useState(false); // mobile gallery accordion
+  const [scrolled, setScrolled] = useState(false);
 
   const themeRef = useRef<HTMLDivElement>(null);
 
   /* Mount */
-  useEffect(() => { setMounted(true); }, []);
+  useEffect(() => {
+    const id = requestAnimationFrame(() => setMounted(true));
+    return () => cancelAnimationFrame(id);
+  }, []);
 
   /* Scroll shadow */
   useEffect(() => {
@@ -58,11 +62,19 @@ export default function Navbar() {
   /* Lock body scroll when mobile menu open */
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [mobileOpen]);
 
   /* Close mobile menu on route change */
-  useEffect(() => { setMobileOpen(false); }, [pathname]);
+  useEffect(() => {
+    if (mobileOpen) {
+      startTransition(() => {
+        setMobileOpen(false);
+      });
+    }
+  }, [pathname]);
 
   if (!mounted) return null;
 
@@ -80,7 +92,6 @@ export default function Navbar() {
         }}
       >
         <nav className="navbar-nav">
-
           {/* ── Logo ── */}
           <Link href="/" className="navbar-logo" aria-label="Home">
             <Image
@@ -117,7 +128,9 @@ export default function Navbar() {
                           key={child.name}
                           href={child.href}
                           className={`navbar-dropdown-item ${
-                            isActive(child.href) ? "navbar-dropdown-item-active" : ""
+                            isActive(child.href)
+                              ? "navbar-dropdown-item-active"
+                              : ""
                           }`}
                         >
                           {child.name}
@@ -135,7 +148,7 @@ export default function Navbar() {
                   {menu.name}
                   {isActive(menu.href) && <span className="navbar-link-dot" />}
                 </Link>
-              )
+              ),
             )}
           </div>
 
@@ -148,23 +161,34 @@ export default function Navbar() {
                 className="navbar-icon-btn"
                 aria-label="Toggle theme"
               >
-                {resolvedTheme === "dark"
-                  ? <Sun size={16} />
-                  : <Moon size={16} />}
+                {resolvedTheme === "dark" ? (
+                  <Sun size={16} />
+                ) : (
+                  <Moon size={16} />
+                )}
               </button>
 
               {themeOpen && (
                 <div className="navbar-theme-dropdown">
                   {[
-                    { label: "Light",  icon: <Sun size={14} />,     value: "light"  },
-                    { label: "Dark",   icon: <Moon size={14} />,    value: "dark"   },
-                    { label: "System", icon: <Laptop size={14} />,  value: "system" },
+                    { label: "Light", icon: <Sun size={14} />, value: "light" },
+                    { label: "Dark", icon: <Moon size={14} />, value: "dark" },
+                    {
+                      label: "System",
+                      icon: <Laptop size={14} />,
+                      value: "system",
+                    },
                   ].map(({ label, icon, value }) => (
                     <button
                       key={value}
-                      onClick={() => { setTheme(value); setThemeOpen(false); }}
+                      onClick={() => {
+                        setTheme(value);
+                        setThemeOpen(false);
+                      }}
                       className={`navbar-theme-item ${
-                        resolvedTheme === value ? "navbar-theme-item-active" : ""
+                        resolvedTheme === value
+                          ? "navbar-theme-item-active"
+                          : ""
                       }`}
                     >
                       {icon}
@@ -181,9 +205,15 @@ export default function Navbar() {
               onClick={() => setMobileOpen((p) => !p)}
               aria-label={mobileOpen ? "Close menu" : "Open menu"}
             >
-              <span className={`navbar-ham-line ${mobileOpen ? "navbar-ham-open-1" : ""}`} />
-              <span className={`navbar-ham-line ${mobileOpen ? "navbar-ham-open-2" : ""}`} />
-              <span className={`navbar-ham-line ${mobileOpen ? "navbar-ham-open-3" : ""}`} />
+              <span
+                className={`navbar-ham-line ${mobileOpen ? "navbar-ham-open-1" : ""}`}
+              />
+              <span
+                className={`navbar-ham-line ${mobileOpen ? "navbar-ham-open-2" : ""}`}
+              />
+              <span
+                className={`navbar-ham-line ${mobileOpen ? "navbar-ham-open-3" : ""}`}
+              />
             </button>
           </div>
         </nav>
@@ -197,11 +227,16 @@ export default function Navbar() {
       />
 
       {/* ── Mobile drawer ── */}
-      <aside className={`navbar-drawer ${mobileOpen ? "navbar-drawer-open" : ""}`}>
-
+      <aside
+        className={`navbar-drawer ${mobileOpen ? "navbar-drawer-open" : ""}`}
+      >
         {/* Drawer header */}
         <div className="navbar-drawer-header">
-          <Link href="/" className="navbar-logo" onClick={() => setMobileOpen(false)}>
+          <Link
+            href="/"
+            className="navbar-logo"
+            onClick={() => setMobileOpen(false)}
+          >
             <Image
               src="/images/logo.png"
               alt="Ronaldo"
@@ -249,7 +284,9 @@ export default function Navbar() {
                         key={child.name}
                         href={child.href}
                         className={`navbar-drawer-child ${
-                          isActive(child.href) ? "navbar-drawer-child-active" : ""
+                          isActive(child.href)
+                            ? "navbar-drawer-child-active"
+                            : ""
                         }`}
                       >
                         <span className="navbar-drawer-child-dot" />
@@ -273,7 +310,7 @@ export default function Navbar() {
                   <span className="navbar-drawer-active-badge">current</span>
                 )}
               </Link>
-            )
+            ),
           )}
         </nav>
 
@@ -282,8 +319,8 @@ export default function Navbar() {
           <p className="navbar-drawer-footer-label">Theme</p>
           <div className="navbar-drawer-theme-row">
             {[
-              { label: "Light",  icon: <Sun size={13} />,    value: "light"  },
-              { label: "Dark",   icon: <Moon size={13} />,   value: "dark"   },
+              { label: "Light", icon: <Sun size={13} />, value: "light" },
+              { label: "Dark", icon: <Moon size={13} />, value: "dark" },
               { label: "System", icon: <Laptop size={13} />, value: "system" },
             ].map(({ label, icon, value }) => (
               <button

@@ -17,8 +17,10 @@ function useInView(threshold = 0.15) {
     const el = ref.current;
     if (!el) return;
     const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) setInView(true); },
-      { threshold }
+      ([e]) => {
+        if (e.isIntersecting) setInView(true);
+      },
+      { threshold },
     );
     obs.observe(el);
     return () => obs.disconnect();
@@ -51,10 +53,11 @@ function ExperienceCard({
       }}
     >
       {/* Decorative index */}
-      <div className="exp-index" aria-hidden>{item.index}</div>
+      <div className="exp-index" aria-hidden>
+        {item.index}
+      </div>
 
       <div className={`exp-card ${item.highlight ? "exp-card-highlight" : ""}`}>
-
         {/* ── Header ── */}
         <div className="exp-header">
           <div className="exp-header-left">
@@ -79,12 +82,16 @@ function ExperienceCard({
 
         {/* ── Points ── */}
         <ul className="exp-points">
-          {(expanded ? item.points : item.points.slice(0, PREVIEW)).map((pt, i) => (
-            <li key={i} className="exp-point">
-              <span className="exp-point-icon" aria-hidden>→</span>
-              <span>{pt}</span>
-            </li>
-          ))}
+          {(expanded ? item.points : item.points.slice(0, PREVIEW)).map(
+            (pt, i) => (
+              <li key={i} className="exp-point">
+                <span className="exp-point-icon" aria-hidden>
+                  →
+                </span>
+                <span>{pt}</span>
+              </li>
+            ),
+          )}
         </ul>
 
         {item.points.length > PREVIEW && (
@@ -101,7 +108,9 @@ function ExperienceCard({
         {/* ── Tags ── */}
         <div className="exp-tags">
           {item.tags.map((t) => (
-            <span key={t} className="exp-tag">{t}</span>
+            <span key={t} className="exp-tag">
+              {t}
+            </span>
           ))}
         </div>
       </div>
@@ -118,7 +127,6 @@ export default function ExperienceSection() {
   return (
     <section className="exp-section">
       <div className="container-custom">
-
         {/* ── Heading ── */}
         <div
           ref={headRef}
@@ -132,12 +140,13 @@ export default function ExperienceSection() {
           <p className="exp-eyebrow">/ experience</p>
           <div className="exp-heading-row">
             <h1 className="exp-heading">
-              My<br />
+              Profesional
+              <br />
               <span className="exp-heading-outline">Experience</span>
             </h1>
             <p className="exp-heading-sub">
-              A journey through my professional growth, projects, and contributions
-              in web development and design.
+              A journey through my professional growth, projects, and
+              contributions in web development and design.
             </p>
           </div>
         </div>
@@ -151,7 +160,9 @@ export default function ExperienceSection() {
             <div key={exp.company} className="exp-timeline-row">
               {/* Node */}
               <div className="exp-node-wrap">
-                <div className={`exp-node ${exp.highlight ? "exp-node-active" : ""}`}>
+                <div
+                  className={`exp-node ${exp.highlight ? "exp-node-active" : ""}`}
+                >
                   {exp.highlight && <div className="exp-node-pulse" />}
                 </div>
               </div>

@@ -1,8 +1,8 @@
 import AwardsSection from "@/components/sections/Award/AwardsSection";
 
 export const metadata = {
-  title: "Awards | Ronaldo Jo",
-  description: "Certifications and achievements of Ronaldo Jo",
+  title: "Awards | Josua Ronaldo",
+  description: "Certifications and achievements of Josua Ronaldo",
 };
 
 export default function AwardsPage() {

@@ -78,7 +78,7 @@ export function AboutContent() {
                 I am a passionate UI/UX designer and full-stack developer with
                 over
                 <strong> 3 years</strong> of experience crafting intuitive and
-                visually engaging digital products — plus 1 year of real-world
+                visually engaging digital products plus 1 year of real-world
                 industry experience delivering scalable solutions.
               </p>
               <p>
@@ -88,7 +88,7 @@ export function AboutContent() {
                 expertise in Figma and Adobe Creative Suite.
               </p>
               <p>
-                I bridge the gap between design and development — from user
+                I bridge the gap between design and development from user
                 research and prototyping to building responsive web and mobile
                 apps that are both functional and user-centered.
               </p>
