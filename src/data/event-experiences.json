@@ -1,0 +1,38 @@
+[
+  {
+    "id": "pempromsu-christmas-2024",
+    "title": "Pempromsu Christmas Event 2024",
+    "organization": "Provincial Government of North Sumatra",
+    "role": "Visual Jockey / Motion Graphic",
+    "period": "December 2024",
+    "location": "Medan, North Sumatra",
+    "highlight": true,
+    "category": "live-event",
+    "points": [
+      "Contributed as part of the multimedia team for a large-scale Christmas event",
+      "Operated Resolume Arena as a Visual Jockey (VJ)",
+      "Displayed motion graphics aligned with event theme",
+      "Executed accurate videotron mapping for live visuals"
+    ],
+    "tags": ["Resolume Arena", "VJ", "Motion Graphics", "Videotron Mapping"],
+    "image": ""
+  },
+  {
+    "id": "church-ministry-multimedia",
+    "title": "Church Ministry Multimedia Team",
+    "organization": "Church Ministry",
+    "role": "Visual Jockey / Motion Graphic",
+    "period": "Jan 2023 – Present",
+    "location": "Medan, Indonesia",
+    "highlight": false,
+    "category": "live-event",
+    "points": [
+      "Created and displayed high-quality motion graphics for worship services",
+      "Handled live visual performance during church events",
+      "Operated Resolume Arena for projection mapping",
+      "Maintained visual consistency across events"
+    ],
+    "tags": ["Live Visual", "Projection Mapping", "Resolume Arena"],
+    "image": ""
+  }
+]
