@@ -17,6 +17,12 @@ const poppins = Poppins({
   display: "swap",
 });
 
+export const metadata = {
+  icons: {
+    icon: "/logo.png",
+  },
+};
+
 export default function RootLayout({
   children,
 }: {
