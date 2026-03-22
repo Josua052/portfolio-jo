@@ -1,0 +1,47 @@
+[
+  {
+    "id": "github",
+    "platform": "GitHub",
+    "icon": "Github",
+    "value": "Josua052",
+    "display": "github.com/Josua052",
+    "link": "https://github.com/Josua052",
+    "description": "Open source & projects"
+  },
+  {
+    "id": "linkedin",
+    "platform": "LinkedIn",
+    "icon": "Linkedin",
+    "value": "josua-ronaldo",
+    "display": "josua-ronaldo",
+    "link": "https://www.linkedin.com/in/josua-ronaldo/",
+    "description": "Professional network"
+  },
+  {
+    "id": "instagram",
+    "platform": "Instagram",
+    "icon": "Instagram",
+    "value": "@josuaronaldo_",
+    "display": "@josuaronaldo_",
+    "link": "https://instagram.com/josuaronaldo_",
+    "description": "Daily life & creative"
+  },
+  {
+    "id": "email",
+    "platform": "Email",
+    "icon": "Mail",
+    "value": "josuaronaldo96@gmail.com",
+    "display": "josuaronaldo96@gmail.com",
+    "link": "mailto:josuaronaldo96@gmail.com",
+    "description": "Best for project inquiries"
+  },
+  {
+    "id": "phone",
+    "platform": "WhatsApp",
+    "icon": "Phone",
+    "value": "+62812-6483-3128",
+    "display": "+62 812-6483-3128",
+    "link": "https://wa.me/6281264833128",
+    "description": "Quick response"
+  }
+]
