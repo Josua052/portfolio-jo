@@ -2,18 +2,11 @@
 "use client";
 
 import Image from "next/image";
-import { ZoomIn } from "lucide-react";
+import { ArrowUpRight, ExternalLink } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { DesignProject } from "@/types/gallery-editing";
 
-export interface GalleryItem {
-  id: string;
-  title: string;
-  category: string;
-  image: string;
-  description: string;
-}
-
-function useInView(threshold = 0.12) {
+function useInView(threshold = 0.1) {
   const ref = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(false);
   useEffect(() => {
@@ -30,16 +23,17 @@ function useInView(threshold = 0.12) {
 }
 
 interface GalleryCardProps {
-  item: GalleryItem;
+  item: DesignProject;
   delay?: number;
-  tall?: boolean;
-  onOpen: (item: GalleryItem) => void;
+  /** span 2 columns on desktop for featured items */
+  featured?: boolean;
+  onOpen: (item: DesignProject) => void;
 }
 
 export default function GalleryCard({
   item,
   delay = 0,
-  tall = false,
+  featured = false,
   onOpen,
 }: GalleryCardProps) {
   const { ref, inView } = useInView();
@@ -47,167 +41,272 @@ export default function GalleryCard({
   return (
     <div
       ref={ref}
-      className={`gallery-card ${tall ? "gallery-card-tall" : ""}`}
+      className={`gc-wrap ${featured ? "gc-featured" : ""}`}
       style={{
         opacity: inView ? 1 : 0,
-        transform: inView
-          ? "translateY(0) scale(1)"
-          : "translateY(24px) scale(0.97)",
+        transform: inView ? "translateY(0) scale(1)" : "translateY(20px) scale(0.97)",
         transition: `opacity 0.55s ${delay}ms ease, transform 0.55s ${delay}ms ease`,
       }}
-      onClick={() => onOpen(item)}
-      role="button"
-      tabIndex={0}
-      onKeyDown={(e) => { if (e.key === "Enter") onOpen(item); }}
-      aria-label={`View ${item.title}`}
     >
-      {/* Image */}
-      <div className="gallery-card-img-wrap">
-        <Image
-          src={item.image}
-          alt={item.title}
-          fill
-          className="gallery-card-img"
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-        />
-      </div>
+      <div
+        className="gc-card"
+        onClick={() => onOpen(item)}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => { if (e.key === "Enter") onOpen(item); }}
+        aria-label={`View ${item.title}`}
+      >
+        {/* Cover image */}
+        <div className="gc-cover">
+          <Image
+            src={item.coverImage}
+            alt={item.title}
+            fill
+            className="gc-cover-img"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          />
 
-      {/* Hover overlay */}
-      <div className="gallery-card-overlay" />
+          {/* Hover overlay */}
+          <div className="gc-overlay" />
 
-      {/* Zoom icon */}
-      <div className="gallery-card-zoom">
-        <ZoomIn size={16} />
-      </div>
+          {/* Hover CTA */}
+          <div className="gc-hover-cta">
+            <span className="gc-hover-btn">View Project</span>
+          </div>
 
-      {/* Category chip — top left, always visible */}
-      <div className="gallery-card-cat-wrap">
-        <span className="gallery-card-cat">{item.category}</span>
-      </div>
+          {/* Category chip */}
+          <span className="gc-cat">{item.category}</span>
 
-      {/* Title + description — slides up on hover */}
-      <div className="gallery-card-content">
-        <h3 className="gallery-card-title">{item.title}</h3>
-        <p className="gallery-card-desc">{item.description}</p>
+          {/* Behance link — top right */}
+          {item.behanceUrl && (
+            <a
+              href={item.behanceUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="gc-behance-link"
+              onClick={(e) => e.stopPropagation()}
+              aria-label="View on Behance"
+            >
+              <ExternalLink size={12} />
+            </a>
+          )}
+        </div>
+
+        {/* Info bar */}
+        <div className="gc-info">
+          <div className="gc-info-left">
+            <h3 className="gc-title">{item.title}</h3>
+            <p className="gc-desc">{item.description}</p>
+          </div>
+          <div className="gc-info-right">
+            {item.year && <span className="gc-year">{item.year}</span>}
+            <ArrowUpRight size={14} className="gc-arrow" />
+          </div>
+        </div>
+
+        {/* Tools row */}
+        {item.tools && item.tools.length > 0 && (
+          <div className="gc-tools">
+            {item.tools.map((t) => (
+              <span key={t} className="gc-tool">{t}</span>
+            ))}
+          </div>
+        )}
       </div>
 
       <style>{`
-        .gallery-card {
+        .gc-wrap {
           position: relative;
           break-inside: avoid;
-          margin-bottom: 1.25rem;
+        }
+
+        .gc-card {
+          background: var(--background);
+          border: 1px solid var(--border);
           border-radius: 1.25rem;
           overflow: hidden;
-          border: 1px solid var(--border);
-          background: var(--secondary);
           cursor: pointer;
-          height: 280px;
-          transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+          display: flex;
+          flex-direction: column;
+          transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
         }
-        .gallery-card-tall { height: 380px; }
-
-        .gallery-card:hover {
+        .gc-card:hover {
           border-color: var(--foreground);
-          transform: translateY(-3px);
-          box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+          box-shadow: 0 12px 40px rgba(0,0,0,0.1);
+          transform: translateY(-4px);
         }
 
-        .gallery-card-img-wrap {
-          position: absolute;
-          inset: 0;
+        /* Cover */
+        .gc-cover {
+          position: relative;
+          width: 100%;
+          aspect-ratio: 4 / 3;
+          overflow: hidden;
+          background: var(--secondary);
+          flex-shrink: 0;
         }
-        .gallery-card-img {
+        .gc-featured .gc-cover {
+          aspect-ratio: 16 / 7;
+        }
+
+        .gc-cover-img {
           object-fit: cover;
           transition: transform 0.6s ease;
         }
-        .gallery-card:hover .gallery-card-img {
-          transform: scale(1.06);
-        }
+        .gc-card:hover .gc-cover-img { transform: scale(1.05); }
 
-        .gallery-card-overlay {
+        /* Overlay */
+        .gc-overlay {
           position: absolute;
           inset: 0;
-          background: linear-gradient(
-            to top,
-            rgba(0,0,0,0.85) 0%,
-            rgba(0,0,0,0.3) 50%,
-            transparent 100%
-          );
-          opacity: 0;
-          transition: opacity 0.35s ease;
-        }
-        .gallery-card:hover .gallery-card-overlay { opacity: 1; }
-
-        .gallery-card-zoom {
-          position: absolute;
-          top: 1rem;
-          right: 1rem;
-          width: 34px;
-          height: 34px;
-          border-radius: 10px;
           background: rgba(0,0,0,0.5);
-          border: 1px solid rgba(255,255,255,0.15);
-          color: white;
+          opacity: 0;
+          transition: opacity 0.3s;
+        }
+        .gc-card:hover .gc-overlay { opacity: 1; }
+
+        /* Hover CTA center */
+        .gc-hover-cta {
+          position: absolute;
+          inset: 0;
           display: flex;
           align-items: center;
           justify-content: center;
           opacity: 0;
-          transform: scale(0.8);
+          transform: translateY(6px);
           transition: opacity 0.3s, transform 0.3s;
-          backdrop-filter: blur(4px);
         }
-        .gallery-card:hover .gallery-card-zoom {
+        .gc-card:hover .gc-hover-cta {
           opacity: 1;
-          transform: scale(1);
+          transform: translateY(0);
+        }
+        .gc-hover-btn {
+          padding: 0.55rem 1.25rem;
+          border-radius: 999px;
+          background: white;
+          color: #0f172a;
+          font-size: 0.78rem;
+          font-weight: 700;
+          letter-spacing: 0.02em;
         }
 
-        .gallery-card-cat-wrap {
+        /* Category chip — bottom left */
+        .gc-cat {
           position: absolute;
-          top: 1rem;
-          left: 1rem;
-        }
-        .gallery-card-cat {
-          display: inline-flex;
+          bottom: 0.75rem;
+          left: 0.875rem;
           padding: 0.2rem 0.65rem;
           border-radius: 999px;
-          font-size: 0.65rem;
+          font-size: 0.62rem;
           font-weight: 700;
-          letter-spacing: 0.06em;
+          letter-spacing: 0.07em;
           text-transform: uppercase;
-          background: rgba(0,0,0,0.5);
-          color: rgba(255,255,255,0.85);
+          background: rgba(0,0,0,0.55);
+          color: rgba(255,255,255,0.88);
           border: 1px solid rgba(255,255,255,0.15);
-          backdrop-filter: blur(4px);
+          backdrop-filter: blur(6px);
         }
 
-        .gallery-card-content {
+        /* Behance link — top right */
+        .gc-behance-link {
           position: absolute;
-          bottom: 0;
-          left: 0;
-          right: 0;
-          padding: 1.25rem;
-          transform: translateY(8px);
+          top: 0.75rem;
+          right: 0.75rem;
+          width: 30px;
+          height: 30px;
+          border-radius: 8px;
+          background: rgba(0,0,0,0.55);
+          border: 1px solid rgba(255,255,255,0.18);
+          color: rgba(255,255,255,0.8);
+          display: flex;
+          align-items: center;
+          justify-content: center;
           opacity: 0;
-          transition: transform 0.35s ease, opacity 0.35s ease;
+          transition: opacity 0.2s, background 0.2s;
+          backdrop-filter: blur(4px);
+          z-index: 2;
         }
-        .gallery-card:hover .gallery-card-content {
-          transform: translateY(0);
-          opacity: 1;
+        .gc-card:hover .gc-behance-link { opacity: 1; }
+        .gc-behance-link:hover { background: rgba(255,255,255,0.2); }
+
+        /* Info bar */
+        .gc-info {
+          display: flex;
+          align-items: flex-start;
+          justify-content: space-between;
+          gap: 0.75rem;
+          padding: 1rem 1.25rem 0.75rem;
         }
-        .gallery-card-title {
+        .gc-info-left { flex: 1; min-width: 0; }
+        .gc-title {
           font-family: var(--font-montserrat), serif;
-          font-size: 1rem;
+          font-size: 0.95rem;
           font-weight: 700;
-          color: white;
-          margin: 0 0 0.4rem;
           letter-spacing: -0.015em;
+          color: var(--foreground);
+          margin: 0 0 0.25rem;
           line-height: 1.3;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
-        .gallery-card-desc {
-          font-size: 0.8rem;
-          line-height: 1.6;
-          color: rgba(255,255,255,0.7);
+        .gc-desc {
+          font-size: 0.78rem;
+          line-height: 1.5;
+          color: var(--muted);
           margin: 0;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+        .gc-info-right {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-end;
+          gap: 0.25rem;
+          flex-shrink: 0;
+        }
+        .gc-year {
+          font-size: 0.68rem;
+          font-weight: 700;
+          letter-spacing: 0.05em;
+          color: var(--muted);
+          opacity: 0.7;
+        }
+        .gc-arrow {
+          color: var(--muted);
+          opacity: 0;
+          transform: translate(-3px, 3px);
+          transition: opacity 0.2s, transform 0.2s, color 0.2s;
+        }
+        .gc-card:hover .gc-arrow {
+          opacity: 1;
+          transform: translate(0, 0);
+          color: var(--foreground);
+        }
+
+        /* Tools */
+        .gc-tools {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.35rem;
+          padding: 0 1.25rem 1rem;
+        }
+        .gc-tool {
+          padding: 0.15rem 0.55rem;
+          border-radius: 5px;
+          font-size: 0.65rem;
+          font-weight: 600;
+          border: 1px solid var(--border);
+          color: var(--muted);
+          background: var(--secondary);
+          transition: color 0.2s, border-color 0.2s;
+        }
+        .gc-card:hover .gc-tool {
+          color: var(--foreground);
+          border-color: var(--foreground);
+          opacity: 0.55;
         }
       `}</style>
     </div>

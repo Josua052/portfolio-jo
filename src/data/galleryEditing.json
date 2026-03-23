@@ -3,14 +3,32 @@
     "id": "01",
     "title": "Design Poster Marios-Live Music with Osen Hutasoit",
     "category": "Poster",
-    "image": "/images/gallery-editing/Flyer IG.png",
-    "description": "Design Poster Marios-Live Music with Osen Hutasoit."
+    "description": "Design Poster Marios-Live Music with Osen Hutasoit.",
+    "coverImage": "/images/gallery-editing/Flyer IG.png",
+    "year": "",
+    "tools": ["Adobe Photoshop"],
+    "behanceUrl": "",
+    "detailImages": [
+      {
+        "src": "/images/gallery-editing/Flyer IG.png",
+        "caption": "Poster Marios Live Music"
+      }
+    ]
   },
   {
     "id": "02",
     "title": "Design Mockup Tshirt Law Communities",
     "category": "Mockup Tshirt",
-    "image": "/images/gallery-editing/Tshirt-Mockup.png",
-    "description": "Design Mockup Tshirt Law Communities"
+    "description": "Design Mockup Tshirt Law Communities.",
+    "coverImage": "/images/gallery-editing/Tshirt-Mockup.png",
+    "year": "",
+    "tools": ["Adobe Photoshop"],
+    "behanceUrl": "",
+    "detailImages": [
+      {
+        "src": "/images/gallery-editing/Tshirt-Mockup.png",
+        "caption": "Tshirt Mockup Law Communities"
+      }
+    ]
   }
 ]
