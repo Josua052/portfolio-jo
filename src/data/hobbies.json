@@ -1,0 +1,62 @@
+[
+  {
+    "id": "football",
+    "label": "Football",
+    "emoji": "⚽",
+    "tagline": "Every match tells a story",
+    "color": "#f59e0b",
+    "description": "Football adalah bahasa universal yang melampaui batas. Menonton laga setiap pekan adalah ritual yang tak pernah terlewat — dari liga domestik hingga panggung Eropa.",
+    "highlights": [
+      { "icon": "🏟", "text": "Liga Eropa Favorit" },
+      { "icon": "⚡", "text": "Klub Favorit sejak kecil" },
+      { "icon": "🎯", "text": "Selalu pantau statistik pemain" },
+      { "icon": "📺", "text": "Nonton live setiap pekan" }
+    ],
+    "stat": { "value": "10+", "label": "Tahun mengikuti sepakbola" }
+  },
+  {
+    "id": "badminton",
+    "label": "Badminton",
+    "emoji": "🏸",
+    "tagline": "Smash harder every day",
+    "color": "#22c55e",
+    "description": "Bulutangkis mengajarkan refleks, strategi, dan mental tangguh. Olahraga ini sudah jadi bagian dari rutinitas mingguan — baik bermain maupun menonton turnamen internasional.",
+    "highlights": [
+      { "icon": "🏆", "text": "Bangga dengan prestasi Indonesia" },
+      { "icon": "🎽", "text": "Rutin bermain mingguan" },
+      { "icon": "🥇", "text": "Ikuti turnamen lokal" },
+      { "icon": "📡", "text": "Pantau BWF World Tour" }
+    ],
+    "stat": { "value": "3×", "label": "Per minggu main badminton" }
+  },
+  {
+    "id": "hiking",
+    "label": "Hiking",
+    "emoji": "🏔",
+    "tagline": "Summit fever, always",
+    "color": "#06B6D4",
+    "description": "Mendaki gunung memberi perspektif berbeda. Setiap langkah menuju puncak adalah latihan mental dan fisik yang luar biasa — dan pemandangan dari atas selalu sepadan.",
+    "highlights": [
+      { "icon": "🗻", "text": "Sudah mendaki beberapa gunung" },
+      { "icon": "🌿", "text": "Suka jalur hutan tropis" },
+      { "icon": "💧", "text": "Air terjun jadi destinasi favorit" },
+      { "icon": "🎒", "text": "Selalu siap perlengkapan lengkap" }
+    ],
+    "stat": { "value": "5+", "label": "Gunung & destinasi didaki" }
+  },
+  {
+    "id": "travelling",
+    "label": "Travelling",
+    "emoji": "✈️",
+    "tagline": "Every city, a new story",
+    "color": "#6366f1",
+    "description": "Travelling memperluas cara pandang dan inspirasi. Setiap kota punya karakter, kuliner, dan cerita unik yang tidak bisa ditemukan dari balik layar laptop.",
+    "highlights": [
+      { "icon": "🗺", "text": "Eksplorasi kota-kota baru" },
+      { "icon": "🍜", "text": "Kuliner lokal jadi prioritas" },
+      { "icon": "📸", "text": "Dokumentasi setiap momen" },
+      { "icon": "🌏", "text": "Rencana jelajah Asia Tenggara" }
+    ],
+    "stat": { "value": "10+", "label": "Kota yang pernah dikunjungi" }
+  }
+]
