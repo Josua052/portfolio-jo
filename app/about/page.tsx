@@ -1,6 +1,7 @@
 import AboutHero from "@/components/sections/About/AboutHero";
 import { AboutContent } from "@/components/sections/About/AboutContent";
 import { AboutEducation } from "@/components/sections/About/AboutEducation";
+import AboutHobbies from "@/components/sections/About/AboutHobbies";
 
 export const metadata = {
   title: "About | Josua Ronaldo",
@@ -13,6 +14,7 @@ export default function AboutPage() {
       <AboutHero />
       <AboutContent />
       <AboutEducation />
+      <AboutHobbies />
     </main>
   );
 }

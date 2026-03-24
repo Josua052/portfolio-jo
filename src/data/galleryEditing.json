@@ -30,5 +30,69 @@
         "caption": "Tshirt Mockup Law Communities"
       }
     ]
+  },
+  {
+    "id": "behance-01",
+    "title": "PT Degiva Sukses Indonesia – Company Profile Website",
+    "category": "Behance Project",
+    "description": "Imported from Behance portfolio.",
+    "coverImage": "https://mir-s3-cdn-cf.behance.net/projects/808/5c768c239548975.Y3JvcCwxOTIwLDE1MDEsMCwzMDI3.jpg",
+    "year": "",
+    "tools": [],
+    "behanceUrl": "https://www.behance.net/gallery/239548975/PT-Degiva-Sukses-Indonesia-Company-Profile-Website",
+    "detailImages": [
+      {
+        "src": "https://mir-s3-cdn-cf.behance.net/projects/808/5c768c239548975.Y3JvcCwxOTIwLDE1MDEsMCwzMDI3.jpg",
+        "caption": "PT Degiva Sukses Indonesia – Company Profile Website"
+      }
+    ]
+  },
+  {
+    "id": "behance-02",
+    "title": "My Portfolio",
+    "category": "Behance Project",
+    "description": "Imported from Behance portfolio.",
+    "coverImage": "https://mir-s3-cdn-cf.behance.net/projects/808/052b38223632519.Y3JvcCwxOTIwLDE1MDEsMCw2MzE2.png",
+    "year": "",
+    "tools": [],
+    "behanceUrl": "",
+    "detailImages": [
+      {
+        "src": "https://mir-s3-cdn-cf.behance.net/projects/808/052b38223632519.Y3JvcCwxOTIwLDE1MDEsMCw2MzE2.png",
+        "caption": "My Portfolio"
+      }
+    ]
+  },
+  {
+    "id": "behance-03",
+    "title": "Landing Page Palm Oil Company",
+    "category": "Behance Project",
+    "description": "Imported from Behance portfolio.",
+    "coverImage": "https://mir-s3-cdn-cf.behance.net/projects/808/1ffbad173075645.Y3JvcCwxMDgwLDg0NCwwLDExNw.jpg",
+    "year": "",
+    "tools": [],
+    "behanceUrl": "https://www.behance.net/gallery/173075645/Landing-Page-Palm-Oil-Company",
+    "detailImages": [
+      {
+        "src": "https://mir-s3-cdn-cf.behance.net/projects/808/1ffbad173075645.Y3JvcCwxMDgwLDg0NCwwLDExNw.jpg",
+        "caption": "Landing Page Palm Oil Company"
+      }
+    ]
+  },
+  {
+    "id": "behance-04",
+    "title": "Health Website",
+    "category": "Behance Project",
+    "description": "Imported from Behance portfolio.",
+    "coverImage": "https://mir-s3-cdn-cf.behance.net/projects/808/fb40b1164837099.Y3JvcCwxNTQ5LDEyMTIsMjU2LDA.jpg",
+    "year": "",
+    "tools": [],
+    "behanceUrl": "https://www.behance.net/gallery/164837099/Health-Website",
+    "detailImages": [
+      {
+        "src": "https://mir-s3-cdn-cf.behance.net/projects/808/fb40b1164837099.Y3JvcCwxNTQ5LDEyMTIsMjU2LDA.jpg",
+        "caption": "Health Website"
+      }
+    ]
   }
 ]
