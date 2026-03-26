@@ -43,7 +43,7 @@ export default function GalleryLiveHero() {
         </h1>
 
         <p className="glive-hero-sub">
-          Captured moments from daily life — photos and videos,
+          Captured moments from daily life photos and videos,
           raw, random, and real.
         </p>
 

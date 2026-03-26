@@ -46,7 +46,7 @@ export default function GalleryHero() {
         </h1>
 
         <p className="gallery-hero-sub">
-          A collection of my visual editing work — posters, photo manipulation,
+          A collection of my visual editing work, posters, photo manipulation,
           UI/UX design explorations, and digital art.
         </p>
 

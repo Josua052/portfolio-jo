@@ -66,13 +66,11 @@ function FootballCanvas() {
         ctx.save();
         ctx.globalAlpha = b.alpha;
         ctx.translate(b.x, b.y);
-        // Outer circle
         ctx.beginPath();
         ctx.arc(0, 0, b.r, 0, Math.PI * 2);
         ctx.strokeStyle = "#f59e0b";
         ctx.lineWidth = 1.5;
         ctx.stroke();
-        // Star lines from center
         for (let i = 0; i < 5; i++) {
           const a = (i * 2 * Math.PI) / 5 - Math.PI / 2;
           ctx.beginPath();
@@ -82,7 +80,6 @@ function FootballCanvas() {
           ctx.lineWidth = 0.9;
           ctx.stroke();
         }
-        // Inner circle
         ctx.beginPath();
         ctx.arc(0, 0, b.r * 0.3, 0, Math.PI * 2);
         ctx.strokeStyle = "#f59e0b";
@@ -141,7 +138,6 @@ function BadmintonCanvas() {
         ctx.globalAlpha = s.alpha;
         ctx.translate(s.x, s.y);
         ctx.rotate(s.rot);
-        // Feathers
         for (let i = 0; i < 8; i++) {
           const a = (i / 8) * Math.PI * 2;
           ctx.beginPath();
@@ -217,7 +213,6 @@ function HikingCanvas() {
       ctx.clearRect(0, 0, W, H);
       t += 0.004;
 
-      // Rising stars/mist
       stars.forEach((s) => {
         s.y -= (s.speed / H) * 70;
         if (s.y < -0.02) s.y = 1.05;
@@ -227,7 +222,6 @@ function HikingCanvas() {
         ctx.fill();
       });
 
-      // Mountain ridge
       ctx.beginPath();
       ctx.moveTo(0, H);
       peakDefs.forEach(([px, py], i) => {
@@ -303,7 +297,6 @@ function TravellingCanvas() {
         phase: n.phase,
       }));
 
-      // Routes
       routes.forEach((r) => {
         const a = pts[r.from],
           b = pts[r.to];
@@ -317,7 +310,6 @@ function TravellingCanvas() {
         ctx.setLineDash([]);
       });
 
-      // Nodes with pulse
       pts.forEach((p) => {
         const pulse = Math.sin(t * 1.5 + p.phase) * 0.5 + 0.5;
         ctx.beginPath();
@@ -331,7 +323,6 @@ function TravellingCanvas() {
         ctx.stroke();
       });
 
-      // Moving travelers
       travelers.forEach((tr) => {
         tr.prog += tr.speed;
         if (tr.prog > 1) tr.prog = 0;
@@ -369,16 +360,47 @@ const BG_CANVAS: Record<string, React.FC> = {
 
 /* ─────────────────────────────────────────────
    AboutHobbies — default export
+   Single-card carousel: hanya 1 card tampil,
+   bergantian otomatis dengan transisi halus
 ───────────────────────────────────────────── */
 export default function AboutHobbies() {
   const { ref: headRef, inView: headIn } = useInView(0.2);
-  const BgCanvas = BG_CANVAS[HOBBIES[0].id];
-  // We show ALL hobbies in a grid — no tab switching needed
+
+  // activeIdx = target auto-cycle
+  const [activeIdx, setActiveIdx] = useState(0);
+  // displayIdx = yang sedang ditampilkan (lag saat transisi)
+  const [displayIdx, setDisplayIdx] = useState(0);
+  // phase: "in" = card visible, "out" = sedang fade-out
+  const [phase, setPhase] = useState<"in" | "out">("in");
+
+  // Auto-cycle setiap 5 detik
+  useEffect(() => {
+    const t = setInterval(() => {
+      setActiveIdx((p) => (p + 1) % HOBBIES.length);
+    }, 5000);
+    return () => clearInterval(t);
+  }, []);
+
+  // Transisi halus: fade-out → ganti konten → fade-in
+  useEffect(() => {
+    if (activeIdx === displayIdx) return;
+    const t0 = setTimeout(() => setPhase("out"), 0);
+    const t1 = setTimeout(() => {
+      setDisplayIdx(activeIdx);
+      setPhase("in");
+    }, 350);
+    return () => {
+      clearTimeout(t0);
+      clearTimeout(t1);
+    };
+  }, [activeIdx]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const hobby = HOBBIES[displayIdx];
 
   return (
     <section className="hbs-section">
-      {/* Rotating background canvas — cycles through all hobbies' animations */}
-      <CyclingBackground hobbies={HOBBIES} />
+      {/* Background canvas sinkron dengan activeIdx */}
+      <CyclingBackground hobbies={HOBBIES} activeIdx={activeIdx} />
 
       <div className="container-custom hbs-inner">
         {/* Heading */}
@@ -399,17 +421,28 @@ export default function AboutHobbies() {
               <span className="hbs-heading-outline">the Screen</span>
             </h2>
             <p className="hbs-heading-sub">
-              What I do when I am not coding — the passions that keep me
+              What I do when I&apos;m not coding — the passions that keep me
               energized and inspired every single day.
             </p>
           </div>
         </div>
 
-        {/* 2×2 grid of all hobby cards */}
-        <div className="hbs-grid">
-          {HOBBIES.map((hobby, i) => (
-            <HobbyCard key={hobby.id} hobby={hobby} delay={i * 80} />
-          ))}
+        {/* Single-card viewport — 1 card tampil, bergantian otomatis */}
+        <div className="hbs-viewport">
+          <div
+            className="hbs-card-transition"
+            style={{
+              opacity: phase === "in" ? 1 : 0,
+              transform:
+                phase === "in"
+                  ? "translateY(0) scale(1)"
+                  : "translateY(18px) scale(0.97)",
+              transition: "opacity 0.35s ease, transform 0.35s ease",
+              willChange: "opacity, transform",
+            }}
+          >
+            <HobbyCard hobby={hobby} delay={0} />
+          </div>
         </div>
       </div>
 
@@ -426,9 +459,10 @@ export default function AboutHobbies() {
           z-index: 2;
           display: flex;
           flex-direction: column;
-          gap: 3rem;
+          gap: 2.5rem;
         }
 
+        /* Heading */
         .hbs-heading-wrap { display: flex; flex-direction: column; gap: 1.25rem; }
         .hbs-eyebrow {
           font-size: 0.7rem; font-weight: 700;
@@ -453,15 +487,19 @@ export default function AboutHobbies() {
           line-height: 1.75; color: var(--muted);
         }
 
-        /* 2×2 grid */
-        .hbs-grid {
-          display: grid;
-          grid-template-columns: repeat(2, 1fr);
-          gap: 1.25rem;
+        /* Single-card viewport */
+        .hbs-viewport {
+          width: 100%;
+          max-width: 560px;
+          margin: 0 auto;
         }
+        .hbs-card-transition {
+          width: 100%;
+        }
+
         @media (max-width: 640px) {
-          .hbs-grid { grid-template-columns: 1fr; }
           .hbs-heading-row { flex-direction: column; align-items: flex-start; }
+          .hbs-viewport { max-width: 100%; }
         }
 
         /* Canvas */
@@ -478,26 +516,21 @@ export default function AboutHobbies() {
 }
 
 /* ─────────────────────────────────────────────
-   Cycling background — slowly transitions
-   between each hobby's canvas animation
+   Cycling background — sinkron dengan activeIdx
 ───────────────────────────────────────────── */
-function CyclingBackground({ hobbies }: { hobbies: HobbyData[] }) {
-  const [idx, setIdx] = useState(0);
-
-  useEffect(() => {
-    const t = setInterval(() => {
-      setIdx((p) => (p + 1) % hobbies.length);
-    }, 6000);
-    return () => clearInterval(t);
-  }, [hobbies.length]);
-
-  const h = hobbies[idx];
+function CyclingBackground({
+  hobbies,
+  activeIdx,
+}: {
+  hobbies: HobbyData[];
+  activeIdx: number;
+}) {
+  const h = hobbies[activeIdx];
   const Canvas = BG_CANVAS[h.id];
 
   return (
     <div className="hbs-bg-wrap" key={h.id}>
       {Canvas && <Canvas />}
-      {/* Gradient: opaque top→transparent center→opaque bottom */}
       <div
         className="hbs-bg-fade"
         style={{
@@ -510,7 +543,6 @@ function CyclingBackground({ hobbies }: { hobbies: HobbyData[] }) {
           )`,
         }}
       />
-      {/* Subtle color wash */}
       <div className="hbs-bg-tint" style={{ background: `${h.color}05` }} />
 
       <style>{`

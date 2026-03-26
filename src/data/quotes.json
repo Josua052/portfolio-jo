@@ -1,0 +1,44 @@
+[
+  {
+    "id": "01",
+    "quote": "Lakukan yang terbaik hari ini, biarkan masa depan mengurus dirinya sendiri.",
+    "source": "Pegangan Hidup",
+    "category": "mindset",
+    "highlight": true
+  },
+  {
+    "id": "02",
+    "quote": "Kode yang baik bukan hanya yang berjalan, tapi yang mudah dimengerti orang lain.",
+    "source": "Prinsip Kerja",
+    "category": "work",
+    "highlight": false
+  },
+  {
+    "id": "03",
+    "quote": "Belajar tidak pernah selesai — setiap hari adalah kesempatan untuk menjadi lebih baik dari kemarin.",
+    "source": "Filosofi Belajar",
+    "category": "growth",
+    "highlight": false
+  },
+  {
+    "id": "04",
+    "quote": "Desain yang baik adalah yang tidak terlihat — pengalaman yang mulus adalah seni tertinggi.",
+    "source": "Prinsip Desain",
+    "category": "work",
+    "highlight": false
+  },
+  {
+    "id": "05",
+    "quote": "Perjalanan seribu mil dimulai dari satu langkah kecil yang berani.",
+    "source": "Motivasi",
+    "category": "mindset",
+    "highlight": false
+  },
+  {
+    "id": "06",
+    "quote": "Tantangan bukan untuk dihindari, tapi untuk dihadapi — di situlah karakter terbentuk.",
+    "source": "Pegangan Hidup",
+    "category": "growth",
+    "highlight": false
+  }
+]
