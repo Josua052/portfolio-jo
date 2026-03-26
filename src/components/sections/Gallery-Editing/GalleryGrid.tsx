@@ -32,7 +32,7 @@ function ProjectModal({
     const handler = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
       if (e.key === "ArrowRight") setImgIndex((p) => (p + 1) % total);
-      if (e.key === "ArrowLeft")  setImgIndex((p) => (p - 1 + total) % total);
+      if (e.key === "ArrowLeft") setImgIndex((p) => (p - 1 + total) % total);
     };
     document.addEventListener("keydown", handler);
     document.body.style.overflow = "hidden";
@@ -47,7 +47,6 @@ function ProjectModal({
   return (
     <div className="pm-backdrop" onClick={onClose} role="dialog" aria-modal>
       <div className="pm-inner" onClick={(e) => e.stopPropagation()}>
-
         {/* Close */}
         <button className="pm-close" onClick={onClose} aria-label="Close">
           <X size={18} />
@@ -126,7 +125,9 @@ function ProjectModal({
               <p className="pm-section-label">Tools Used</p>
               <div className="pm-tools">
                 {project.tools.map((t) => (
-                  <span key={t} className="pm-tool">{t}</span>
+                  <span key={t} className="pm-tool">
+                    {t}
+                  </span>
                 ))}
               </div>
             </div>
@@ -474,7 +475,6 @@ export default function GalleryGrid() {
   return (
     <section className="gg-section">
       <div className="gg-container">
-
         {/* Controls */}
         <div className="gg-controls">
           <span className="gg-count">
@@ -504,7 +504,7 @@ export default function GalleryGrid() {
               key={item.id}
               item={item}
               delay={(i % 3) * 80}
-              featured={i % 4 === 0}   /* every 4th item spans wider */
+              featured={i % 4 === 0} /* every 4th item spans wider */
               onOpen={setSelected}
             />
           ))}
@@ -519,6 +519,7 @@ export default function GalleryGrid() {
         .gg-section {
           background: var(--background);
           padding: 0 1.5rem 7rem;
+          overflow-x: hidden; 
         }
         .gg-container {
           max-width: 1280px;
@@ -526,6 +527,8 @@ export default function GalleryGrid() {
           display: flex;
           flex-direction: column;
           gap: 2rem;
+          min-width: 0;        
+          overflow: hidden; 
         }
 
         /* Controls */
@@ -576,6 +579,8 @@ export default function GalleryGrid() {
           display: grid;
           grid-template-columns: 1fr;
           gap: 1.25rem;
+          min-width: 0;            
+          width: 100%;  
         }
         @media (min-width: 640px) {
           .gg-grid {
@@ -597,7 +602,22 @@ export default function GalleryGrid() {
         }
 
         @media (max-width: 640px) {
-          .gg-controls { flex-direction: column; align-items: flex-start; }
+          .gg-section {
+            padding: 0 1rem 5rem; 
+          }
+          .gg-controls {
+            flex-direction: column;
+            align-items: flex-start;
+          }
+          .gg-filters {
+            max-width: 100%;         
+            overflow-x: auto;        
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+          }
+          .gg-filters::-webkit-scrollbar {
+            display: none;
+          }
         }
       `}</style>
     </section>

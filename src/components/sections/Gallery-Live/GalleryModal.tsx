@@ -26,16 +26,8 @@ export default function GalleryModal({ item, onClose }: Props) {
   }, [onClose]);
 
   return (
-    <div
-      className="gmodal-backdrop"
-      onClick={onClose}
-      role="dialog"
-      aria-modal
-    >
-      <div
-        className="gmodal-inner"
-        onClick={(e) => e.stopPropagation()}
-      >
+    <div className="gmodal-backdrop" onClick={onClose} role="dialog" aria-modal>
+      <div className="gmodal-inner" onClick={(e) => e.stopPropagation()}>
         {/* Close */}
         <button className="gmodal-close" onClick={onClose} aria-label="Close">
           <X size={18} />
@@ -50,6 +42,7 @@ export default function GalleryModal({ item, onClose }: Props) {
               fill
               className="object-contain"
               sizes="90vw"
+              unoptimized
             />
           ) : (
             <video

@@ -3,7 +3,7 @@
 
 import Image from "next/image";
 import { Play, Calendar } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { GalleryItemType } from "@/types/gallery";
 
 function useInView(threshold = 0.1) {
@@ -18,9 +18,13 @@ function useInView(threshold = 0.1) {
     );
     obs.observe(el);
     return () => obs.disconnect();
-  }, []);
+  }, [threshold]);
   return { ref, inView };
 }
+
+// ✅ Placeholder SVG sebagai fallback jika gambar gagal dimuat
+const FALLBACK_PLACEHOLDER =
+  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 400 400'%3E%3Crect fill='%23222' width='400' height='400'/%3E%3Ctext fill='%23666' font-family='sans-serif' font-size='14' text-anchor='middle' x='200' y='200'%3EImage unavailable%3C/text%3E%3C/svg%3E";
 
 interface Props {
   item: GalleryItemType;
@@ -30,6 +34,18 @@ interface Props {
 
 export default function GalleryItem({ item, onClick, delay = 0 }: Props) {
   const { ref, inView } = useInView();
+  const [imgSrc, setImgSrc] = useState(
+    item.type === "image" ? item.src : (item.thumbnail ?? FALLBACK_PLACEHOLDER)
+  );
+  const [imgError, setImgError] = useState(false);
+
+  // ✅ Handle error: fallback jika Google Drive gagal
+  const handleImageError = useCallback(() => {
+    if (!imgError) {
+      setImgError(true);
+      setImgSrc(FALLBACK_PLACEHOLDER);
+    }
+  }, [imgError]);
 
   return (
     <div
@@ -49,14 +65,25 @@ export default function GalleryItem({ item, onClick, delay = 0 }: Props) {
       {/* Media thumbnail */}
       <div className="gitem-media">
         <Image
-          src={item.type === "image" ? item.src : (item.thumbnail ?? "/placeholder.jpg")}
+          src={imgSrc}
           alt={item.title}
           fill
           className="gitem-img"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          onError={handleImageError}
+          // ✅ unoptimized untuk external URL dari Google Drive
+          // karena Next.js image optimization mungkin gagal dengan redirect Google
+          unoptimized
         />
 
-        {/* Video play overlay — always visible for videos */}
+        {/* Error indicator */}
+        {imgError && (
+          <div className="gitem-error-badge">
+            ⚠️
+          </div>
+        )}
+
+        {/* Video play overlay */}
         {item.type === "video" && (
           <div className="gitem-play-badge">
             <Play size={14} fill="white" />
@@ -99,7 +126,6 @@ export default function GalleryItem({ item, onClick, delay = 0 }: Props) {
         .gitem-media {
           position: relative;
           width: 100%;
-          /* Height determined by the image natural ratio */
           aspect-ratio: 1 / 1;
           overflow: hidden;
         }
@@ -126,6 +152,23 @@ export default function GalleryItem({ item, onClick, delay = 0 }: Props) {
           display: flex;
           align-items: center;
           justify-content: center;
+          backdrop-filter: blur(4px);
+        }
+
+        /* ✅ Error badge */
+        .gitem-error-badge {
+          position: absolute;
+          top: 0.75rem;
+          right: 0.75rem;
+          z-index: 3;
+          width: 28px;
+          height: 28px;
+          border-radius: 50%;
+          background: rgba(255, 80, 80, 0.8);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 0.75rem;
           backdrop-filter: blur(4px);
         }
 

@@ -26,8 +26,10 @@ function useInView(threshold = 0.1) {
     const el = ref.current;
     if (!el) return;
     const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) setInView(true); },
-      { threshold }
+      ([e]) => {
+        if (e.isIntersecting) setInView(true);
+      },
+      { threshold },
     );
     obs.observe(el);
     return () => obs.disconnect();
@@ -48,12 +50,16 @@ export default function HobbyCard({
     <div
       ref={ref}
       className="hc-outer"
-      style={{
-        opacity: inView ? 1 : 0,
-        transform: inView ? "translateY(0) scale(1)" : "translateY(20px) scale(0.97)",
-        transition: `opacity 0.55s ${delay}ms ease, transform 0.55s ${delay}ms ease`,
-        "--hc": hobby.color,
-      } as React.CSSProperties}
+      style={
+        {
+          opacity: inView ? 1 : 0,
+          transform: inView
+            ? "translateY(0) scale(1)"
+            : "translateY(20px) scale(0.97)",
+          transition: `opacity 0.55s ${delay}ms ease, transform 0.55s ${delay}ms ease`,
+          "--hc": hobby.color,
+        } as React.CSSProperties
+      }
     >
       <div className="hc-card">
         {/* Accent top bar */}
@@ -63,25 +69,42 @@ export default function HobbyCard({
         <div className="hc-noise" aria-hidden />
 
         {/* Big decorative emoji — background */}
-        <div className="hc-deco" aria-hidden>{hobby.emoji}</div>
+        <div className="hc-deco" aria-hidden>
+          {hobby.emoji}
+        </div>
 
         {/* Content */}
         <div className="hc-content">
-
           {/* Header */}
           <div className="hc-header">
-            <div className="hc-icon-wrap" style={{ background: `${hobby.color}18`, borderColor: `${hobby.color}30` }}>
+            <div
+              className="hc-icon-wrap"
+              style={{
+                background: `${hobby.color}18`,
+                borderColor: `${hobby.color}30`,
+              }}
+            >
               <span className="hc-icon-emoji">{hobby.emoji}</span>
             </div>
 
             <div className="hc-header-text">
               <h3 className="hc-title">{hobby.label}</h3>
-              <p className="hc-tagline" style={{ color: hobby.color }}>{hobby.tagline}</p>
+              <p className="hc-tagline" style={{ color: hobby.color }}>
+                {hobby.tagline}
+              </p>
             </div>
 
             {/* Stat pill */}
-            <div className="hc-stat-pill" style={{ borderColor: `${hobby.color}30`, background: `${hobby.color}10` }}>
-              <span className="hc-stat-value" style={{ color: hobby.color }}>{hobby.stat.value}</span>
+            <div
+              className="hc-stat-pill"
+              style={{
+                borderColor: `${hobby.color}30`,
+                background: `${hobby.color}10`,
+              }}
+            >
+              <span className="hc-stat-value" style={{ color: hobby.color }}>
+                {hobby.stat.value}
+              </span>
               <span className="hc-stat-label">{hobby.stat.label}</span>
             </div>
           </div>
@@ -286,7 +309,59 @@ export default function HobbyCard({
           color: var(--muted);
           margin: 0;
         }
-      `}</style>
+        @media (max-width: 480px) {
+          .hc-header {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 0.75rem;
+          }
+          .hc-header > .hc-icon-wrap {
+            align-self: flex-start;
+          }
+          .hc-stat-pill {
+            flex-direction: row;
+            align-self: flex-start;
+            gap: 0.4rem;
+          }
+        }
+        @media (max-width: 400px) {
+          .hc-highlights {
+            grid-template-columns: 1fr; /* 1 kolom di ponsel kecil */
+          }
+        }
+        @media (max-width: 480px) {
+          .hc-content {
+            padding: 1rem;
+            gap: 0.875rem;
+          }
+        }
+        @media (max-width: 480px) {
+          .hc-icon-wrap {
+            width: 40px;
+            height: 40px;
+            border-radius: 11px;
+          }
+          .hc-icon-emoji { font-size: 1.25rem; }
+        }
+        @media (max-width: 480px) {
+          .hc-deco {
+              font-size: 4.5rem;
+              bottom: -0.25rem;
+              right: 0.25rem;
+            }
+          }
+          @media (max-width: 480px) {
+            .hc-stat-pill {
+              flex-direction: row;
+              gap: 0.35rem;
+              padding: 0.35rem 0.6rem;
+            }
+          }
+          @media (max-width: 480px) {
+            .hc-title { font-size: 0.95rem; }
+            .hc-desc { font-size: 0.78rem; line-height: 1.65; }
+          }
+          `}</style>
     </div>
   );
 }

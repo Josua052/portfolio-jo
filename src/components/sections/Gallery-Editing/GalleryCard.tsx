@@ -13,8 +13,10 @@ function useInView(threshold = 0.1) {
     const el = ref.current;
     if (!el) return;
     const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) setInView(true); },
-      { threshold }
+      ([e]) => {
+        if (e.isIntersecting) setInView(true);
+      },
+      { threshold },
     );
     obs.observe(el);
     return () => obs.disconnect();
@@ -44,7 +46,9 @@ export default function GalleryCard({
       className={`gc-wrap ${featured ? "gc-featured" : ""}`}
       style={{
         opacity: inView ? 1 : 0,
-        transform: inView ? "translateY(0) scale(1)" : "translateY(20px) scale(0.97)",
+        transform: inView
+          ? "translateY(0) scale(1)"
+          : "translateY(20px) scale(0.97)",
         transition: `opacity 0.55s ${delay}ms ease, transform 0.55s ${delay}ms ease`,
       }}
     >
@@ -53,7 +57,9 @@ export default function GalleryCard({
         onClick={() => onOpen(item)}
         role="button"
         tabIndex={0}
-        onKeyDown={(e) => { if (e.key === "Enter") onOpen(item); }}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") onOpen(item);
+        }}
         aria-label={`View ${item.title}`}
       >
         {/* Cover image */}
@@ -108,7 +114,9 @@ export default function GalleryCard({
         {item.tools && item.tools.length > 0 && (
           <div className="gc-tools">
             {item.tools.map((t) => (
-              <span key={t} className="gc-tool">{t}</span>
+              <span key={t} className="gc-tool">
+                {t}
+              </span>
             ))}
           </div>
         )}
@@ -118,6 +126,8 @@ export default function GalleryCard({
         .gc-wrap {
           position: relative;
           break-inside: avoid;
+          min-width: 0;              
+          overflow: hidden;            
         }
 
         .gc-card {
@@ -129,6 +139,8 @@ export default function GalleryCard({
           display: flex;
           flex-direction: column;
           transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+          min-width: 0;             
+          width: 100%;                
         }
         .gc-card:hover {
           border-color: var(--foreground);
@@ -246,11 +258,15 @@ export default function GalleryCard({
           color: var(--foreground);
           margin: 0 0 0.25rem;
           line-height: 1.3;
-          white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
+          word-break: break-word;      
+          overflow-wrap: break-word;   
+          display: -webkit-box;       
+          -webkit-line-clamp: 2;       
+          -webkit-box-orient: vertical;
         }
-        .gc-desc {
+                .gc-desc {
           font-size: 0.78rem;
           line-height: 1.5;
           color: var(--muted);
@@ -307,6 +323,11 @@ export default function GalleryCard({
           color: var(--foreground);
           border-color: var(--foreground);
           opacity: 0.55;
+        }
+        @media (max-width: 640px) {
+          .gc-featured .gc-cover {
+            aspect-ratio: 4 / 3;      /* ← sama seperti card biasa di mobile */
+          }
         }
       `}</style>
     </div>

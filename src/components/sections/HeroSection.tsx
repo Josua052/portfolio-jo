@@ -70,7 +70,7 @@ export default function HeroSection() {
 
           <div className="hero-social-row">
             <Link
-              href="#"
+              href="https://www.instagram.com/josua_ronaldo_/"
               target="_blank"
               className="hero-social-link"
               aria-label="Instagram"
@@ -86,7 +86,7 @@ export default function HeroSection() {
               <Twitter size={16} />
             </Link>
             <Link
-              href="#"
+              href="https://github.com/Josua052"
               target="_blank"
               className="hero-social-link"
               aria-label="GitHub"
@@ -111,7 +111,11 @@ export default function HeroSection() {
             </h1>
 
             <div className="hero-cta-group">
-              <Link href="/resume" className="hero-cta-primary">
+              <Link
+                href="https://drive.google.com/file/d/1NIL0NBRAFaNe07HS3obsMMvdeI4nHxes/preview"
+                target="_blank"
+                className="hero-cta-primary"
+              >
                 Get Resume
                 <ArrowUpRight size={16} />
               </Link>
