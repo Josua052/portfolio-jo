@@ -12,7 +12,7 @@
     "id": "linkedin",
     "platform": "LinkedIn",
     "icon": "Linkedin",
-    "value": "josua-ronaldo",
+    "value": "Josua Ronaldo Pandiangan",
     "display": "josua-ronaldo",
     "link": "https://www.linkedin.com/in/josua-ronaldo/",
     "description": "Professional network"
@@ -39,9 +39,9 @@
     "id": "phone",
     "platform": "WhatsApp",
     "icon": "Phone",
-    "value": "+62812-6483-3128",
-    "display": "+62 812-6483-3128",
-    "link": "https://wa.me/6281264833128",
+    "value": "+6295-4017-03270",
+    "display": "+62 95-4017-03270",
+    "link": "https://wa.me/62895401703270",
     "description": "Quick response"
   }
 ]
