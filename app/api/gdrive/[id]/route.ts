@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
-  _req: NextRequest,
-  { params }: { params: { id: string } },
-) {
-  const { id } = await params;
+  req: NextRequest,
+    context: { params: Promise<{ id: string }> }
+  ) {
+    const { id } = await context.params;
 
   if (!id || !/^[a-zA-Z0-9_-]+$/.test(id)) {
     return new NextResponse("Invalid file ID", { status: 400 });
