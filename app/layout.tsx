@@ -4,6 +4,7 @@ import Footer from "@/components/common/Footer";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { Montserrat, Poppins } from "next/font/google";
 import MusicPlayer from "@/components/common/MusicPlayer";
+import { Analytics } from "@vercel/analytics/next";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -45,6 +46,7 @@ export default function RootLayout({
           <Footer />
           <MusicPlayer />
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );
