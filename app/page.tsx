@@ -2,6 +2,7 @@ import AboutQuotes from "@/components/sections/About/Quotes";
 import HeroSection from "@/components/sections/HeroSection";
 import AtGlanceSection from "@/components/sections/Home/AtGlanceSection";
 import ContactSection from "@/components/sections/Home/ContactSection";
+import TestimonialsSection from "@/components/sections/Testimonial/TestimonialsSection";
 
 export const metadata = {
   title: "Portfolio of Josua | Homepage",
@@ -31,6 +32,7 @@ export default function HomePage() {
       <AboutQuotes />
       <AtGlanceSection />
       <ContactSection />
+      <TestimonialsSection />
     </main>
   );
 }
