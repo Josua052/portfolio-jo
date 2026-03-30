@@ -3,7 +3,6 @@
 
 import { useState } from "react";
 import { Send, Loader2, CheckCircle2, Star } from "lucide-react";
-import { supabase } from "@/lib/supabase";
 
 const RELATION_OPTIONS = [
   "Rekan Kerja",
@@ -29,25 +28,33 @@ export default function TestimonialForm() {
     const form = e.currentTarget;
     const fd = new FormData(form);
 
-    const { error: sbErr } = await supabase.from("testimonials").insert([
-      {
-        name: fd.get("name"),
-        role: fd.get("role"),
-        company: fd.get("company"),
-        relation: fd.get("relation"),
-        message: fd.get("message"),
-        rating: rating || null,
-      },
-    ]);
+    try {
+      const res = await fetch("/api/testimonial", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: fd.get("name"),
+          role: fd.get("role") || undefined,
+          company: fd.get("company") || undefined,
+          relation: fd.get("relation") || undefined,
+          message: fd.get("message"),
+          rating: rating || undefined,
+        }),
+      });
 
-    setLoading(false);
+      const json = await res.json();
 
-    if (!sbErr) {
-      setSuccess(true);
-      form.reset();
-      setRating(0);
-    } else {
-      setError(sbErr.message);
+      if (!res.ok) {
+        setError(json.error ?? "Gagal mengirim testimoni.");
+      } else {
+        setSuccess(true);
+        form.reset();
+        setRating(0);
+      }
+    } catch {
+      setError("Terjadi kesalahan jaringan. Coba lagi.");
+    } finally {
+      setLoading(false);
     }
   };
 
