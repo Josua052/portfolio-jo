@@ -13,16 +13,25 @@ import { gdriveProxyUrl, gdriveThumbnailUrl } from "@/lib/gdrive";
  *  driveId = bagian setelah /d/ sampai /view
  */
 const GALLERY_LIVE_RAW: (Omit<GalleryItemType, "src" | "thumbnail"> & {
-  driveId?: string;           // untuk image via proxy
-  videoUrl?: string;          // untuk video (direct URL atau hosting lain)
-  driveThumbnailId?: string;  // thumbnail video via proxy
+  driveId?: string; // untuk image via proxy
+  videoUrl?: string; // untuk video (direct URL atau hosting lain)
+  driveThumbnailId?: string; // thumbnail video via proxy
 })[] = [
   {
     id: "1",
     type: "image",
-    title: "Cibeureum Waterfall Hiking",
+    title: "Walet Waterfall Hiking",
     driveId: "1OBdRxltR6_roaeBRcLDqKy891-FRDiHT",
-    date: "2026-03-10",
+    date: "2026-02-15",
+    location: "Gunung Salak, Bogor",
+    tags: ["nature", "morning"],
+  },
+  {
+    id: "2",
+    type: "image",
+    title: "Cibeureum Waterfall Hiking",
+    driveId: "1IDaN_qFkfwQYkYLkNncN-LY-Vn1YQNmA",
+    date: "2026-03-14",
     location: "Gunung Gede, Bogor",
     tags: ["nature", "morning"],
   },

@@ -33,6 +33,22 @@
   },
   {
     "id": "behance-01",
+    "title": "Website Unicate UI\/UX Case Study",
+    "category": "Behance Project",
+    "description": "Imported from Behance portfolio.",
+    "coverImage": "https:\/\/mir-s3-cdn-cf.behance.net\/projects\/max_808\/dd61c6163287671.Y3JvcCwxNDQwLDExMjYsMCww.jpg",
+    "year": "",
+    "tools": [],
+    "behanceUrl": "https://www.behance.net/gallery/163287671/Website-Unicate-UIUX-Case-Study",
+    "detailImages": [
+      {
+        "src": "https:\/\/mir-s3-cdn-cf.behance.net\/projects\/max_808\/dd61c6163287671.Y3JvcCwxNDQwLDExMjYsMCww.jpg",
+        "caption": "Website Unicate UI\/UX Case Study"
+      }
+    ]
+  },
+  {
+    "id": "behance-02",
     "title": "PT Degiva Sukses Indonesia – Company Profile Website",
     "category": "Behance Project",
     "description": "Imported from Behance portfolio.",
@@ -48,14 +64,14 @@
     ]
   },
   {
-    "id": "behance-02",
+    "id": "behance-03",
     "title": "My Portfolio",
     "category": "Behance Project",
     "description": "Imported from Behance portfolio.",
     "coverImage": "https://mir-s3-cdn-cf.behance.net/projects/808/052b38223632519.Y3JvcCwxOTIwLDE1MDEsMCw2MzE2.png",
     "year": "",
     "tools": [],
-    "behanceUrl": "",
+    "behanceUrl": "https://www.behance.net/gallery/223632519/My-Portfolio",
     "detailImages": [
       {
         "src": "https://mir-s3-cdn-cf.behance.net/projects/808/052b38223632519.Y3JvcCwxOTIwLDE1MDEsMCw2MzE2.png",
@@ -64,7 +80,7 @@
     ]
   },
   {
-    "id": "behance-03",
+    "id": "behance-04",
     "title": "Landing Page Palm Oil Company",
     "category": "Behance Project",
     "description": "Imported from Behance portfolio.",
@@ -80,7 +96,7 @@
     ]
   },
   {
-    "id": "behance-04",
+    "id": "behance-05",
     "title": "Health Website",
     "category": "Behance Project",
     "description": "Imported from Behance portfolio.",
