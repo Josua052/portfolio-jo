@@ -1,4 +1,5 @@
 // src/components/testimonial/TestimonialsList.tsx
+import { unstable_noStore as noStore } from "next/cache";
 import { Star, Quote } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 
@@ -189,6 +190,9 @@ function TestimonialCard({
 }
 
 export default async function TestimonialsList() {
+  // Opt out of Next.js data cache — always fetch fresh from Supabase
+  noStore();
+
   const { data } = await supabase
     .from("testimonials")
     .select("*")
