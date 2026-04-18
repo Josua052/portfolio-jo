@@ -58,57 +58,23 @@ export default function TestimonialForm() {
     }
   };
 
-  const ic = (name: string) =>
-    `tf-input${focused === name ? " tf-input-focus" : ""}`;
+  const inputClass = (name: string) =>
+    `tf-input ${focused === name ? "tf-input-focus" : ""}`;
 
   if (success) {
     return (
       <div className="tf-success">
         <div className="tf-success-icon">
-          <CheckCircle2 size={24} />
+          <CheckCircle2 size={28} />
         </div>
         <h3 className="tf-success-title">Terima kasih!</h3>
         <p className="tf-success-sub">
-          Testimonimu sudah diterima dan sedang menunggu review. Sangat berarti! 🙏
+          Testimonimu sudah diterima dan sedang menunggu review. Sangat berarti!
+          🙏
         </p>
         <button className="tf-success-btn" onClick={() => setSuccess(false)}>
           Tulis lagi
         </button>
-
-        <style>{`
-          .tf-success {
-            display: flex; flex-direction: column; align-items: center;
-            justify-content: center; text-align: center;
-            gap: 0.875rem; padding: 3rem 1.5rem;
-            min-height: 300px;
-          }
-          .tf-success-icon {
-            width: 52px; height: 52px; border-radius: 50%;
-            background: rgba(34,197,94,0.1);
-            border: 1px solid rgba(34,197,94,0.25);
-            display: flex; align-items: center; justify-content: center;
-            color: #22c55e;
-          }
-          .tf-success-title {
-            font-family: var(--font-montserrat), serif;
-            font-size: 1.1rem; font-weight: 800;
-            letter-spacing: -0.02em; color: var(--foreground); margin: 0;
-          }
-          .tf-success-sub {
-            font-size: 0.82rem; line-height: 1.65;
-            color: var(--muted); max-width: 260px; margin: 0;
-          }
-          .tf-success-btn {
-            margin-top: 0.25rem;
-            padding: 0.5rem 1.125rem; border-radius: 8px;
-            border: 1px solid var(--border);
-            background: transparent; color: var(--muted);
-            font-size: 0.78rem; font-weight: 600;
-            cursor: pointer; font-family: inherit;
-            transition: border-color 0.2s, color 0.2s;
-          }
-          .tf-success-btn:hover { border-color: var(--foreground); color: var(--foreground); }
-        `}</style>
       </div>
     );
   }
@@ -116,30 +82,30 @@ export default function TestimonialForm() {
   return (
     <form onSubmit={handleSubmit} className="tf-form">
       {/* Header */}
-      <div className="tf-head">
-        <p className="tf-eyebrow">/ share your experience</p>
-        <h3 className="tf-title">Tulis rekomendasimu</h3>
-        <p className="tf-sub">
+      <div className="tf-form-head">
+        <p className="tf-form-eyebrow">/ share your experience</p>
+        <h3 className="tf-form-title">Tulis Rekomendasimu</h3>
+        <p className="tf-form-sub">
           Pernah bekerja sama atau memberikan proyek? Ceritakan pengalamanmu.
         </p>
       </div>
 
       {/* Star rating */}
       <div className="tf-rating-wrap">
-        <p className="tf-label">Rating</p>
+        <p className="tf-field-label">Rating</p>
         <div className="tf-stars">
           {[1, 2, 3, 4, 5].map((s) => (
             <button
               key={s}
               type="button"
-              className="tf-star-btn"
+              className="tf-star"
               onMouseEnter={() => setHovered(s)}
               onMouseLeave={() => setHovered(0)}
               onClick={() => setRating(s)}
               aria-label={`Rate ${s} stars`}
             >
               <Star
-                size={20}
+                size={22}
                 fill={(hovered || rating) >= s ? "#f59e0b" : "none"}
                 stroke={(hovered || rating) >= s ? "#f59e0b" : "var(--border)"}
                 strokeWidth={1.5}
@@ -147,8 +113,12 @@ export default function TestimonialForm() {
             </button>
           ))}
           {rating > 0 && (
-            <span className="tf-rating-text">
-              {["", "Buruk", "Cukup", "Baik", "Sangat Baik", "Luar Biasa"][rating]}
+            <span className="tf-rating-label">
+              {
+                ["", "Buruk", "Cukup", "Baik", "Sangat Baik", "Luar Biasa"][
+                  rating
+                ]
+              }
             </span>
           )}
         </div>
@@ -156,13 +126,15 @@ export default function TestimonialForm() {
 
       {/* Name */}
       <div className="tf-field">
-        <label className="tf-label" htmlFor="tf-name">Nama Lengkap *</label>
+        <label className="tf-field-label" htmlFor="tf-name">
+          Nama Lengkap *
+        </label>
         <input
           id="tf-name"
           name="name"
-          placeholder="Input your name"
+          placeholder="Input Your Name"
           required
-          className={ic("name")}
+          className={inputClass("name")}
           onFocus={() => setFocused("name")}
           onBlur={() => setFocused(null)}
         />
@@ -171,23 +143,27 @@ export default function TestimonialForm() {
       {/* Role + Company */}
       <div className="tf-row">
         <div className="tf-field">
-          <label className="tf-label" htmlFor="tf-role">Jabatan</label>
+          <label className="tf-field-label" htmlFor="tf-role">
+            Jabatan / Role
+          </label>
           <input
             id="tf-role"
             name="role"
             placeholder="Software Engineer"
-            className={ic("role")}
+            className={inputClass("role")}
             onFocus={() => setFocused("role")}
             onBlur={() => setFocused(null)}
           />
         </div>
         <div className="tf-field">
-          <label className="tf-label" htmlFor="tf-company">Perusahaan</label>
+          <label className="tf-field-label" htmlFor="tf-company">
+            Perusahaan
+          </label>
           <input
             id="tf-company"
             name="company"
             placeholder="PT. Example"
-            className={ic("company")}
+            className={inputClass("company")}
             onFocus={() => setFocused("company")}
             onBlur={() => setFocused(null)}
           />
@@ -196,44 +172,58 @@ export default function TestimonialForm() {
 
       {/* Relation */}
       <div className="tf-field">
-        <label className="tf-label" htmlFor="tf-relation">Hubungan dengan Josua</label>
+        <label className="tf-field-label" htmlFor="tf-relation">
+          Hubungan dengan Josua
+        </label>
         <select
           id="tf-relation"
           name="relation"
-          className={ic("relation")}
+          className={inputClass("relation")}
           onFocus={() => setFocused("relation")}
           onBlur={() => setFocused(null)}
           defaultValue=""
         >
-          <option value="" disabled>Pilih hubungan...</option>
+          <option value="" disabled>
+            Pilih hubungan...
+          </option>
           {RELATION_OPTIONS.map((o) => (
-            <option key={o} value={o}>{o}</option>
+            <option key={o} value={o}>
+              {o}
+            </option>
           ))}
         </select>
       </div>
 
       {/* Message */}
       <div className="tf-field">
-        <label className="tf-label" htmlFor="tf-message">Testimoni *</label>
+        <label className="tf-field-label" htmlFor="tf-message">
+          Testimoni *
+        </label>
         <textarea
           id="tf-message"
           name="message"
           required
-          rows={4}
-          placeholder="Ceritakan pengalamanmu bekerja bersama Josua..."
-          className={ic("message")}
+          rows={5}
+          placeholder="Ceritakan pengalamanmu bekerja bersama Josua, kualitas kerja, komunikasi, atau hasil proyek..."
+          className={inputClass("message")}
           onFocus={() => setFocused("message")}
           onBlur={() => setFocused(null)}
         />
       </div>
 
+      {/* Error */}
       {error && <p className="tf-error">{error}</p>}
 
+      {/* Submit */}
       <button type="submit" className="tf-submit" disabled={loading}>
         {loading ? (
-          <><Loader2 size={14} className="tf-spin" /> Mengirim...</>
+          <>
+            <Loader2 size={15} className="tf-spin" /> Mengirim...
+          </>
         ) : (
-          <><Send size={13} /> Kirim Testimoni</>
+          <>
+            <Send size={14} /> Kirim Testimoni
+          </>
         )}
       </button>
 
@@ -242,60 +232,82 @@ export default function TestimonialForm() {
       </p>
 
       <style>{`
+        /* ── Form wrapper ── */
         .tf-form {
-          display: flex; flex-direction: column; gap: 1.125rem;
-          width: 100%; box-sizing: border-box;
+          display: flex;
+          flex-direction: column;
+          gap: 1.375rem;
+          background: var(--background);
+          border: 1px solid var(--border);
+          border-radius: 1.25rem;
+          padding: 2rem;
+          /* Prevent form from overflowing its sticky container */
+          box-sizing: border-box;
+          width: 100%;
+          max-width: 100%;
+          min-width: 0;
         }
 
-        .tf-head { display: flex; flex-direction: column; gap: 0.3rem; }
-        .tf-eyebrow {
+        /* Header */
+        .tf-form-head { display: flex; flex-direction: column; gap: 0.375rem; }
+        .tf-form-eyebrow {
           font-size: 0.65rem; font-weight: 700;
-          letter-spacing: 0.1em; text-transform: uppercase;
+          letter-spacing: 0.14em; text-transform: uppercase;
           color: var(--muted);
         }
-        .tf-title {
+        .tf-form-title {
           font-family: var(--font-montserrat), serif;
-          font-size: 1.1rem; font-weight: 800;
-          letter-spacing: -0.025em; color: var(--foreground); margin: 0;
+          font-size: 1.25rem; font-weight: 800;
+          letter-spacing: -0.025em; color: var(--foreground);
+          margin: 0;
         }
-        .tf-sub {
-          font-size: 0.8rem; line-height: 1.6;
+        .tf-form-sub {
+          font-size: 0.82rem; line-height: 1.6;
           color: var(--muted); margin: 0;
         }
 
-        .tf-rating-wrap { display: flex; flex-direction: column; gap: 0.4rem; }
-        .tf-stars { display: flex; align-items: center; gap: 2px; }
-        .tf-star-btn {
-          background: none; border: none; cursor: pointer; padding: 2px;
-          display: flex; align-items: center; line-height: 1;
+        /* Stars */
+        .tf-rating-wrap { display: flex; flex-direction: column; gap: 0.5rem; }
+        .tf-stars {
+          display: flex; align-items: center; gap: 0.25rem;
         }
-        .tf-rating-text {
-          font-size: 0.72rem; font-weight: 600;
-          color: #f59e0b; margin-left: 0.25rem;
+        .tf-star {
+          background: none; border: none; cursor: pointer; padding: 2px;
+          transition: transform 0.15s;
+          display: flex; align-items: center;
+        }
+        .tf-star:hover { transform: scale(1.2); }
+        .tf-rating-label {
+          font-size: 0.75rem; font-weight: 600;
+          color: #f59e0b; margin-left: 0.375rem;
+          letter-spacing: 0.02em;
         }
 
-        .tf-field { display: flex; flex-direction: column; gap: 0.35rem; }
-        .tf-label {
-          font-size: 0.65rem; font-weight: 700;
-          letter-spacing: 0.08em; text-transform: uppercase;
+        /* Fields */
+        .tf-field { display: flex; flex-direction: column; gap: 0.4rem; }
+        .tf-field-label {
+          font-size: 0.68rem; font-weight: 700;
+          letter-spacing: 0.07em; text-transform: uppercase;
           color: var(--muted);
         }
-        .tf-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+        .tf-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.875rem; }
         @media (max-width: 480px) { .tf-row { grid-template-columns: 1fr; } }
 
         .tf-input {
-          width: 100%; padding: 0.6rem 0.85rem;
-          border-radius: 8px;
+          width: 100%; padding: 0.7rem 0.95rem;
+          border-radius: 10px;
           border: 1px solid var(--border);
           background: var(--secondary);
           color: var(--foreground);
-          font-size: 0.825rem; font-family: inherit;
+          font-size: 0.875rem; font-family: inherit;
           outline: none; resize: vertical;
           appearance: none;
           box-sizing: border-box;
-          transition: border-color 0.18s, background 0.18s, box-shadow 0.18s;
+          max-width: 100%;
+          transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
         }
-        .tf-input::placeholder { color: var(--muted); opacity: 0.5; }
+        .tf-input::placeholder { color: var(--muted); opacity: 0.55; }
+        .tf-input:hover { border-color: color-mix(in srgb, var(--foreground) 30%, var(--border)); }
         .tf-input-focus {
           border-color: var(--foreground) !important;
           background: var(--background) !important;
@@ -307,38 +319,75 @@ export default function TestimonialForm() {
           cursor: pointer;
           background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
           background-repeat: no-repeat;
-          background-position: right 0.8rem center;
-          padding-right: 2.25rem;
+          background-position: right 0.875rem center;
+          padding-right: 2.5rem;
         }
 
         .tf-error {
-          font-size: 0.75rem; color: #ef4444;
-          padding: 0.55rem 0.8rem;
-          border-radius: 7px;
-          background: rgba(239,68,68,0.07);
-          border: 1px solid rgba(239,68,68,0.18);
+          font-size: 0.78rem; color: #ef4444;
+          padding: 0.6rem 0.875rem;
+          border-radius: 8px;
+          background: rgba(239,68,68,0.08);
+          border: 1px solid rgba(239,68,68,0.2);
         }
 
         .tf-submit {
           display: flex; align-items: center; justify-content: center;
-          gap: 0.45rem; width: 100%; padding: 0.8rem;
-          border-radius: 8px; border: none;
-          background: var(--foreground); color: var(--background);
-          font-size: 0.825rem; font-weight: 700;
+          gap: 0.5rem; width: 100%; padding: 0.875rem;
+          border-radius: 10px; border: none;
+          background: var(--primary); color: var(--background);
+          font-size: 0.875rem; font-weight: 700;
           font-family: inherit; letter-spacing: 0.01em;
           cursor: pointer;
-          transition: opacity 0.18s;
+          transition: opacity 0.2s, transform 0.2s;
         }
-        .tf-submit:hover:not(:disabled) { opacity: 0.85; }
-        .tf-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+        .tf-submit:hover:not(:disabled) { opacity: 0.88; transform: translateY(-1px); }
+        .tf-submit:disabled { opacity: 0.55; cursor: not-allowed; }
 
         .tf-disclaimer {
-          font-size: 0.68rem; color: var(--muted);
+          font-size: 0.7rem; color: var(--muted);
           text-align: center; margin: 0; letter-spacing: 0.02em;
         }
 
         @keyframes tf-spin { to { transform: rotate(360deg); } }
         .tf-spin { animation: tf-spin 0.8s linear infinite; }
+
+        /* Success state */
+        .tf-success {
+          display: flex; flex-direction: column; align-items: center;
+          justify-content: center; text-align: center;
+          gap: 1rem; padding: 3rem 2rem;
+          border: 1px solid var(--border); border-radius: 1.25rem;
+          background: var(--background); min-height: 360px;
+          box-sizing: border-box;
+          width: 100%;
+          max-width: 100%;
+        }
+        .tf-success-icon {
+          width: 60px; height: 60px; border-radius: 50%;
+          background: rgba(34,197,94,0.1);
+          border: 1px solid rgba(34,197,94,0.3);
+          display: flex; align-items: center; justify-content: center;
+          color: #22c55e;
+        }
+        .tf-success-title {
+          font-family: var(--font-montserrat), serif;
+          font-size: 1.25rem; font-weight: 800;
+          letter-spacing: -0.025em; color: var(--foreground); margin: 0;
+        }
+        .tf-success-sub {
+          font-size: 0.85rem; line-height: 1.7;
+          color: var(--muted); max-width: 280px;
+        }
+        .tf-success-btn {
+          padding: 0.55rem 1.25rem; border-radius: 10px;
+          border: 1px solid var(--border);
+          background: var(--background); color: var(--muted);
+          font-size: 0.8rem; font-weight: 600;
+          cursor: pointer;
+          transition: border-color 0.2s, color 0.2s;
+        }
+        .tf-success-btn:hover { border-color: var(--foreground); color: var(--foreground); }
       `}</style>
     </form>
   );

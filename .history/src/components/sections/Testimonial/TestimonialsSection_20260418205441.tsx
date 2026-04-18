@@ -3,15 +3,44 @@ import { Suspense } from "react";
 import TestimonialForm from "./TestimonialForm";
 import TestimonialsTicker from "./TestimonialsList";
 
+function FormSkeleton() {
+  return (
+    <div className="ts-form-skeleton">
+      <div className="ts-sk-line ts-sk-short" />
+      <div className="ts-sk-line ts-sk-mid" />
+      <div className="ts-sk-line ts-sk-long" />
+      <div className="ts-sk-line ts-sk-long" />
+      <div className="ts-sk-line ts-sk-long" />
+      <div className="ts-sk-btn" />
+      <style>{`
+        .ts-form-skeleton {
+          display: flex; flex-direction: column; gap: 14px;
+          padding: 32px 28px;
+        }
+        .ts-sk-line {
+          border-radius: 6px;
+          background: var(--secondary);
+          height: 12px;
+          animation: ts-shimmer 1.6s ease-in-out infinite;
+        }
+        .ts-sk-short  { width: 35%; }
+        .ts-sk-mid    { width: 55%; }
+        .ts-sk-long   { width: 100%; height: 32px; border-radius: 8px; }
+        .ts-sk-btn    { width: 100%; height: 34px; border-radius: 8px; background: var(--secondary); animation: ts-shimmer 1.6s ease-in-out infinite; margin-top: 4px; }
+        @keyframes ts-shimmer {
+          0%, 100% { opacity: 0.4; }
+          50%       { opacity: 0.9; }
+        }
+      `}</style>
+    </div>
+  );
+}
+
 function TickerSkeleton() {
   return (
     <div className="ts-ticker-skeleton">
-      {[1, 2, 3, 4, 5].map((i) => (
-        <div
-          key={i}
-          className="ts-ticker-sk-card"
-          style={{ opacity: i === 3 ? 1 : i === 2 || i === 4 ? 0.65 : 0.35 }}
-        >
+      {[1, 2, 3, 4].map((i) => (
+        <div key={i} className="ts-ticker-sk-card">
           <div className="ts-sk-t-line ts-sk-t-short" />
           <div className="ts-sk-t-line ts-sk-t-long" />
           <div className="ts-sk-t-line ts-sk-t-long" />
@@ -25,38 +54,17 @@ function TickerSkeleton() {
       ))}
       <style>{`
         .ts-ticker-skeleton {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 20px;
-          padding: 2.75rem 1rem;
+          display: flex; gap: 14px; padding: 20px;
           overflow: hidden;
         }
         .ts-ticker-sk-card {
-          flex-shrink: 0;
-          width: 300px;
+          flex-shrink: 0; width: 240px;
           border: 1px solid var(--border);
-          border-radius: 1rem;
-          padding: 1.375rem 1.5rem;
-          display: flex;
-          flex-direction: column;
-          gap: 10px;
-          transition: opacity 0.3s;
-        }
-        .ts-ticker-sk-card:nth-child(3) {
-          transform: scale(1.06);
-        }
-        .ts-ticker-sk-card:nth-child(2),
-        .ts-ticker-sk-card:nth-child(4) {
-          transform: scale(0.89);
-        }
-        .ts-ticker-sk-card:nth-child(1),
-        .ts-ticker-sk-card:nth-child(5) {
-          transform: scale(0.78);
+          border-radius: 12px; padding: 18px;
+          display: flex; flex-direction: column; gap: 10px;
         }
         .ts-sk-t-line {
-          border-radius: 6px;
-          background: var(--secondary);
+          border-radius: 6px; background: var(--secondary);
           height: 10px;
           animation: ts-shimmer 1.6s ease-in-out infinite;
         }
@@ -64,22 +72,14 @@ function TickerSkeleton() {
         .ts-sk-t-mid   { width: 60%; }
         .ts-sk-t-long  { width: 100%; }
         .ts-sk-t-footer {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          border-top: 1px solid var(--border);
-          padding-top: 0.875rem;
-          margin-top: 4px;
+          display: flex; align-items: center; gap: 10px;
+          border-top: 1px solid var(--border); padding-top: 10px; margin-top: 2px;
         }
         .ts-sk-t-avatar {
-          width: 36px; height: 36px; border-radius: 50%;
+          width: 30px; height: 30px; border-radius: 50%;
           background: var(--secondary);
           animation: ts-shimmer 1.6s ease-in-out infinite;
           flex-shrink: 0;
-        }
-        @keyframes ts-shimmer {
-          0%, 100% { opacity: 0.4; }
-          50%       { opacity: 0.9; }
         }
       `}</style>
     </div>
@@ -107,15 +107,15 @@ export default function TestimonialsSection() {
             </div>
             <div className="ts-stats">
               <div className="ts-stat">
-                <span className="ts-stat-num">5</span>
+                <span className="ts-stat-num">24</span>
                 <span className="ts-stat-label">Klien</span>
               </div>
               <div className="ts-stat">
-                <span className="ts-stat-num">5</span>
+                <span className="ts-stat-num">4.9</span>
                 <span className="ts-stat-label">Rating</span>
               </div>
               <div className="ts-stat">
-                <span className="ts-stat-num">1+</span>
+                <span className="ts-stat-num">3+</span>
                 <span className="ts-stat-label">Tahun</span>
               </div>
             </div>
@@ -123,15 +123,18 @@ export default function TestimonialsSection() {
 
           {/* Right — Form */}
           <div className="ts-form-area">
-            <TestimonialForm />
+            <Suspense fallback={<FormSkeleton />}>
+              <TestimonialForm />
+            </Suspense>
           </div>
         </div>
 
-        {/* ── Bottom: Ticker (no border wrapper, no label bar) ── */}
-        <div className="ts-ticker-outer">
-          <div className="ts-ticker-meta">
+        {/* ── Bottom: Ticker ── */}
+        <div className="ts-ticker-wrapper">
+          <div className="ts-ticker-bar">
             <div className="ts-ticker-dot" />
             <span className="ts-ticker-label">Live testimonials</span>
+            <div className="ts-ticker-line" />
           </div>
           <Suspense fallback={<TickerSkeleton />}>
             <TestimonialsTicker />
@@ -146,7 +149,7 @@ export default function TestimonialsSection() {
           overflow-x: hidden;
         }
 
-        /* ── Top grid ── */
+        /* Top grid */
         .ts-top {
           display: grid;
           grid-template-columns: 1fr 1fr;
@@ -158,7 +161,7 @@ export default function TestimonialsSection() {
           .ts-top { grid-template-columns: 1fr; }
         }
 
-        /* ── Heading area ── */
+        /* Heading area */
         .ts-heading-area {
           padding: 2.5rem 2rem;
           border-right: 1px solid var(--border);
@@ -208,7 +211,7 @@ export default function TestimonialsSection() {
           max-width: 320px;
         }
 
-        /* ── Stats ── */
+        /* Stats */
         .ts-stats {
           display: flex;
           gap: 2rem;
@@ -239,22 +242,26 @@ export default function TestimonialsSection() {
           color: var(--muted);
         }
 
-        /* ── Form area ── */
+        /* Form area */
         .ts-form-area {
           padding: 2.5rem 2rem;
         }
 
-        /* ── Ticker outer — NO border, NO background ── */
-        .ts-ticker-outer {
-          margin-top: 3rem;
+        /* Ticker wrapper */
+        .ts-ticker-wrapper {
+          margin-top: 1.25rem;
+          border: 1px solid var(--border);
+          border-radius: 1.25rem;
+          overflow: hidden;
         }
 
-        .ts-ticker-meta {
+        .ts-ticker-bar {
           display: flex;
           align-items: center;
-          gap: 8px;
-          margin-bottom: 0.25rem;
-          padding: 0 0.25rem;
+          gap: 10px;
+          padding: 0.625rem 1.25rem;
+          border-bottom: 1px solid var(--border);
+          background: var(--secondary);
         }
 
         .ts-ticker-dot {
@@ -271,6 +278,13 @@ export default function TestimonialsSection() {
           letter-spacing: 0.1em;
           text-transform: uppercase;
           color: var(--muted);
+          white-space: nowrap;
+        }
+
+        .ts-ticker-line {
+          flex: 1;
+          height: 1px;
+          background: var(--border);
         }
       `}</style>
     </section>

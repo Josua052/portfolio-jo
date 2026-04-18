@@ -111,11 +111,11 @@ export default function TestimonialsSection() {
                 <span className="ts-stat-label">Klien</span>
               </div>
               <div className="ts-stat">
-                <span className="ts-stat-num">5</span>
+                <span className="ts-stat-num">45</span>
                 <span className="ts-stat-label">Rating</span>
               </div>
               <div className="ts-stat">
-                <span className="ts-stat-num">1+</span>
+                <span className="ts-stat-num">3+</span>
                 <span className="ts-stat-label">Tahun</span>
               </div>
             </div>

@@ -1,11 +1,20 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Play, Pause } from "lucide-react";
 
 export default function MusicPlayer() {
   const audioRef = useRef<HTMLAudioElement>(null);
   const [playing, setPlaying] = useState(false);
+  useEffect(() => {
+  const handleFirstClick = () => {
+    audioRef.current?.play();
+    setPlaying(true);
+    window.removeEventListener("click", handleFirstClick);
+  };
+
+  window.addEventListener("click", handleFirstClick);
+}, []);
 
   const toggleMusic = () => {
     if (!audioRef.current) return;
