@@ -654,7 +654,7 @@ export default function AboutHobbies() {
         .hbs-stat-label {
           font-family: 'Courier New', monospace;
           font-size: 0.6rem; letter-spacing: 0.1em;
-          text-transform: uppercase; color: var(--muted);
+          text-transform: uppercase; color: rgba(255,255,255,0.28);
         }
         .hbs-right-foot { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
         .hbs-status {

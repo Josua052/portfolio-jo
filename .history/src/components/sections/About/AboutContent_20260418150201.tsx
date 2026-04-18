@@ -59,7 +59,7 @@ export function AboutContent() {
             <div className="about-bio-wrap">
               {/* Highlighted Quote */}
               <div className="about-bio-quote">
-                <span className="about-bio-quote-mark"></span>
+                <span className="about-bio-quote-mark">"</span>
                 <p>
                   Full-stack developer & UI/UX designer from the land of Batak
                   where we code as hard as we talk, and ship products faster

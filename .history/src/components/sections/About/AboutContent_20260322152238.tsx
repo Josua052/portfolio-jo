@@ -2,6 +2,12 @@
 
 import Image from "next/image";
 
+const STATS = [
+  { value: "3", label: "Years designing" },
+  { value: "1yr", label: "Industry experience" },
+  { value: "5", label: "Projects shipped" },
+];
+
 const SKILLS = [
   { name: "React.js", color: "#61DAFB" },
   { name: "Next.js", color: "#0070f3" },
@@ -21,6 +27,7 @@ export function AboutContent() {
           {/* ── LEFT: Photo + stats ── */}
           <div className="about-photo-col">
             <div className="about-photo-wrap">
+              {/* Photo frame */}
               <div className="about-photo-frame">
                 <Image
                   src="/images/profile1.jpg"
@@ -32,6 +39,17 @@ export function AboutContent() {
                 <div className="about-photo-gradient" />
               </div>
 
+              {/* Floating stat cards */}
+              <div className="about-stat-card about-stat-card-tl">
+                <span className="about-stat-value">{STATS[0].value}</span>
+                <span className="about-stat-label">{STATS[0].label}</span>
+              </div>
+              <div className="about-stat-card about-stat-card-br">
+                <span className="about-stat-value">{STATS[2].value}</span>
+                <span className="about-stat-label">{STATS[2].label}</span>
+              </div>
+
+              {/* Corner bracket accents */}
               <div
                 className="about-photo-corner about-photo-corner-tl"
                 aria-hidden
@@ -55,52 +73,41 @@ export function AboutContent() {
               </span>
             </h2>
 
-            {/* ── Bio Block ── */}
-            <div className="about-bio-wrap">
-              {/* Highlighted Quote */}
-              <div className="about-bio-quote">
-                <span className="about-bio-quote-mark"></span>
-                <p>
-                  Full-stack developer & UI/UX designer from the land of Batak
-                  where we code as hard as we talk, and ship products faster
-                  than we finish a plate of <em>saksang</em>.
-                </p>
-              </div>
+            <div className="about-paragraphs">
+              <p>
+                I am a passionate UI/UX designer and full-stack developer with
+                over
+                <strong> 3 years</strong> of experience crafting intuitive and
+                visually engaging digital products plus 1 year of real-world
+                industry experience delivering scalable solutions.
+              </p>
+              <p>
+                As an Information Technology graduate from the{" "}
+                <strong>University of North Sumatra</strong>, I specialize in
+                React.js, Tailwind CSS, and Flutter, combined with strong design
+                expertise in Figma and Adobe Creative Suite.
+              </p>
+              <p>
+                I bridge the gap between design and development from user
+                research and prototyping to building responsive web and mobile
+                apps that are both functional and user-centered.
+              </p>
+              <p>
+                Outside of work, I enjoy exploring emerging tech, following
+                football, and building creative side projects. I strongly
+                believe in continuous learning and staying ahead of design
+                trends.
+              </p>
+            </div>
 
-              <div className="about-bio-divider" />
-
-              {/* Bio segments */}
-              <div className="about-bio-segments">
-                <div className="about-bio-segment">
-                  <span className="about-bio-segment-label">Background</span>
-                  <p>
-                    IT graduate from <strong>Universitas Sumatera Utara</strong>{" "}
-                    with 3+ years shaping digital products from pixel-perfect
-                    interfaces to production ready systems.
-                  </p>
+            {/* Stats row */}
+            <div className="about-stats-row">
+              {STATS.map((s) => (
+                <div key={s.label} className="about-stat-inline">
+                  <span className="about-stat-inline-value">{s.value}</span>
+                  <span className="about-stat-inline-label">{s.label}</span>
                 </div>
-
-                <div className="about-bio-segment">
-                  <span className="about-bio-segment-label">Expertise</span>
-                  <p>
-                    Specializing in <strong>React.js, Flutter & Figma</strong>
-                    <br />
-                    bridging design and engineering to deliver experiences that
-                    are fast, accessible, and actually enjoyable to use.
-                  </p>
-                </div>
-
-                <div className="about-bio-segment">
-                  <span className="about-bio-segment-label">
-                    Beyond the screen
-                  </span>
-                  <p>
-                    Fueled by football, emerging tech, and side projects. Firm
-                    believer that the best code like Batak music hits
-                    differently when there is soul behind it.
-                  </p>
-                </div>
-              </div>
+              ))}
             </div>
 
             {/* Skills */}
@@ -123,6 +130,7 @@ export function AboutContent() {
       </div>
 
       <style>{`
+        /* ── Force section background to follow theme ── */
         .about-content-section {
           background: var(--background) !important;
           color: var(--foreground);
@@ -141,19 +149,23 @@ export function AboutContent() {
 
         /* ── Photo column ── */
         .about-photo-col { position: relative; }
+
         .about-photo-wrap {
           position: relative;
           display: inline-block;
           width: 100%;
         }
+
+        /* Frame uses only CSS vars — no hardcoded colors */
         .about-photo-frame {
           position: relative;
           border-radius: 1.5rem;
           overflow: hidden;
           border: 1px solid var(--border);
           aspect-ratio: 4 / 5;
-          background: var(--secondary);
+          background: var(--secondary);        /* ✅ respects light/dark */
         }
+
         .about-photo-img {
           object-fit: cover;
           width: 100%;
@@ -164,6 +176,8 @@ export function AboutContent() {
         .about-photo-frame:hover .about-photo-img {
           transform: scale(1.03);
         }
+
+        /* Gradient uses background var so it blends in both modes */
         .about-photo-gradient {
           position: absolute;
           bottom: 0; left: 0; right: 0;
@@ -171,13 +185,15 @@ export function AboutContent() {
           background: linear-gradient(to top, var(--background), transparent);
           pointer-events: none;
         }
+
+        /* Corner accents */
         .about-photo-corner {
           position: absolute;
           width: 32px;
           height: 32px;
           border-color: var(--foreground);
           border-style: solid;
-          opacity: 0.2;
+          opacity: 0.2;                        /* subtle on both modes */
         }
         .about-photo-corner-tl {
           top: -8px; left: -8px;
@@ -189,6 +205,8 @@ export function AboutContent() {
           border-width: 0 2px 2px 0;
           border-radius: 0 0 4px 0;
         }
+
+        /* Floating stat cards */
         .about-stat-card {
           position: absolute;
           display: flex;
@@ -197,20 +215,24 @@ export function AboutContent() {
           justify-content: center;
           padding: 0.75rem 1.25rem;
           border-radius: 14px;
-          border: 1px solid var(--border);
-          background: var(--background);
+          border: 1px solid var(--border);     /* ✅ var */
+          background: var(--background);       /* ✅ var — white in light, dark in dark */
           backdrop-filter: blur(12px);
           z-index: 2;
-          box-shadow: 0 4px 16px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+          /* Shadow adapts: lighter in light mode, darker in dark mode */
+          box-shadow:
+            0 4px 16px rgba(0,0,0,0.08),
+            0 1px 4px rgba(0,0,0,0.04);
         }
         .about-stat-card-tl { top: 1.5rem; left: -1.25rem; }
         .about-stat-card-br { bottom: 3rem; right: -1.25rem; }
+
         .about-stat-value {
           font-family: var(--font-montserrat), serif;
           font-size: 1.5rem;
           font-weight: 800;
           letter-spacing: -0.04em;
-          color: var(--foreground);
+          color: var(--foreground);            /* ✅ var */
           line-height: 1;
         }
         .about-stat-label {
@@ -218,7 +240,7 @@ export function AboutContent() {
           font-weight: 600;
           letter-spacing: 0.08em;
           text-transform: uppercase;
-          color: var(--muted);
+          color: var(--muted);                 /* ✅ var */
           margin-top: 0.25rem;
         }
 
@@ -229,6 +251,7 @@ export function AboutContent() {
           gap: 1.75rem;
           padding-top: 1rem;
         }
+
         .about-content-eyebrow {
           font-size: 0.7rem;
           font-weight: 700;
@@ -236,6 +259,7 @@ export function AboutContent() {
           text-transform: uppercase;
           color: var(--muted);
         }
+
         .about-content-heading {
           font-family: var(--font-montserrat), Georgia, serif;
           font-size: clamp(2rem, 4vw, 3.25rem);
@@ -250,101 +274,30 @@ export function AboutContent() {
           color: transparent;
         }
 
-        /* ── Bio block ── */
-        .about-bio-wrap {
-          display: flex;
-          flex-direction: column;
-          gap: 1.25rem;
-        }
-
-        /* Quote block */
-        .about-bio-quote {
-          position: relative;
-          padding: 1.1rem 1.25rem 1.1rem 1.5rem;
-          border-left: 3px solid var(--foreground);
-          background: var(--secondary);
-          border-radius: 0 12px 12px 0;
-          display: flex;
-          gap: 0.5rem;
-          align-items: flex-start;
-        }
-        .about-bio-quote-mark {
-          font-family: Georgia, serif;
-          font-size: 2.5rem;
-          line-height: 1;
-          font-weight: 900;
-          color: var(--foreground);
-          opacity: 0.15;
-          margin-top: -0.25rem;
-          flex-shrink: 0;
-          user-select: none;
-        }
-        .about-bio-quote p {
-          font-size: 0.9rem;
-          line-height: 1.75;
-          color: var(--foreground);
-          font-style: italic;
-          margin: 0;
-        }
-        .about-bio-quote em {
-          font-style: normal;
-          font-weight: 700;
-        }
-
-        /* Thin divider */
-        .about-bio-divider {
-          height: 1px;
-          background: var(--border);
-          width: 100%;
-          opacity: 0.6;
-        }
-
-        /* Bio segments */
-        .about-bio-segments {
+        /* Paragraphs */
+        .about-paragraphs {
           display: flex;
           flex-direction: column;
           gap: 1rem;
         }
-        .about-bio-segment {
-          display: grid;
-          grid-template-columns: 8.5rem 1fr;
-          gap: 0.75rem;
-          align-items: baseline; 
-        }
-        @media (max-width: 500px) {
-          .about-bio-segment {
-            grid-template-columns: 1fr;
-            gap: 0.2rem;
-          }
-        }
-        .about-bio-segment-label {
-          font-size: 0.62rem;
-          font-weight: 700;
-          letter-spacing: 0.1em;
-          text-transform: uppercase;
+        .about-paragraphs p {
+          font-size: 0.925rem;
+          line-height: 1.8;
           color: var(--muted);
-          padding-top: 0.15rem;
-          word-break: break-word; 
         }
-        .about-bio-segment p {
-          font-size: 0.9rem;
-          line-height: 1.75;
-          color: var(--muted);
-          margin: 0;
-        }
-        .about-bio-segment strong {
+        .about-paragraphs strong {
           color: var(--foreground);
           font-weight: 600;
         }
 
-        /* ── Stats row ── */
+        /* Stats row */
         .about-stats-row {
           display: flex;
           gap: 0;
           border: 1px solid var(--border);
           border-radius: 14px;
           overflow: hidden;
-          background: var(--background);
+          background: var(--background);      /* ✅ var */
         }
         .about-stat-inline {
           flex: 1;
@@ -354,9 +307,14 @@ export function AboutContent() {
           padding: 1rem;
           gap: 0.25rem;
           border-right: 1px solid var(--border);
-          background: var(--background);
+          background: var(--background);      /* ✅ var */
+          transition: background 0.2s;
         }
         .about-stat-inline:last-child { border-right: none; }
+        .about-stat-inline:hover {
+          background: var(--hover);
+        }
+
         .about-stat-inline-value {
           font-family: var(--font-montserrat), serif;
           font-size: 1.5rem;
@@ -373,7 +331,7 @@ export function AboutContent() {
           color: var(--muted);
         }
 
-        /* ── Skills ── */
+        /* Skills */
         .about-skills-wrap {
           display: flex;
           flex-direction: column;
@@ -401,13 +359,21 @@ export function AboutContent() {
           font-weight: 600;
           border: 1px solid var(--border);
           color: var(--foreground);
-          background: var(--background);
+          background: var(--background);      /* ✅ var */
+          transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s, background 0.2s;
           cursor: default;
+        }
+        .about-skill-tag:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+          border-color: var(--foreground);
+          background: var(--hover);           /* ✅ var */
         }
         .about-skill-dot {
           width: 6px;
           height: 6px;
           border-radius: 50%;
+          flex-shrink: 0;
           flex-shrink: 0;
         }
       `}</style>

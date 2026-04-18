@@ -2,6 +2,12 @@
 
 import Image from "next/image";
 
+const STATS = [
+  { value: "3", label: "Years designing" },
+  { value: "1yr", label: "Industry experience" },
+  { value: "5", label: "Projects shipped" },
+];
+
 const SKILLS = [
   { name: "React.js", color: "#61DAFB" },
   { name: "Next.js", color: "#0070f3" },
@@ -32,6 +38,15 @@ export function AboutContent() {
                 <div className="about-photo-gradient" />
               </div>
 
+              <div className="about-stat-card about-stat-card-tl">
+                <span className="about-stat-value">{STATS[0].value}</span>
+                <span className="about-stat-label">{STATS[0].label}</span>
+              </div>
+              <div className="about-stat-card about-stat-card-br">
+                <span className="about-stat-value">{STATS[2].value}</span>
+                <span className="about-stat-label">{STATS[2].label}</span>
+              </div>
+
               <div
                 className="about-photo-corner about-photo-corner-tl"
                 aria-hidden
@@ -59,9 +74,9 @@ export function AboutContent() {
             <div className="about-bio-wrap">
               {/* Highlighted Quote */}
               <div className="about-bio-quote">
-                <span className="about-bio-quote-mark"></span>
+                <span className="about-bio-quote-mark">"</span>
                 <p>
-                  Full-stack developer & UI/UX designer from the land of Batak
+                  Full-stack developer & UI/UX designer from the land of Batak —
                   where we code as hard as we talk, and ship products faster
                   than we finish a plate of <em>saksang</em>.
                 </p>
@@ -75,16 +90,15 @@ export function AboutContent() {
                   <span className="about-bio-segment-label">Background</span>
                   <p>
                     IT graduate from <strong>Universitas Sumatera Utara</strong>{" "}
-                    with 3+ years shaping digital products from pixel-perfect
-                    interfaces to production ready systems.
+                    with 3+ years shaping digital products — from pixel-perfect
+                    interfaces to production-ready systems.
                   </p>
                 </div>
 
                 <div className="about-bio-segment">
                   <span className="about-bio-segment-label">Expertise</span>
                   <p>
-                    Specializing in <strong>React.js, Flutter & Figma</strong>
-                    <br />
+                    Specializing in <strong>React.js, Flutter & Figma</strong> —
                     bridging design and engineering to deliver experiences that
                     are fast, accessible, and actually enjoyable to use.
                   </p>
@@ -96,11 +110,21 @@ export function AboutContent() {
                   </span>
                   <p>
                     Fueled by football, emerging tech, and side projects. Firm
-                    believer that the best code like Batak music hits
-                    differently when there is soul behind it.
+                    believer that the best code — like Batak music — hits
+                    differently when there's soul behind it.
                   </p>
                 </div>
               </div>
+            </div>
+
+            {/* Stats row */}
+            <div className="about-stats-row">
+              {STATS.map((s) => (
+                <div key={s.label} className="about-stat-inline">
+                  <span className="about-stat-inline-value">{s.value}</span>
+                  <span className="about-stat-inline-label">{s.label}</span>
+                </div>
+              ))}
             </div>
 
             {/* Skills */}
@@ -307,9 +331,9 @@ export function AboutContent() {
         }
         .about-bio-segment {
           display: grid;
-          grid-template-columns: 8.5rem 1fr;
+          grid-template-columns: 6.5rem 1fr;
           gap: 0.75rem;
-          align-items: baseline; 
+          align-items: baseline;
         }
         @media (max-width: 500px) {
           .about-bio-segment {
@@ -324,7 +348,7 @@ export function AboutContent() {
           text-transform: uppercase;
           color: var(--muted);
           padding-top: 0.15rem;
-          word-break: break-word; 
+          white-space: nowrap;
         }
         .about-bio-segment p {
           font-size: 0.9rem;

@@ -453,7 +453,6 @@ export default function AboutHobbies() {
           position: relative;
           overflow: hidden;
           padding: 5rem 1.5rem 6rem;
-          background: var(--background);
 
           /*
             Futuristic dark panel yang tetap ikut tema:
@@ -461,6 +460,7 @@ export default function AboutHobbies() {
             - Dark mode  → lebih gelap lagi
             Kita pakai color-mix agar blending dengan --background
           */
+          background: color-mix(in srgb, var(--background) 8%, #080c10 92%);
         }
 
         /* scanlines */
@@ -519,9 +519,7 @@ export default function AboutHobbies() {
           font-family: var(--font-montserrat), Georgia, serif;
           font-size: clamp(2.5rem, 5vw, 4.5rem);
           font-weight: 800; letter-spacing: -0.035em;
-          line-height: 0.95; 
-          color: var(--foreground);
-          margin: 0.5rem 0 0;
+          line-height: 0.95; color: #fff; margin: 0.5rem 0 0;
         }
         .hbs-heading-outline {
           -webkit-text-stroke: 1.5px rgba(255,255,255,0.35);
@@ -529,7 +527,7 @@ export default function AboutHobbies() {
         }
         .hbs-sub {
           max-width: 320px; font-size: 0.82rem;
-          line-height: 1.8; color: var(--muted);
+          line-height: 1.8; color: rgba(255,255,255,0.32);
           font-family: 'Courier New', monospace;
         }
 
@@ -606,8 +604,7 @@ export default function AboutHobbies() {
           font-family: var(--font-montserrat), Georgia, serif;
           font-size: clamp(1.6rem, 3vw, 2.4rem);
           font-weight: 800; letter-spacing: -0.025em;
-          line-height: 1; color: var(--foreground);
-          margin: 0;
+          line-height: 1; color: #fff; margin: 0;
         }
         .hbs-tile-tagline {
           font-family: 'Courier New', monospace;
@@ -633,9 +630,7 @@ export default function AboutHobbies() {
         .hbs-highlight-icon { font-size: 12px; flex-shrink: 0; }
         .hbs-highlight-text {
           font-family: 'Courier New', monospace;
-          font-size: 0.68rem;
-          color: var(--muted);
-          opacity: 0.8;
+          font-size: 0.68rem; color: rgba(255,255,255,0.38);
           letter-spacing: 0.02em;
         }
 
@@ -654,7 +649,7 @@ export default function AboutHobbies() {
         .hbs-stat-label {
           font-family: 'Courier New', monospace;
           font-size: 0.6rem; letter-spacing: 0.1em;
-          text-transform: uppercase; color: var(--muted);
+          text-transform: uppercase; color: rgba(255,255,255,0.28);
         }
         .hbs-right-foot { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
         .hbs-status {

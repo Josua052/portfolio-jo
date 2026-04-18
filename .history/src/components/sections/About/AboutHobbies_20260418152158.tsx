@@ -529,7 +529,7 @@ export default function AboutHobbies() {
         }
         .hbs-sub {
           max-width: 320px; font-size: 0.82rem;
-          line-height: 1.8; color: var(--muted);
+          line-height: 1.8; color: rgba(255,255,255,0.32);
           font-family: 'Courier New', monospace;
         }
 
@@ -633,9 +633,7 @@ export default function AboutHobbies() {
         .hbs-highlight-icon { font-size: 12px; flex-shrink: 0; }
         .hbs-highlight-text {
           font-family: 'Courier New', monospace;
-          font-size: 0.68rem;
-          color: var(--muted);
-          opacity: 0.8;
+          font-size: 0.68rem; color: rgba(255,255,255,0.38);
           letter-spacing: 0.02em;
         }
 
@@ -654,7 +652,7 @@ export default function AboutHobbies() {
         .hbs-stat-label {
           font-family: 'Courier New', monospace;
           font-size: 0.6rem; letter-spacing: 0.1em;
-          text-transform: uppercase; color: var(--muted);
+          text-transform: uppercase; color: rgba(255,255,255,0.28);
         }
         .hbs-right-foot { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
         .hbs-status {

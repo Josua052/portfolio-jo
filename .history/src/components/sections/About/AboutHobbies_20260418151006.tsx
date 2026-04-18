@@ -4,37 +4,25 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import hobbiesData from "@/data/hobbies.json";
 
-/* ── Type — sesuai struktur hobbies.json ── */
-export interface HobbyHighlight {
-  icon: string;
-  text: string;
-}
-export interface HobbyStat {
-  value: string;
-  label: string;
-}
 export interface HobbyData {
   id: string;
-  label: string;
-  emoji: string;
-  tagline: string;
-  color: string;
+  title: string;
   description: string;
-  highlights: HobbyHighlight[];
-  stat: HobbyStat;
+  color: string;
+  tags?: string[];
 }
 
 const HOBBIES = hobbiesData as HobbyData[];
 
-const HOBBY_META: Record<string, { index: string }> = {
-  football: { index: "01" },
-  badminton: { index: "02" },
-  hiking: { index: "03" },
-  travelling: { index: "04" },
+const HOBBY_META: Record<string, { accent: string; index: string }> = {
+  football: { accent: "#f59e0b", index: "01" },
+  badminton: { accent: "#22c55e", index: "02" },
+  hiking: { accent: "#06b6d4", index: "03" },
+  travelling: { accent: "#6366f1", index: "04" },
 };
 
-/* ── Canvas components (no unused props) ── */
-function FootballCanvas() {
+/* ── Canvas components ── */
+function FootballCanvas({ active }: { active: boolean }) {
   const ref = useRef<HTMLCanvasElement>(null);
   useEffect(() => {
     const c = ref.current!;
@@ -86,7 +74,7 @@ function FootballCanvas() {
   return <canvas ref={ref} className="hbs-canvas" />;
 }
 
-function BadmintonCanvas() {
+function BadmintonCanvas({ active }: { active: boolean }) {
   const ref = useRef<HTMLCanvasElement>(null);
   useEffect(() => {
     const c = ref.current!;
@@ -137,7 +125,7 @@ function BadmintonCanvas() {
   return <canvas ref={ref} className="hbs-canvas" />;
 }
 
-function HikingCanvas() {
+function HikingCanvas({ active }: { active: boolean }) {
   const ref = useRef<HTMLCanvasElement>(null);
   useEffect(() => {
     const c = ref.current!;
@@ -161,7 +149,7 @@ function HikingCanvas() {
       [0.87, 0.52],
       [0.95, 0.35],
       [1, 0.6],
-    ] as [number, number][];
+    ];
     const draw = () => {
       c.width = c.offsetWidth;
       c.height = c.offsetHeight;
@@ -204,7 +192,7 @@ function HikingCanvas() {
   return <canvas ref={ref} className="hbs-canvas" />;
 }
 
-function TravelCanvas() {
+function TravelCanvas({ active }: { active: boolean }) {
   const ref = useRef<HTMLCanvasElement>(null);
   useEffect(() => {
     const c = ref.current!;
@@ -282,7 +270,7 @@ function TravelCanvas() {
   return <canvas ref={ref} className="hbs-canvas" />;
 }
 
-const CANVAS_MAP: Record<string, React.FC> = {
+const CANVAS_MAP: Record<string, React.FC<{ active: boolean }>> = {
   football: FootballCanvas,
   badminton: BadmintonCanvas,
   hiking: HikingCanvas,
@@ -295,28 +283,38 @@ export default function AboutHobbies() {
   const [progKey, setProgKey] = useState(0);
   const timerRef = useRef<ReturnType<typeof setInterval>>();
 
-  const advance = useCallback(() => {
-    setActive((p) => (p + 1) % HOBBIES.length);
+  const goTo = useCallback((i: number) => {
+    setActive(i);
     setProgKey((k) => k + 1);
   }, []);
 
   useEffect(() => {
-    timerRef.current = setInterval(advance, 5000);
+    timerRef.current = setInterval(() => {
+      setActive((p) => {
+        const next = (p + 1) % HOBBIES.length;
+        setProgKey((k) => k + 1);
+        return next;
+      });
+    }, 5000);
     return () => clearInterval(timerRef.current);
-  }, [advance]);
+  }, []);
 
   const handleClick = (i: number) => {
-    if (i === active) return;
     clearInterval(timerRef.current);
-    setActive(i);
-    setProgKey((k) => k + 1);
-    timerRef.current = setInterval(advance, 5000);
+    goTo(i);
+    timerRef.current = setInterval(() => {
+      setActive((p) => {
+        const next = (p + 1) % HOBBIES.length;
+        setProgKey((k) => k + 1);
+        return next;
+      });
+    }, 5000);
   };
 
   return (
     <section className="hbs-section">
       <div className="container-custom hbs-inner">
-        {/* System label */}
+        {/* Heading */}
         <div className="hbs-head">
           <span className="hbs-blink" />
           <span className="hbs-sys-label">
@@ -324,10 +322,9 @@ export default function AboutHobbies() {
           </span>
         </div>
 
-        {/* Title row */}
         <div className="hbs-title-row">
           <div>
-            <p className="hbs-eyebrow">/ hobbies &amp; interests</p>
+            <p className="hbs-eyebrow">/ hobbies & interests</p>
             <h2 className="hbs-heading">
               Beyond
               <br />
@@ -335,15 +332,18 @@ export default function AboutHobbies() {
             </h2>
           </div>
           <p className="hbs-sub">
-            What I do when I&apos;m not coding — the passions that keep me
-            energized and inspired every single day.
+            What I do when I'm not coding — the passions that keep me energized
+            and inspired every single day.
           </p>
         </div>
 
         {/* Timeline strip */}
         <div className="hbs-strip">
           {HOBBIES.map((h, i) => {
-            const meta = HOBBY_META[h.id] ?? { index: `0${i + 1}` };
+            const meta = HOBBY_META[h.id] ?? {
+              accent: "#888",
+              index: "0" + (i + 1),
+            };
             const isActive = i === active;
             const Canvas = CANVAS_MAP[h.id];
             return (
@@ -353,91 +353,80 @@ export default function AboutHobbies() {
                 onClick={() => handleClick(i)}
                 style={{
                   borderColor: isActive
-                    ? h.color + "55"
+                    ? meta.accent + "55"
                     : "rgba(255,255,255,0.08)",
                 }}
               >
+                {/* BG tint */}
                 <div className="hbs-tile-bg" />
-                {Canvas && <Canvas />}
+
+                {/* Animated canvas */}
+                {Canvas && <Canvas active={isActive} />}
 
                 {/* Corner brackets */}
                 <div
                   className="hbs-brk hbs-brk-tl"
-                  style={{ borderColor: h.color + "55" }}
+                  style={{ borderColor: meta.accent + "55" }}
                 />
                 <div
                   className="hbs-brk hbs-brk-br"
-                  style={{ borderColor: h.color + "55" }}
+                  style={{ borderColor: meta.accent + "55" }}
                 />
 
-                {/* Collapsed vertical label */}
+                {/* Collapsed label */}
                 <span
                   className="hbs-collapsed-label"
-                  style={{ color: h.color + "99" }}
+                  style={{ color: meta.accent + "99" }}
                 >
-                  {h.label}
+                  {h.title}
                 </span>
 
-                {/* Active expanded content */}
+                {/* Active content */}
                 <div className="hbs-tile-content">
                   <div className="hbs-tile-top">
                     <span
                       className="hbs-tile-num"
-                      style={{ color: h.color + "88" }}
+                      style={{ color: meta.accent + "88" }}
                     >
                       {meta.index} / 0{HOBBIES.length}
                     </span>
-                    <h3 className="hbs-tile-title">{h.label}</h3>
-                    <p
-                      className="hbs-tile-tagline"
-                      style={{ color: h.color + "bb" }}
-                    >
-                      {h.tagline}
-                    </p>
+                    <h3 className="hbs-tile-title">{h.title}</h3>
                     <div
                       className="hbs-tile-rule"
-                      style={{ background: h.color }}
+                      style={{ background: meta.accent }}
                     />
                   </div>
-
                   <p className="hbs-tile-desc">{h.description}</p>
-
-                  {/* Highlights */}
-                  <div className="hbs-highlights">
-                    {h.highlights.map((hl, idx) => (
-                      <div key={idx} className="hbs-highlight-row">
-                        <span className="hbs-highlight-icon">{hl.icon}</span>
-                        <span className="hbs-highlight-text">{hl.text}</span>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Stat + footer */}
-                  <div className="hbs-tile-footer">
-                    <div className="hbs-stat">
-                      <span
-                        className="hbs-stat-value"
-                        style={{ color: h.color }}
-                      >
-                        {h.stat.value}
-                      </span>
-                      <span className="hbs-stat-label">{h.stat.label}</span>
-                    </div>
-                    <div className="hbs-right-foot">
-                      <div className="hbs-status">
+                  {h.tags && (
+                    <div className="hbs-tile-tags">
+                      {h.tags.map((tag) => (
                         <span
-                          className="hbs-status-dot"
-                          style={{ background: h.color }}
-                        />
-                        Active module
-                      </div>
-                      <div className="hbs-prog-wrap">
-                        <div
-                          key={isActive ? `prog-${progKey}` : "idle"}
-                          className={`hbs-prog-bar${isActive ? " hbs-prog-run" : ""}`}
-                          style={{ background: h.color }}
-                        />
-                      </div>
+                          key={tag}
+                          className="hbs-tile-tag"
+                          style={{
+                            borderColor: meta.accent + "55",
+                            color: meta.accent,
+                          }}
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                  <div className="hbs-tile-footer">
+                    <div className="hbs-status">
+                      <span
+                        className="hbs-status-dot"
+                        style={{ background: meta.accent }}
+                      />
+                      Active module
+                    </div>
+                    <div className="hbs-prog-wrap">
+                      <div
+                        key={isActive ? `prog-${progKey}` : undefined}
+                        className="hbs-prog-bar"
+                        style={{ background: meta.accent }}
+                      />
                     </div>
                   </div>
                 </div>
@@ -448,28 +437,19 @@ export default function AboutHobbies() {
       </div>
 
       <style>{`
-        /* ── Light/dark-aware futuristic surface ── */
         .hbs-section {
-          position: relative;
-          overflow: hidden;
+          background: #080c10;
           padding: 5rem 1.5rem 6rem;
-          background: var(--background);
-
-          /*
-            Futuristic dark panel yang tetap ikut tema:
-            - Light mode → gelap tapi tidak hitam pekat (#0d1117)
-            - Dark mode  → lebih gelap lagi
-            Kita pakai color-mix agar blending dengan --background
-          */
+          overflow: hidden;
+          position: relative;
         }
-
         /* scanlines */
         .hbs-section::before {
           content: '';
           position: absolute; inset: 0;
           background: repeating-linear-gradient(
             0deg, transparent, transparent 3px,
-            rgba(255,255,255,0.01) 3px, rgba(255,255,255,0.01) 4px
+            rgba(255,255,255,0.012) 3px, rgba(255,255,255,0.012) 4px
           );
           pointer-events: none; z-index: 0;
         }
@@ -478,75 +458,73 @@ export default function AboutHobbies() {
           content: '';
           position: absolute; inset: 0;
           background-image:
-            linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+            linear-gradient(rgba(255,255,255,0.022) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,0.022) 1px, transparent 1px);
           background-size: 44px 44px;
           pointer-events: none; z-index: 0;
         }
-
         .hbs-inner {
           position: relative; z-index: 2;
           display: flex; flex-direction: column; gap: 2.5rem;
         }
 
-        /* Head */
+        /* Heading */
         .hbs-head { display: flex; align-items: center; gap: 8px; }
         .hbs-blink {
           display: inline-block; width: 7px; height: 7px;
           border-radius: 50%; background: #22c55e;
           animation: hbs-blink 1.1s step-end infinite;
-          flex-shrink: 0;
         }
         @keyframes hbs-blink { 0%,100%{opacity:1} 50%{opacity:0} }
         .hbs-sys-label {
           font-family: 'Courier New', monospace;
-          font-size: 0.62rem; letter-spacing: 0.18em;
-          text-transform: uppercase; color: rgba(255,255,255,0.22);
+          font-size: 0.65rem; letter-spacing: 0.18em;
+          text-transform: uppercase; color: rgba(255,255,255,0.25);
         }
-
-        /* Title */
         .hbs-title-row {
           display: flex; align-items: flex-end;
           justify-content: space-between; gap: 2rem; flex-wrap: wrap;
         }
         .hbs-eyebrow {
-          font-family: 'Courier New', monospace;
-          font-size: 0.62rem; font-weight: 700;
+          font-size: 0.65rem; font-weight: 700;
           letter-spacing: 0.14em; text-transform: uppercase;
-          color: rgba(255,255,255,0.28);
+          color: rgba(255,255,255,0.3);
+          font-family: 'Courier New', monospace;
         }
         .hbs-heading {
           font-family: var(--font-montserrat), Georgia, serif;
           font-size: clamp(2.5rem, 5vw, 4.5rem);
           font-weight: 800; letter-spacing: -0.035em;
-          line-height: 0.95; 
-          color: var(--foreground);
-          margin: 0.5rem 0 0;
+          line-height: 0.95; color: #fff; margin: 0.5rem 0 0;
         }
         .hbs-heading-outline {
-          -webkit-text-stroke: 1.5px rgba(255,255,255,0.35);
+          -webkit-text-stroke: 1.5px rgba(255,255,255,0.4);
           color: transparent;
         }
         .hbs-sub {
-          max-width: 320px; font-size: 0.82rem;
-          line-height: 1.8; color: var(--muted);
+          max-width: 320px; font-size: 0.85rem;
+          line-height: 1.75; color: rgba(255,255,255,0.35);
           font-family: 'Courier New', monospace;
         }
 
         /* ── Strip ── */
         .hbs-strip {
-          display: flex; gap: 10px; align-items: stretch; min-height: 400px;
+          display: flex; gap: 10px; align-items: stretch;
+          min-height: 380px;
         }
 
         /* Tile */
         .hbs-tile {
-          flex: 1; min-width: 0;
-          position: relative; border: 1px solid;
-          border-radius: 4px; overflow: hidden;
+          flex: 1;
+          min-width: 0;
+          position: relative;
+          border: 1px solid;
+          border-radius: 4px;
+          overflow: hidden;
           cursor: pointer;
           transition: flex 0.55s cubic-bezier(0.4,0,0.2,1), border-color 0.3s;
         }
-        .hbs-tile-active { flex: 4.5; cursor: default; }
+        .hbs-tile-active { flex: 4; }
 
         .hbs-tile-bg {
           position: absolute; inset: 0; z-index: 0;
@@ -560,7 +538,7 @@ export default function AboutHobbies() {
         .hbs-canvas {
           position: absolute; inset: 0;
           width: 100%; height: 100%;
-          display: block; z-index: 1; opacity: 0.18;
+          display: block; z-index: 1; opacity: 0.2;
         }
 
         /* Corner brackets */
@@ -571,16 +549,16 @@ export default function AboutHobbies() {
         .hbs-brk-tl { top: 8px; left: 8px; border-width: 1.5px 0 0 1.5px; border-radius: 2px 0 0 0; }
         .hbs-brk-br { bottom: 8px; right: 8px; border-width: 0 1.5px 1.5px 0; border-radius: 0 0 2px 0; }
 
-        /* Collapsed vertical label */
+        /* Collapsed label */
         .hbs-collapsed-label {
           position: absolute; bottom: 1.25rem; left: 50%;
           transform: translateX(-50%) rotate(180deg);
           writing-mode: vertical-rl;
           font-family: 'Courier New', monospace;
-          font-size: 0.62rem; font-weight: 700;
+          font-size: 0.65rem; font-weight: 700;
           letter-spacing: 0.18em; text-transform: uppercase;
           white-space: nowrap; z-index: 4;
-          opacity: 1; transition: opacity 0.15s;
+          opacity: 1; transition: opacity 0.2s;
         }
         .hbs-tile-active .hbs-collapsed-label { opacity: 0; pointer-events: none; }
 
@@ -588,107 +566,77 @@ export default function AboutHobbies() {
         .hbs-tile-content {
           position: relative; z-index: 4;
           height: 100%; display: flex; flex-direction: column;
-          justify-content: space-between;
-          padding: 1.5rem 1.25rem;
-          gap: 1rem;
-          opacity: 0; transition: opacity 0.3s 0.22s;
+          justify-content: space-between; padding: 1.5rem 1.25rem;
+          opacity: 0; transition: opacity 0.3s 0.2s;
           pointer-events: none;
         }
         .hbs-tile-active .hbs-tile-content { opacity: 1; pointer-events: auto; }
 
-        /* Top */
-        .hbs-tile-top { display: flex; flex-direction: column; gap: 0.4rem; }
+        .hbs-tile-top { display: flex; flex-direction: column; gap: 0.5rem; }
         .hbs-tile-num {
           font-family: 'Courier New', monospace;
-          font-size: 0.6rem; letter-spacing: 0.2em;
+          font-size: 0.62rem; letter-spacing: 0.2em;
         }
         .hbs-tile-title {
           font-family: var(--font-montserrat), Georgia, serif;
           font-size: clamp(1.6rem, 3vw, 2.4rem);
           font-weight: 800; letter-spacing: -0.025em;
-          line-height: 1; color: var(--foreground);
-          margin: 0;
+          line-height: 1; color: #fff; margin: 0;
         }
-        .hbs-tile-tagline {
-          font-family: 'Courier New', monospace;
-          font-size: 0.7rem; letter-spacing: 0.1em;
-          text-transform: uppercase; margin: 0;
-        }
-        .hbs-tile-rule { height: 2px; width: 2rem; border-radius: 999px; margin-top: 0.25rem; }
+        .hbs-tile-rule { height: 2px; width: 2rem; border-radius: 999px; flex-shrink: 0; }
 
-        /* Description */
         .hbs-tile-desc {
           font-family: 'Courier New', monospace;
-          font-size: 0.75rem; line-height: 1.85;
-          color: rgba(255,255,255,0.42); margin: 0;
+          font-size: 0.78rem; line-height: 1.8;
+          color: rgba(255,255,255,0.45); max-width: 38ch;
         }
 
-        /* Highlights */
-        .hbs-highlights {
-          display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem 1rem;
-        }
-        .hbs-highlight-row {
-          display: flex; align-items: center; gap: 0.4rem;
-        }
-        .hbs-highlight-icon { font-size: 12px; flex-shrink: 0; }
-        .hbs-highlight-text {
+        .hbs-tile-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+        .hbs-tile-tag {
           font-family: 'Courier New', monospace;
-          font-size: 0.68rem;
-          color: var(--muted);
-          opacity: 0.8;
-          letter-spacing: 0.02em;
+          font-size: 0.6rem; font-weight: 700;
+          letter-spacing: 0.12em; text-transform: uppercase;
+          padding: 3px 8px; border-radius: 2px; border: 1px solid;
+          cursor: default;
         }
 
         /* Footer */
         .hbs-tile-footer {
-          display: flex; align-items: flex-end;
+          display: flex; align-items: center;
           justify-content: space-between; gap: 1rem;
-          border-top: 1px solid rgba(255,255,255,0.07);
-          padding-top: 0.75rem;
         }
-        .hbs-stat { display: flex; flex-direction: column; gap: 2px; }
-        .hbs-stat-value {
-          font-family: var(--font-montserrat), serif;
-          font-size: 1.5rem; font-weight: 800; letter-spacing: -0.04em; line-height: 1;
-        }
-        .hbs-stat-label {
-          font-family: 'Courier New', monospace;
-          font-size: 0.6rem; letter-spacing: 0.1em;
-          text-transform: uppercase; color: var(--muted);
-        }
-        .hbs-right-foot { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
         .hbs-status {
           display: flex; align-items: center; gap: 6px;
           font-family: 'Courier New', monospace;
-          font-size: 0.58rem; letter-spacing: 0.12em;
-          text-transform: uppercase; color: rgba(255,255,255,0.22);
+          font-size: 0.58rem; letter-spacing: 0.14em;
+          text-transform: uppercase; color: rgba(255,255,255,0.25);
         }
         .hbs-status-dot {
-          width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0;
+          width: 5px; height: 5px; border-radius: 50%;
           animation: hbs-blink 1.4s step-end infinite;
+          flex-shrink: 0;
         }
         .hbs-prog-wrap {
           width: 80px; height: 2px;
           background: rgba(255,255,255,0.08);
-          border-radius: 1px; overflow: hidden;
+          border-radius: 1px; overflow: hidden; flex-shrink: 0;
         }
-        .hbs-prog-bar { height: 100%; border-radius: 1px; width: 0%; }
-        .hbs-prog-run {
+        .hbs-prog-bar {
+          height: 100%; border-radius: 1px;
+          width: 0%;
           animation: hbs-prog 5s linear forwards;
         }
         @keyframes hbs-prog { from { width: 0% } to { width: 100% } }
 
-        /* Responsive */
         @media (max-width: 768px) {
           .hbs-strip { flex-direction: column; min-height: auto; }
-          .hbs-tile { flex: none !important; min-height: 56px; border-radius: 4px; }
-          .hbs-tile-active { min-height: 420px; }
+          .hbs-tile { flex: none !important; min-height: 64px; }
+          .hbs-tile-active { min-height: 380px; }
           .hbs-collapsed-label {
             writing-mode: horizontal-tb;
+            transform: none; left: 1rem; bottom: auto; top: 50%;
             transform: translateY(-50%);
-            left: 1rem; bottom: auto; top: 50%;
           }
-          .hbs-highlights { grid-template-columns: 1fr; }
           .hbs-title-row { flex-direction: column; align-items: flex-start; }
         }
       `}</style>

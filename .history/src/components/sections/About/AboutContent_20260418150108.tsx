@@ -2,6 +2,12 @@
 
 import Image from "next/image";
 
+const STATS = [
+  { value: "3", label: "Years designing" },
+  { value: "1yr", label: "Industry experience" },
+  { value: "5", label: "Projects shipped" },
+];
+
 const SKILLS = [
   { name: "React.js", color: "#61DAFB" },
   { name: "Next.js", color: "#0070f3" },
@@ -32,6 +38,15 @@ export function AboutContent() {
                 <div className="about-photo-gradient" />
               </div>
 
+              <div className="about-stat-card about-stat-card-tl">
+                <span className="about-stat-value">{STATS[0].value}</span>
+                <span className="about-stat-label">{STATS[0].label}</span>
+              </div>
+              <div className="about-stat-card about-stat-card-br">
+                <span className="about-stat-value">{STATS[2].value}</span>
+                <span className="about-stat-label">{STATS[2].label}</span>
+              </div>
+
               <div
                 className="about-photo-corner about-photo-corner-tl"
                 aria-hidden
@@ -59,7 +74,7 @@ export function AboutContent() {
             <div className="about-bio-wrap">
               {/* Highlighted Quote */}
               <div className="about-bio-quote">
-                <span className="about-bio-quote-mark"></span>
+                <span className="about-bio-quote-mark">"</span>
                 <p>
                   Full-stack developer & UI/UX designer from the land of Batak
                   where we code as hard as we talk, and ship products faster
