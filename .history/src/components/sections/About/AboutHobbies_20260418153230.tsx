@@ -301,27 +301,15 @@ export default function AboutHobbies() {
   }, []);
 
   useEffect(() => {
-    timerRef.current = setInterval(() => {
-      advance();
-    }, 4000);
-
-    return () => {
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
-      }
-    };
+    timerRef.current = setInterval(advance, 5000);
+    return () => clearInterval(timerRef.current);
   }, [advance]);
 
   const handleClick = (i: number) => {
     if (i === active) return;
-
-    if (timerRef.current) {
-      clearInterval(timerRef.current);
-    }
-
+    clearInterval(timerRef.current);
     setActive(i);
     setProgKey((k) => k + 1);
-
     timerRef.current = setInterval(advance, 5000);
   };
 

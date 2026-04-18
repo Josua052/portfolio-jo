@@ -312,18 +312,18 @@ export default function AboutHobbies() {
     };
   }, [advance]);
 
-  const handleClick = (i: number) => {
-    if (i === active) return;
+const handleClick = (i: number) => {
+  if (i === active) return;
 
-    if (timerRef.current) {
-      clearInterval(timerRef.current);
-    }
+  if (timerRef.current) {
+    clearInterval(timerRef.current);
+  }
 
-    setActive(i);
-    setProgKey((k) => k + 1);
+  setActive(i);
+  setProgKey((k) => k + 1);
 
-    timerRef.current = setInterval(advance, 5000);
-  };
+  timerRef.current = setInterval(advance, 5000);
+};
 
   return (
     <section className="hbs-section">
