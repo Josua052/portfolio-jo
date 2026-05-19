@@ -32,14 +32,6 @@ export function AboutContent() {
                 <div className="about-photo-gradient" />
               </div>
 
-              <div
-                className="about-photo-corner about-photo-corner-tl"
-                aria-hidden
-              />
-              <div
-                className="about-photo-corner about-photo-corner-br"
-                aria-hidden
-              />
             </div>
           </div>
 
@@ -148,10 +140,10 @@ export function AboutContent() {
         }
         .about-photo-frame {
           position: relative;
-          border-radius: 1.5rem;
+          border-radius: 50%;
           overflow: hidden;
           border: 1px solid var(--border);
-          aspect-ratio: 4 / 5;
+          aspect-ratio: 1 / 1;
           background: var(--secondary);
         }
         .about-photo-img {
@@ -171,24 +163,7 @@ export function AboutContent() {
           background: linear-gradient(to top, var(--background), transparent);
           pointer-events: none;
         }
-        .about-photo-corner {
-          position: absolute;
-          width: 32px;
-          height: 32px;
-          border-color: var(--foreground);
-          border-style: solid;
-          opacity: 0.2;
-        }
-        .about-photo-corner-tl {
-          top: -8px; left: -8px;
-          border-width: 2px 0 0 2px;
-          border-radius: 4px 0 0 0;
-        }
-        .about-photo-corner-br {
-          bottom: -8px; right: -8px;
-          border-width: 0 2px 2px 0;
-          border-radius: 0 0 4px 0;
-        }
+
         .about-stat-card {
           position: absolute;
           display: flex;

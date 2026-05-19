@@ -112,7 +112,7 @@ export default function HeroSection() {
 
             <div className="hero-cta-group">
               <Link
-                href="https://drive.google.com/file/d/1NIL0NBRAFaNe07HS3obsMMvdeI4nHxes/preview"
+                href="https://drive.google.com/file/d/1Tyqtqpr_NVBmf9WHje12vDTNDUm8aovW/preview"
                 target="_blank"
                 className="hero-cta-primary"
               >
