@@ -9,12 +9,13 @@ export const metadata = {
   description: "Homepage of Josua Ronaldo",
   openGraph: {
     title: "Portfolio of Josua Ronaldo",
-    description: "Explore my projects, skills, and experience in web development & design.",
+    description:
+      "Explore my projects, skills, and experience in web development & design.",
     url: "https://www.josuaronaldo.my.id",
     siteName: "Josua Ronaldo Portfolio",
     images: [
       {
-        url: "https://www.josuaronaldo.my.id/cover.png", 
+        url: "https://www.josuaronaldo.my.id/cover.png",
         width: 1200,
         height: 630,
         alt: "Josua Ronaldo Portfolio",
@@ -29,10 +30,18 @@ export default function HomePage() {
   return (
     <main>
       <HeroSection />
-      <AboutQuotes />
-      <AtGlanceSection />
-      <ContactSection />
-      <TestimonialsSection />
+      <div data-aos="fade-up">
+        <AtGlanceSection />
+      </div>
+      <div data-aos="fade-up">
+        <AboutQuotes />
+      </div>
+      <div data-aos="fade-up">
+        <ContactSection />
+      </div>
+      <div data-aos="fade-up">
+        <TestimonialsSection />
+      </div>
     </main>
   );
 }

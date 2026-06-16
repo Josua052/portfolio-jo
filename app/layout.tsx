@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { Montserrat, Poppins } from "next/font/google";
 import MusicPlayer from "@/components/common/MusicPlayer";
 import { Analytics } from "@vercel/analytics/next";
+import { AOSInit } from "@/components/providers/AOSInit";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -41,6 +42,7 @@ export default function RootLayout({
         className="min-h-screen antialiased bg-background text-foreground"
       >
         <ThemeProvider>
+          <AOSInit />
           <Navbar />
           <main className="pt-16">{children}</main>
           <Footer />
