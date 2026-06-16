@@ -140,8 +140,8 @@ export default function TestimonialForm() {
             >
               <Star
                 size={20}
-                fill={(hovered || rating) >= s ? "#f59e0b" : "none"}
-                stroke={(hovered || rating) >= s ? "#f59e0b" : "var(--border)"}
+                fill={(hovered || rating) >= s ? "var(--foreground)" : "none"}
+                stroke={(hovered || rating) >= s ? "var(--foreground)" : "var(--border)"}
                 strokeWidth={1.5}
               />
             </button>
@@ -271,7 +271,7 @@ export default function TestimonialForm() {
         }
         .tf-rating-text {
           font-size: 0.72rem; font-weight: 600;
-          color: #f59e0b; margin-left: 0.25rem;
+          color: var(--foreground); margin-left: 0.25rem;
         }
 
         .tf-field { display: flex; flex-direction: column; gap: 0.35rem; }

@@ -194,6 +194,7 @@ export default function AtGlanceSection() {
           {/* ② Status mini-card */}
           <div className="ags-cell ags-cell-status">
             <div className="flex items-start justify-between w-full">
+              <div className="ags-status-icon"></div>
               <span className="text-[0.65rem] uppercase tracking-widest font-bold text-muted-foreground">
                 Status
               </span>

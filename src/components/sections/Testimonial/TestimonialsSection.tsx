@@ -90,52 +90,48 @@ export default function TestimonialsSection() {
   return (
     <section className="ts-section">
       <div className="container-custom">
-        {/* ── Top: Heading + Form ── */}
-        <div className="ts-top">
-          {/* Left — Heading & Stats */}
-          <div className="ts-heading-area">
-            <div>
-              <p className="ts-eyebrow">/ testimonials</p>
-              <h1 className="ts-heading">
-                What people
-                <span className="ts-heading-outline">say about me</span>
-              </h1>
-              <p className="ts-heading-sub">
-                Rekomendasi dari rekan kerja, klien, dan kolaborator yang pernah
-                bekerja bersama saya secara langsung.
-              </p>
+        <div className="ts-grid">
+          {/* Left Column: Heading + Stats + Form */}
+          <div className="ts-left">
+            <div className="ts-heading-area">
+              <div>
+                <p className="ts-eyebrow">/ testimonials</p>
+                <h1 className="ts-heading">
+                  What people
+                  <span className="ts-heading-outline">say about me</span>
+                </h1>
+                <p className="ts-heading-sub">
+                  Rekomendasi dari rekan kerja, klien, dan kolaborator yang pernah
+                  bekerja bersama saya secara langsung.
+                </p>
+              </div>
+              <div className="ts-stats">
+                <div className="ts-stat">
+                  <span className="ts-stat-num">5</span>
+                  <span className="ts-stat-label">Klien</span>
+                </div>
+                <div className="ts-stat">
+                  <span className="ts-stat-num">5</span>
+                  <span className="ts-stat-label">Rating</span>
+                </div>
+                <div className="ts-stat">
+                  <span className="ts-stat-num">1+</span>
+                  <span className="ts-stat-label">Tahun</span>
+                </div>
+              </div>
             </div>
-            <div className="ts-stats">
-              <div className="ts-stat">
-                <span className="ts-stat-num">5</span>
-                <span className="ts-stat-label">Klien</span>
-              </div>
-              <div className="ts-stat">
-                <span className="ts-stat-num">5</span>
-                <span className="ts-stat-label">Rating</span>
-              </div>
-              <div className="ts-stat">
-                <span className="ts-stat-num">1+</span>
-                <span className="ts-stat-label">Tahun</span>
-              </div>
+
+            <div className="ts-form-area">
+              <TestimonialForm />
             </div>
           </div>
 
-          {/* Right — Form */}
-          <div className="ts-form-area">
-            <TestimonialForm />
+          {/* Right Column: Vertical Ticker */}
+          <div className="ts-right">
+            <Suspense fallback={<TickerSkeleton />}>
+              <TestimonialsTicker />
+            </Suspense>
           </div>
-        </div>
-
-        {/* ── Bottom: Ticker (no border wrapper, no label bar) ── */}
-        <div className="ts-ticker-outer">
-          <div className="ts-ticker-meta">
-            <div className="ts-ticker-dot" />
-            <span className="ts-ticker-label">Live testimonials</span>
-          </div>
-          <Suspense fallback={<TickerSkeleton />}>
-            <TestimonialsTicker />
-          </Suspense>
         </div>
       </div>
 
@@ -146,32 +142,41 @@ export default function TestimonialsSection() {
           overflow-x: hidden;
         }
 
-        /* ── Top grid ── */
-        .ts-top {
+        /* ── Grid Layout ── */
+        .ts-grid {
           display: grid;
           grid-template-columns: 1fr 1fr;
-          border: 1px solid var(--border);
-          border-radius: 1.25rem;
-          overflow: hidden;
+          gap: 4rem;
+          align-items: stretch;
         }
-        @media (max-width: 768px) {
-          .ts-top { grid-template-columns: 1fr; }
+
+        @media (max-width: 900px) {
+          .ts-grid {
+            grid-template-columns: 1fr;
+            gap: 3rem;
+          }
+        }
+
+        /* ── Left Column ── */
+        .ts-left {
+          display: flex;
+          flex-direction: column;
+          gap: 2.5rem;
+          position: sticky;
+          top: 6rem;
+        }
+
+        @media (max-width: 900px) {
+          .ts-left {
+            position: static;
+          }
         }
 
         /* ── Heading area ── */
         .ts-heading-area {
-          padding: 2.5rem 2rem;
-          border-right: 1px solid var(--border);
           display: flex;
           flex-direction: column;
-          justify-content: space-between;
           gap: 2rem;
-        }
-        @media (max-width: 768px) {
-          .ts-heading-area {
-            border-right: none;
-            border-bottom: 1px solid var(--border);
-          }
         }
 
         .ts-eyebrow {
@@ -186,10 +191,10 @@ export default function TestimonialsSection() {
 
         .ts-heading {
           font-family: var(--font-montserrat), Georgia, serif;
-          font-size: clamp(2rem, 4vw, 3rem);
+          font-size: clamp(2.5rem, 4vw, 3.5rem);
           font-weight: 800;
           letter-spacing: -0.03em;
-          line-height: 1.0;
+          line-height: 1.05;
           color: var(--foreground);
           display: flex;
           flex-direction: column;
@@ -205,7 +210,7 @@ export default function TestimonialsSection() {
           font-size: 0.85rem;
           line-height: 1.7;
           color: var(--muted);
-          max-width: 320px;
+          max-width: 380px;
         }
 
         /* ── Stats ── */
@@ -241,36 +246,19 @@ export default function TestimonialsSection() {
 
         /* ── Form area ── */
         .ts-form-area {
-          padding: 2.5rem 2rem;
+          padding-top: 1.5rem;
+          border-top: 1px solid var(--border);
         }
 
-        /* ── Ticker outer — NO border, NO background ── */
-        .ts-ticker-outer {
-          margin-top: 3rem;
+        /* ── Right Column ── */
+        .ts-right {
+          position: relative;
+          min-height: 600px;
         }
-
-        .ts-ticker-meta {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          margin-bottom: 0.25rem;
-          padding: 0 0.25rem;
-        }
-
-        .ts-ticker-dot {
-          width: 6px;
-          height: 6px;
-          border-radius: 50%;
-          background: var(--foreground);
-          flex-shrink: 0;
-        }
-
-        .ts-ticker-label {
-          font-size: 0.65rem;
-          font-weight: 700;
-          letter-spacing: 0.1em;
-          text-transform: uppercase;
-          color: var(--muted);
+        @media (max-width: 900px) {
+          .ts-right {
+            min-height: 500px;
+          }
         }
       `}</style>
     </section>

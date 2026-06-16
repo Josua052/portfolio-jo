@@ -153,8 +153,7 @@ export default function AtGlanceSection() {
               <span className="ags-heading-outline">Overview</span>
             </h2>
             <p className="ags-heading-sub">
-              Locations, GitHub activity, and the technologies I use daily in
-              building digital products.
+              Locations, GitHub activity, and the technologies I use daily in building digital products.
             </p>
           </div>
         </div>
@@ -194,30 +193,18 @@ export default function AtGlanceSection() {
           {/* ② Status mini-card */}
           <div className="ags-cell ags-cell-status">
             <div className="flex items-start justify-between w-full">
-              <span className="text-[0.65rem] uppercase tracking-widest font-bold text-muted-foreground">
-                Status
-              </span>
+              <div className="ags-status-icon">
+                <Zap className="w-5 h-5 text-indigo-500" />
+              </div>
+              <span className="text-[0.65rem] uppercase tracking-widest font-bold text-muted-foreground">Status</span>
             </div>
             <div className="mt-4">
-              <h3 className="text-xl font-bold text-foreground">
-                Open to Work
-              </h3>
-              <p className="text-xs text-muted-foreground mt-1">
-                Ready for freelance & full-time opportunities.
-              </p>
+              <h3 className="text-xl font-bold text-foreground">Open to Work</h3>
+              <p className="text-xs text-muted-foreground mt-1">Ready for freelance & full-time opportunities.</p>
             </div>
             <div className="flex flex-wrap gap-2 mt-5">
-              {[
-                "Frontend",
-                "Fullstack",
-                "UI/UX Designer",
-                "Business Analyst",
-                "IT PM",
-              ].map((tag) => (
-                <span
-                  key={tag}
-                  className="px-3 py-1 text-[0.65rem] font-bold uppercase tracking-wider rounded-full border border-indigo-500/20 bg-indigo-500/10 text-indigo-500"
-                >
+              {["Frontend", "Fullstack", "UI/UX", "Business Analyst", "IT PM"].map((tag) => (
+                <span key={tag} className="px-3 py-1 text-[0.65rem] font-bold uppercase tracking-wider rounded-full border border-indigo-500/20 bg-indigo-500/10 text-indigo-500">
                   {tag}
                 </span>
               ))}
@@ -231,12 +218,7 @@ export default function AtGlanceSection() {
                 <Github className="w-4 h-4" />
                 GitHub Activity
               </span>
-              <a
-                href="https://github.com/Josua052"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="ags-cell-link"
-              >
+              <a href="https://github.com/Josua052" target="_blank" rel="noopener noreferrer" className="ags-cell-link">
                 View profile <ArrowUpRight className="w-3 h-3" />
               </a>
             </div>
@@ -256,9 +238,7 @@ export default function AtGlanceSection() {
                 <Atom className="w-4 h-4" />
                 Tech Stack
               </span>
-              <span className="text-[0.65rem] font-semibold text-muted-foreground/50">
-                {TECH_STACK.length} technologies
-              </span>
+              <span className="text-[0.65rem] font-semibold text-muted-foreground/50">{TECH_STACK.length} technologies</span>
             </div>
             <TechStackMarquee />
           </div>

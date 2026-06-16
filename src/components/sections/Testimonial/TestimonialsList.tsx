@@ -27,8 +27,8 @@ function StarRating({ rating }: { rating: number }) {
         <Star
           key={s}
           size={11}
-          fill={s <= rating ? "#f59e0b" : "none"}
-          stroke={s <= rating ? "#f59e0b" : "currentColor"}
+          fill={s <= rating ? "var(--foreground)" : "none"}
+          stroke={s <= rating ? "var(--foreground)" : "currentColor"}
           strokeWidth={1.5}
           className="tk-star-icon"
         />
@@ -103,54 +103,42 @@ export default async function TestimonialsTicker() {
   const looped = [...items, ...items, ...items];
   const itemCount = items.length;
 
-  // Width of one unit (card + gap) for the CSS animation end value
-  const CARD_W = 280;
-  const GAP = 16;
-  const UNIT = CARD_W + GAP;
-  const scrollEnd = itemCount * UNIT;
-
   return (
     <>
-      {/* Inline CSS custom property for the scroll distance */}
-      <style>{`
-        #tk-scene { --tk-scroll-end: -${scrollEnd}px; }
-      `}</style>
-
       <div className="tk-scene" id="tk-scene">
-        <div className="tk-track" id="tk-track">
+        <div className="tk-track" id="tk-track" style={{ animationDuration: `${itemCount * 8}s` }}>
           {looped.map((item, i) => {
             const realIdx = i % itemCount;
-            const offsetClass = OFFSETS[i % OFFSETS.length];
 
             return (
-              <div
-                className={`tk-slot ${offsetClass}`}
-                key={`${item.id}-${i}`}
-              >
+              <div className="tk-slot" key={`${item.id}-${i}`}>
                 <div className="tk-card">
-                  {/* Opening quote mark — typographic, editorial */}
-                  <span className="tk-quote" aria-hidden="true">
-                    &ldquo;
-                  </span>
+                  {/* Custom golden quote mark */}
+                  <div className="tk-quote-mark" aria-hidden="true">
+                    <span>/</span><span>/</span>
+                  </div>
 
                   {/* Testimonial body */}
                   <blockquote className="tk-message">{item.message}</blockquote>
 
-                  {/* Star rating (if present) */}
-                  {item.rating && <StarRating rating={item.rating} />}
+                  <hr className="tk-divider" />
 
-                  {/* Footer: avatar + name + role */}
+                  {/* Footer: avatar + details */}
                   <div className="tk-footer">
                     <Avatar name={item.name} index={realIdx} />
                     <div className="tk-footer-text">
                       <p className="tk-name">{item.name}</p>
-                      <p className="tk-meta">
-                        {[item.role, item.company].filter(Boolean).join(" · ")}
-                      </p>
+                      {(item.role || item.company) && (
+                        <p className="tk-role-company">
+                          {[item.role, item.company].filter(Boolean).join(" di ")}
+                        </p>
+                      )}
+                      <div className="tk-meta-row">
+                        {item.rating && <StarRating rating={item.rating} />}
+                        <span className="tk-dot">•</span>
+                        <span>{new Date(item.created_at).toLocaleDateString('en-US', { month: 'short', year: 'numeric'})}</span>
+                      </div>
                     </div>
-                    <span className="tk-num" aria-hidden="true">
-                      {String(realIdx + 1).padStart(2, "0")}
-                    </span>
                   </div>
                 </div>
               </div>
@@ -163,103 +151,92 @@ export default async function TestimonialsTicker() {
         /* ── Scene ── */
         .tk-scene {
           overflow: hidden;
-          padding: 2.5rem 0 3rem;
-          position: relative;
-        }
-
-        /* Edge fades */
-        .tk-scene::before,
-        .tk-scene::after {
-          content: '';
           position: absolute;
-          top: 0; bottom: 0;
-          width: 80px;
-          z-index: 10;
-          pointer-events: none;
-        }
-        .tk-scene::before {
-          left: 0;
-          background: linear-gradient(to right, var(--background) 0%, transparent 100%);
-        }
-        .tk-scene::after {
-          right: 0;
-          background: linear-gradient(to left, var(--background) 0%, transparent 100%);
+          top: 0; left: 0; right: 0; bottom: 0;
+          mask-image: linear-gradient(to bottom, transparent, black 5%, black 95%, transparent);
+          -webkit-mask-image: linear-gradient(to bottom, transparent, black 5%, black 95%, transparent);
         }
 
         /* ── Track ── */
         .tk-track {
           display: flex;
-          align-items: flex-start;
-          gap: ${GAP}px;
-          width: max-content;
+          flex-direction: column;
+          gap: 24px;
+          height: max-content;
           will-change: transform;
-          animation: tk-scroll ${itemCount * 5.5}s linear infinite;
+          animation-name: tk-scroll-y;
+          animation-timing-function: linear;
+          animation-iteration-count: infinite;
         }
 
-        @keyframes tk-scroll {
-          from { transform: translateX(0); }
-          to   { transform: translateX(var(--tk-scroll-end)); }
+        @keyframes tk-scroll-y {
+          from { transform: translateY(0); }
+          to   { transform: translateY(-33.33333%); }
         }
 
         .tk-track:hover {
           animation-play-state: paused;
         }
 
-        /* ── Slot (card wrapper with stagger) ── */
+        /* ── Slot ── */
         .tk-slot {
+          width: 100%;
           flex-shrink: 0;
-          width: ${CARD_W}px;
-          /* Default: no vertical offset */
         }
-
-        .tk-slot--flat   { margin-top: 0; }
-        .tk-slot--mid    { margin-top: 28px; }
-        .tk-slot--tall   { margin-top: 52px; }
 
         /* ── Card ── */
         .tk-card {
           background: var(--background);
-          border: 0.5px solid var(--border);
-          border-radius: 1rem;
-          padding: 1.375rem 1.375rem 1.25rem;
+          border: 1px solid var(--border);
+          border-radius: 12px;
+          padding: 1.75rem 2rem;
           display: flex;
           flex-direction: column;
-          gap: 0.75rem;
+          gap: 1rem;
+          box-shadow: 0 4px 20px rgba(0,0,0,0.03);
           box-sizing: border-box;
-          opacity: 0.65;
-          transition: opacity 0.35s ease, border-color 0.35s ease;
-          cursor: default;
+          opacity: 0.9;
+          transition: opacity 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
         }
 
-        .tk-slot:hover .tk-card {
+        .tk-card:hover {
           opacity: 1;
-          border-color: var(--foreground);
+          border-color: rgba(0,0,0,0.1);
+          box-shadow: 0 8px 30px rgba(0,0,0,0.06);
         }
 
         /* ── Quote mark ── */
-        .tk-quote {
-          font-size: 2.25rem;
+        .tk-quote-mark {
+          display: flex;
+          gap: 2px;
+          font-size: 1.5rem;
+          font-weight: 900;
+          font-style: italic;
           line-height: 1;
-          color: var(--border);
-          font-family: Georgia, 'Times New Roman', serif;
-          display: block;
-          margin-bottom: -0.25rem;
-          user-select: none;
+          margin-bottom: 0.5rem;
+          color: var(--foreground);
+        }
+        .tk-quote-mark span:nth-child(2) {
+          opacity: 0.5;
         }
 
         /* ── Message ── */
         .tk-message {
-          font-size: 0.8375rem;
+          font-size: 0.95rem;
           line-height: 1.8;
           color: var(--muted);
           margin: 0;
-          flex: 1;
           overflow-wrap: break-word;
           word-break: break-word;
-          display: -webkit-box;
-          -webkit-line-clamp: 6;
-          -webkit-box-orient: vertical;
-          overflow: hidden;
+        }
+
+        /* ── Divider ── */
+        .tk-divider {
+          border: 0;
+          height: 1px;
+          background: var(--border);
+          margin: 0.5rem 0;
+          opacity: 0.6;
         }
 
         /* ── Stars ── */
@@ -268,27 +245,22 @@ export default async function TestimonialsTicker() {
           align-items: center;
           gap: 3px;
         }
-        .tk-star-icon {
-          color: var(--border);
-        }
 
         /* ── Footer ── */
         .tk-footer {
           display: flex;
           align-items: center;
-          gap: 0.625rem;
-          padding-top: 0.875rem;
-          border-top: 0.5px solid var(--border);
+          gap: 1rem;
         }
 
         .tk-avatar {
-          width: 34px;
-          height: 34px;
+          width: 42px;
+          height: 42px;
           border-radius: 50%;
           display: flex;
           align-items: center;
           justify-content: center;
-          font-size: 0.68rem;
+          font-size: 0.75rem;
           font-weight: 700;
           flex-shrink: 0;
           letter-spacing: 0.03em;
@@ -297,38 +269,34 @@ export default async function TestimonialsTicker() {
         .tk-footer-text {
           display: flex;
           flex-direction: column;
-          gap: 0.1rem;
-          min-width: 0;
+          gap: 0.2rem;
           flex: 1;
         }
 
         .tk-name {
-          font-size: 0.8125rem;
+          font-size: 0.95rem;
           font-weight: 700;
-          letter-spacing: -0.01em;
           color: var(--foreground);
           margin: 0;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
         }
 
-        .tk-meta {
-          font-size: 0.7rem;
+        .tk-role-company {
+          font-size: 0.75rem;
           color: var(--muted);
           margin: 0;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
+          opacity: 0.8;
         }
 
-        .tk-num {
-          font-size: 0.65rem;
-          font-weight: 600;
-          letter-spacing: 0.1em;
-          color: var(--border);
-          flex-shrink: 0;
-          align-self: flex-end;
+        .tk-meta-row {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          font-size: 0.75rem;
+          color: var(--muted);
+        }
+
+        .tk-dot {
+          opacity: 0.5;
         }
       `}</style>
     </>
