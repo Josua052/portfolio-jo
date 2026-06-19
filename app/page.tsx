@@ -1,8 +1,10 @@
-import AboutQuotes from "@/components/sections/About/Quotes";
+import dynamic from "next/dynamic";
 import HeroSection from "@/components/sections/HeroSection";
-import AtGlanceSection from "@/components/sections/Home/AtGlanceSection";
-import ContactSection from "@/components/sections/Home/ContactSection";
-import TestimonialsSection from "@/components/sections/Testimonial/TestimonialsSection";
+
+const AtGlanceSection = dynamic(() => import("@/components/sections/Home/AtGlanceSection"), { ssr: true });
+const AboutQuotes = dynamic(() => import("@/components/sections/About/Quotes"), { ssr: true });
+const ContactSection = dynamic(() => import("@/components/sections/Home/ContactSection"), { ssr: true });
+const TestimonialsSection = dynamic(() => import("@/components/sections/Testimonial/TestimonialsSection"), { ssr: true });
 
 export const metadata = {
   title: "Portfolio of Josua | Homepage",
@@ -30,18 +32,10 @@ export default function HomePage() {
   return (
     <main>
       <HeroSection />
-      <div data-aos="fade-up">
-        <AtGlanceSection />
-      </div>
-      <div data-aos="fade-up">
-        <AboutQuotes />
-      </div>
-      <div data-aos="fade-up">
-        <ContactSection />
-      </div>
-      <div data-aos="fade-up">
-        <TestimonialsSection />
-      </div>
+      <AtGlanceSection />
+      <AboutQuotes />
+      <ContactSection />
+      <TestimonialsSection />
     </main>
   );
 }

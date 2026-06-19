@@ -1,9 +1,8 @@
-"use client";
-
-import { useEffect, useState } from "react";
 import Card from "@/components/ui/Card";
+import AnimatedElement from "@/components/ui/AnimatedElement";
+import LiveTime from "@/components/ui/LiveTime";
 import { MapPin, Github, Clock, Zap, ArrowUpRight } from "lucide-react";
-import RealGlobe from "@/components/RealGlobe";
+import GlobeCobe from "@/components/GlobeCobe";
 import {
   Atom,
   Globe,
@@ -35,30 +34,6 @@ export const TECH_STACK = [
   },
   { name: "Git", color: "#F05032", icon: <GitBranch className="w-5 h-5" /> },
 ];
-
-/* ─────────────────────────────────────────────
-   Live Jakarta Time Hook
-───────────────────────────────────────────── */
-function useJakartaTime() {
-  const [time, setTime] = useState("");
-  useEffect(() => {
-    const update = () => {
-      setTime(
-        new Date().toLocaleTimeString("en-US", {
-          timeZone: "Asia/Jakarta",
-          hour: "2-digit",
-          minute: "2-digit",
-          second: "2-digit",
-          hour12: false,
-        }),
-      );
-    };
-    update();
-    const t = setInterval(update, 1000);
-    return () => clearInterval(t);
-  }, []);
-  return time;
-}
 
 /* ─────────────────────────────────────────────
    Tech Pill
@@ -103,32 +78,9 @@ function TechStackMarquee() {
 }
 
 /* ─────────────────────────────────────────────
-   useInView
-───────────────────────────────────────────── */
-function useInView(threshold = 0.1) {
-  const [ref, setRef] = useState<HTMLElement | null>(null);
-  const [inView, setInView] = useState(false);
-  useEffect(() => {
-    if (!ref) return;
-    const obs = new IntersectionObserver(
-      ([e]) => {
-        if (e.isIntersecting) setInView(true);
-      },
-      { threshold },
-    );
-    obs.observe(ref);
-    return () => obs.disconnect();
-  }, [ref, threshold]);
-  return { setRef, inView };
-}
-
-/* ─────────────────────────────────────────────
    AtGlanceSection — default export
 ───────────────────────────────────────────── */
 export default function AtGlanceSection() {
-  const jakartaTime = useJakartaTime();
-  const { setRef: headRef, inView: headIn } = useInView(0.2);
-
   return (
     <section className="ags-section">
       {/* Dot-grid background */}
@@ -136,132 +88,138 @@ export default function AtGlanceSection() {
 
       <div className="container-custom ags-inner">
         {/* ── Editorial Heading ── */}
-        <div
-          ref={headRef}
-          className="ags-heading-wrap"
-          style={{
-            opacity: headIn ? 1 : 0,
-            transform: headIn ? "translateY(0)" : "translateY(20px)",
-            transition: "opacity 0.6s ease, transform 0.6s ease",
-          }}
-        >
-          <p className="ags-eyebrow">/ at a glance</p>
-          <div className="ags-heading-row">
-            <h2 className="ags-heading">
-              Quick
-              <br />
-              <span className="ags-heading-outline">Overview</span>
-            </h2>
-            <p className="ags-heading-sub">
-              Locations, GitHub activity, and the technologies I use daily in
-              building digital products.
-            </p>
+        <AnimatedElement delay={0} initialY={30} exitY={-40}>
+          <div className="ags-heading-wrap">
+            <p className="ags-eyebrow">/ at a glance</p>
+            <div className="ags-heading-row">
+              <h2 className="ags-heading">
+                Quick
+                <br />
+                <span className="ags-heading-outline">Overview</span>
+              </h2>
+              <p className="ags-heading-sub">
+                Locations, GitHub activity, and the technologies I use daily in
+                building digital products.
+              </p>
+            </div>
           </div>
-        </div>
+        </AnimatedElement>
 
         {/* ── Bento Grid ── */}
         <div className="ags-bento">
           {/* ① Globe / Location */}
-          <div className="ags-cell ags-cell-globe">
-            <div className="ags-cell-header mb-4">
-              <span className="ags-cell-label text-white/80">
-                <MapPin className="w-3.5 h-3.5" />
-                Location
-              </span>
-              <span className="ags-cell-badge ags-badge-green">
-                <span className="ags-pulse" />
-                Available
-              </span>
-            </div>
-
-            <div className="ags-globe-wrap">
-              <RealGlobe />
-              <div className="ags-globe-overlay">
-                <span className="ags-pulse-dot" />
-                <span className="text-white">Jakarta, Indonesia</span>
+          <AnimatedElement className="ags-wrap-globe" initialX={-40} initialY={0} exitX={-40} exitY={0}>
+            <div className="ags-cell w-full h-full ags-cell-globe">
+              <div className="ags-cell-header mb-4">
+                <span className="ags-cell-label text-white/80">
+                  <MapPin className="w-3.5 h-3.5" />
+                  Location
+                </span>
+                <span className="ags-cell-badge ags-badge-green">
+                  <span className="ags-pulse" />
+                  Available
+                </span>
               </div>
-              <div className="ags-globe-hint text-white/50">drag to rotate</div>
-            </div>
 
-            {/* Live time */}
-            <div className="ags-time-row">
-              <Clock className="w-3.5 h-3.5 text-white/70" />
-              <span className="ags-time-label text-white/70">WIB (UTC+7)</span>
-              <span className="ags-time-value text-white">{jakartaTime}</span>
+              <div className="ags-globe-wrap">
+                <GlobeCobe />
+                <div className="ags-globe-overlay">
+                  <span className="ags-pulse-dot" />
+                  <span className="text-white">Jakarta, Indonesia</span>
+                </div>
+                <div className="ags-globe-hint text-white/50">drag to rotate</div>
+              </div>
+
+              {/* Live time */}
+              <div className="ags-time-row">
+                <Clock className="w-3.5 h-3.5 text-white/70" />
+                <span className="ags-time-label text-white/70">WIB (UTC+7)</span>
+                <span className="ags-time-value text-white"><LiveTime /></span>
+              </div>
             </div>
-          </div>
+          </AnimatedElement>
 
           {/* ② Status mini-card */}
-          <div className="ags-cell ags-cell-status">
-            <div className="flex items-start justify-between w-full">
-              <span className="text-[0.65rem] uppercase tracking-widest font-bold text-muted-foreground">
-                Status
-              </span>
-            </div>
-            <div className="mt-4">
-              <h3 className="text-xl font-bold text-foreground">
-                Open to Work
-              </h3>
-              <p className="text-xs text-muted-foreground mt-1">
-                Ready for freelance & full-time opportunities.
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-2 mt-5">
-              {[
-                "Frontend",
-                "Fullstack",
-                "UI/UX Designer",
-                "Business Analyst",
-                "IT PM",
-              ].map((tag) => (
-                <span
-                  key={tag}
-                  className="px-3 py-1 text-[0.65rem] font-bold uppercase tracking-wider rounded-full border border-indigo-500/20 bg-indigo-500/10 text-indigo-500"
-                >
-                  {tag}
+          <AnimatedElement className="ags-wrap-status" delay={0.2} initialX={40} initialY={0} exitX={40} exitY={0}>
+            <div className="ags-cell w-full h-full ags-cell-status">
+              <div className="flex items-start justify-between w-full">
+                <span className="text-[0.65rem] uppercase tracking-widest font-bold text-muted-foreground">
+                  Status
                 </span>
-              ))}
+              </div>
+              <div className="mt-4">
+                <h3 className="text-xl font-bold text-foreground">
+                  Open to Work
+                </h3>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Ready for freelance & full-time opportunities.
+                </p>
+              </div>
+              <div className="flex flex-wrap gap-2 mt-5">
+                {[
+                  "Frontend",
+                  "Fullstack",
+                  "UI/UX Designer",
+                  "Business Analyst",
+                  "IT PM",
+                ].map((tag) => (
+                  <span
+                    key={tag}
+                    className="px-3 py-1 text-[0.65rem] font-bold uppercase tracking-wider rounded-full border border-indigo-500/20 bg-indigo-500/10 text-indigo-500"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
             </div>
-          </div>
+          </AnimatedElement>
 
           {/* ③ GitHub Contributions */}
-          <div className="ags-cell ags-cell-github">
-            <div className="ags-cell-header mb-4">
-              <span className="ags-cell-label">
-                <Github className="w-4 h-4" />
-                GitHub Activity
-              </span>
-              <a
-                href="https://github.com/Josua052"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="ags-cell-link"
-              >
-                View profile <ArrowUpRight className="w-3 h-3" />
-              </a>
+          <AnimatedElement className="ags-wrap-github" delay={0.4} initialX={40} initialY={0} exitX={40} exitY={0}>
+            <div className="ags-cell w-full h-full ags-cell-github">
+              <div className="ags-cell-header mb-4">
+                <span className="ags-cell-label">
+                  <Github className="w-4 h-4" />
+                  GitHub Activity
+                </span>
+                <a
+                  href="https://github.com/Josua052"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="ags-cell-link"
+                >
+                  View profile <ArrowUpRight className="w-3 h-3" />
+                </a>
+              </div>
+              <div className="ags-github-chart-wrap">
+                <img
+                  src="https://ghchart.rshah.org/6366f1/Josua052"
+                  alt="GitHub contribution chart"
+                  className="ags-github-img"
+                  loading="lazy"
+                  decoding="async"
+                  width={800}
+                  height={120}
+                />
+              </div>
             </div>
-            <div className="ags-github-chart-wrap">
-              <img
-                src="https://ghchart.rshah.org/6366f1/Josua052"
-                alt="GitHub contribution chart"
-                className="ags-github-img"
-              />
-            </div>
-          </div>
+          </AnimatedElement>
 
           {/* ④ Tech Stack */}
-          <div className="ags-cell ags-cell-tech">
-            <div className="ags-cell-header mb-4">
-              <span className="ags-cell-label">
-                <Atom className="w-4 h-4" />
-                Tech Stack
-              </span>
-              <span className="text-[0.65rem] font-semibold text-muted-foreground/50">
-                {TECH_STACK.length} technologies
-              </span>
+          <AnimatedElement className="ags-wrap-tech" delay={0.6} initialY={40} exitY={40}>
+            <div className="ags-cell w-full h-full ags-cell-tech">
+              <div className="ags-cell-header mb-4">
+                <span className="ags-cell-label">
+                  <Atom className="w-4 h-4" />
+                  Tech Stack
+                </span>
+                <span className="text-[0.65rem] font-semibold text-muted-foreground/50">
+                  {TECH_STACK.length} technologies
+                </span>
+              </div>
+              <TechStackMarquee />
             </div>
-            <TechStackMarquee />
-          </div>
+          </AnimatedElement>
         </div>
       </div>
 
@@ -322,7 +280,7 @@ export default function AtGlanceSection() {
         /* ── Bento Grid ── */
         .ags-bento {
           display: grid;
-          grid-template-columns: 1fr 1.2fr;
+          grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
           grid-template-rows: auto auto auto;
           gap: 1.25rem;
         }
@@ -338,29 +296,36 @@ export default function AtGlanceSection() {
           position: relative;
           overflow: hidden;
           box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+          min-width: 0;
         }
 
         /* Placements */
-        .ags-cell-globe {
+        .ags-wrap-globe {
           grid-column: 1 / 2;
           grid-row: 1 / 3;
+          min-width: 0;
+        }
+        .ags-cell-globe {
           background: #020617; /* Dark background for globe */
           border-color: rgba(255,255,255,0.1);
         }
         
-        .ags-cell-status {
+        .ags-wrap-status {
           grid-column: 2 / 3;
           grid-row: 1 / 2;
+          min-width: 0;
         }
         
-        .ags-cell-github {
+        .ags-wrap-github {
           grid-column: 2 / 3;
           grid-row: 2 / 3;
+          min-width: 0;
         }
 
-        .ags-cell-tech {
+        .ags-wrap-tech {
           grid-column: 1 / 3;
           grid-row: 3 / 4;
+          min-width: 0;
         }
 
         /* ── Common UI Elements ── */
@@ -563,12 +528,12 @@ export default function AtGlanceSection() {
         /* ── Responsive ── */
         @media (max-width: 900px) {
           .ags-bento {
-            grid-template-columns: 1fr;
+            grid-template-columns: minmax(0, 1fr);
           }
-          .ags-cell-globe  { grid-column: 1; grid-row: 1; }
-          .ags-cell-status { grid-column: 1; grid-row: 2; }
-          .ags-cell-github { grid-column: 1; grid-row: 3; }
-          .ags-cell-tech   { grid-column: 1; grid-row: 4; }
+          .ags-wrap-globe  { grid-column: 1; grid-row: 1; }
+          .ags-wrap-status { grid-column: 1; grid-row: 2; }
+          .ags-wrap-github { grid-column: 1; grid-row: 3; }
+          .ags-wrap-tech   { grid-column: 1; grid-row: 4; }
         }
       `}</style>
     </section>

@@ -25,6 +25,7 @@ export default function MusicPlayer() {
 
       <button
         onClick={toggleMusic}
+        aria-label="Toggle background music"
         className="fixed bottom-6 right-6 z-50 p-3 rounded-full 
         bg-[var(--background)] border border-[var(--border)]
         hover:bg-[var(--hover)] transition"

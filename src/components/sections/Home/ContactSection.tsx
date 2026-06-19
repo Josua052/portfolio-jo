@@ -1,202 +1,63 @@
-"use client";
-
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
-
-/* ── Floating tags config with positions ── */
-const TAGS = [
-  { label: "React.js", color: "#61DAFB", top: "8%", left: "8%" },
-  { label: "JavaScript", color: "#F7DF1E", top: "5%", right: "6%" },
-  { label: "Next.js", color: "#ffffff", top: "42%", left: "2%" },
-  { label: "TypeScript", color: "#3178C6", top: "38%", right: "2%" },
-  { label: "Node.js", color: "#68A063", bottom: "18%", left: "10%" },
-  { label: "Tailwind", color: "#06B6D4", bottom: "12%", right: "8%" },
-];
-
-type TagPos = {
-  label: string;
-  color: string;
-  top?: string;
-  left?: string;
-  right?: string;
-  bottom?: string;
-};
-
-/* ── Cursor component that animates between tag centers ── */
-function AnimatedCursor({
-  tags,
-  containerRef,
-}: {
-  tags: TagPos[];
-  containerRef: React.RefObject<HTMLDivElement | null>;
-}) {
-  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
-  const [activeIdx, setActiveIdx] = useState(0);
-  const [visible, setVisible] = useState(false);
-  const [clicking, setClicking] = useState(false);
-  const tagRefs = useRef<(HTMLDivElement | null)[]>([]);
-
-  useEffect(() => {
-    // Wait for layout then start
-    const init = setTimeout(() => setVisible(true), 600);
-    return () => clearTimeout(init);
-  }, []);
-
-  useEffect(() => {
-    if (!visible) return;
-
-    const moveTo = (idx: number) => {
-      const tag = tagRefs.current[idx];
-      const container = containerRef.current;
-      if (!tag || !container) return;
-
-      const tagRect = tag.getBoundingClientRect();
-      const containerRect = container.getBoundingClientRect();
-
-      // Center of the tag relative to container
-      const x = tagRect.left - containerRect.left + tagRect.width / 2;
-      const y = tagRect.top - containerRect.top + tagRect.height / 2;
-      setCursorPos({ x, y });
-
-      // Click animation after arriving
-      const clickTimer = setTimeout(() => {
-        setClicking(true);
-        setTimeout(() => setClicking(false), 300);
-      }, 700);
-
-      return clickTimer;
-    };
-
-    // Initial position
-    moveTo(0);
-
-    const interval = setInterval(() => {
-      setActiveIdx((prev) => {
-        const next = (prev + 1) % tags.length;
-        moveTo(next);
-        return next;
-      });
-    }, 1800);
-
-    return () => clearInterval(interval);
-  }, [visible, tags.length]);
-
-  return (
-    <>
-      {/* Tag elements (invisible anchors for position) */}
-      {tags.map((tag, i) => (
-        <div
-          key={tag.label}
-          ref={(el) => {
-            tagRefs.current[i] = el;
-          }}
-          className={`contact-tag ${activeIdx === i ? "contact-tag-active" : ""}`}
-          style={{
-            top: tag.top,
-            left: tag.left,
-            right: tag.right,
-            bottom: tag.bottom,
-            borderColor: activeIdx === i ? tag.color : undefined,
-            boxShadow: activeIdx === i ? `0 0 12px ${tag.color}33` : undefined,
-          }}
-        >
-          <span className="contact-tag-dot" style={{ background: tag.color }} />
-          {tag.label}
-        </div>
-      ))}
-
-      {/* SVG cursor */}
-      {visible && (
-        <div
-          className="contact-cursor"
-          style={{
-            transform: `translate(${cursorPos.x}px, ${cursorPos.y}px)`,
-          }}
-        >
-          <svg
-            width="22"
-            height="22"
-            viewBox="0 0 22 22"
-            fill="none"
-            style={{
-              transform: clicking ? "scale(0.85)" : "scale(1)",
-              transition: "transform 0.15s ease",
-            }}
-          >
-            <path
-              d="M4 2L18 10.5L11 12.5L8.5 19L4 2Z"
-              fill="var(--foreground)"
-              stroke="var(--background)"
-              strokeWidth="1.5"
-              strokeLinejoin="round"
-            />
-          </svg>
-          {clicking && <div className="contact-cursor-ripple" />}
-        </div>
-      )}
-    </>
-  );
-}
+import AnimatedElement from "@/components/ui/AnimatedElement";
+import ContactVisual from "./ContactVisual";
 
 export default function ContactSection() {
-  const containerRef = useRef<HTMLDivElement>(null);
 
   return (
     <section className="section">
       <div className="container-custom">
         <div className="grid md:grid-cols-2 gap-16 items-center">
           {/* LEFT — Visual */}
-          <div ref={containerRef} className="contact-visual">
-            {/* Background ring decorations */}
-            <div className="contact-ring contact-ring-1" />
-            <div className="contact-ring contact-ring-2" />
-            <div className="contact-ring contact-ring-3" />
-
-            {/* Center monogram */}
-            <div className="contact-monogram">
-              <span className="contact-monogram-text">JR</span>
-              <div className="contact-monogram-ring" />
-            </div>
-
-            {/* Floating tags + animated cursor */}
-            <AnimatedCursor tags={TAGS} containerRef={containerRef} />
-          </div>
+          <AnimatedElement className="w-full flex justify-center" delay={0} initialX={-40} initialY={0} exitX={-40} exitY={0}>
+            <ContactVisual />
+          </AnimatedElement>
 
           {/* RIGHT — Content */}
-          <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-6 w-full">
             {/* Eyebrow */}
-            <p className="contact-eyebrow">/ get in touch</p>
+            <AnimatedElement delay={0.1} initialX={40} initialY={0} exitX={40} exitY={0}>
+              <p className="contact-eyebrow">/ get in touch</p>
+            </AnimatedElement>
 
-            <h2 className="contact-heading">
-              Any questions or
-              <br />
-              just want to{" "}
-              <span className="contact-heading-accent">say hi?</span>
-            </h2>
+            <AnimatedElement delay={0.2} initialX={40} initialY={0} exitX={40} exitY={0}>
+              <h2 className="contact-heading">
+                Any questions or
+                <br />
+                just want to{" "}
+                <span className="contact-heading-accent">say hi?</span>
+              </h2>
+            </AnimatedElement>
 
-            <p
-              style={{
-                color: "var(--muted)",
-                fontSize: "0.95rem",
-                lineHeight: 1.7,
-              }}
-            >
-              Feel free to reach out whether it is about a project, a
-              collaboration, or just a conversation. I read every message.
-            </p>
+            <AnimatedElement delay={0.3} initialX={40} initialY={0} exitX={40} exitY={0}>
+              <p
+                style={{
+                  color: "var(--muted)",
+                  fontSize: "0.95rem",
+                  lineHeight: 1.7,
+                }}
+              >
+                Feel free to reach out whether it is about a project, a
+                collaboration, or just a conversation. I read every message.
+              </p>
+            </AnimatedElement>
 
             {/* Email CTA */}
-            <Link
-              href="mailto:josuaronaldo96@gmail.com"
-              className="contact-email-btn"
-            >
-              <span className="contact-email-icon">✉</span>
-              josuaronaldo96@gmail.com
-              <span className="contact-email-arrow">↗</span>
-            </Link>
+            <AnimatedElement delay={0.4} initialX={40} initialY={0} exitX={40} exitY={0}>
+              <Link
+                href="mailto:josuaronaldo96@gmail.com"
+                className="contact-email-btn"
+              >
+                <span className="contact-email-icon">✉</span>
+                josuaronaldo96@gmail.com
+                <span className="contact-email-arrow">↗</span>
+              </Link>
+            </AnimatedElement>
 
             {/* Divider */}
-            <div className="contact-divider" />
+            <AnimatedElement delay={0.5} initialX={40} initialY={0} exitX={40} exitY={0}>
+              <div className="contact-divider" />
+            </AnimatedElement>
           </div>
         </div>
       </div>

@@ -1,7 +1,7 @@
-// src/components/testimonial/TestimonialsSection.tsx
 import { Suspense } from "react";
 import TestimonialForm from "./TestimonialForm";
 import TestimonialsTicker from "./TestimonialsList";
+import AnimatedElement from "@/components/ui/AnimatedElement";
 
 function TickerSkeleton() {
   return (
@@ -94,44 +94,51 @@ export default function TestimonialsSection() {
           {/* Left Column: Heading + Stats + Form */}
           <div className="ts-left">
             <div className="ts-heading-area">
-              <div>
-                <p className="ts-eyebrow">/ testimonials</p>
-                <h1 className="ts-heading">
-                  What people
-                  <span className="ts-heading-outline">say about me</span>
-                </h1>
-                <p className="ts-heading-sub">
-                  Rekomendasi dari rekan kerja, klien, dan kolaborator yang pernah
-                  bekerja bersama saya secara langsung.
-                </p>
-              </div>
-              <div className="ts-stats">
-                <div className="ts-stat">
-                  <span className="ts-stat-num">5</span>
-                  <span className="ts-stat-label">Klien</span>
+              <AnimatedElement delay={0.1} initialX={-40} initialY={0} exitX={-40} exitY={0}>
+                <div>
+                  <p className="ts-eyebrow">/ testimonials</p>
+                  <h2 className="ts-heading">
+                    What people
+                    <span className="ts-heading-outline">say about me</span>
+                  </h2>
+                  <p className="ts-heading-sub">
+                    Rekomendasi dari rekan kerja, klien, dan kolaborator yang pernah
+                    bekerja bersama saya secara langsung.
+                  </p>
                 </div>
-                <div className="ts-stat">
-                  <span className="ts-stat-num">5</span>
-                  <span className="ts-stat-label">Rating</span>
+              </AnimatedElement>
+
+              <AnimatedElement delay={0.2} initialX={-40} initialY={0} exitX={-40} exitY={0}>
+                <div className="ts-stats">
+                  <div className="ts-stat">
+                    <span className="ts-stat-num">5</span>
+                    <span className="ts-stat-label">Klien</span>
+                  </div>
+                  <div className="ts-stat">
+                    <span className="ts-stat-num">5</span>
+                    <span className="ts-stat-label">Rating</span>
+                  </div>
+                  <div className="ts-stat">
+                    <span className="ts-stat-num">1+</span>
+                    <span className="ts-stat-label">Tahun</span>
+                  </div>
                 </div>
-                <div className="ts-stat">
-                  <span className="ts-stat-num">1+</span>
-                  <span className="ts-stat-label">Tahun</span>
-                </div>
-              </div>
+              </AnimatedElement>
             </div>
 
-            <div className="ts-form-area">
-              <TestimonialForm />
-            </div>
+            <AnimatedElement delay={0.3} initialX={-40} initialY={0} exitX={-40} exitY={0}>
+              <div className="ts-form-area">
+                <TestimonialForm />
+              </div>
+            </AnimatedElement>
           </div>
 
           {/* Right Column: Vertical Ticker */}
-          <div className="ts-right">
+          <AnimatedElement className="ts-right" delay={0.4} initialX={40} initialY={0} exitX={40} exitY={0}>
             <Suspense fallback={<TickerSkeleton />}>
               <TestimonialsTicker />
             </Suspense>
-          </div>
+          </AnimatedElement>
         </div>
       </div>
 

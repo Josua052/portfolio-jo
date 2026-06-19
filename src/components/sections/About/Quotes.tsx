@@ -45,17 +45,17 @@ export default function AboutQuotes() {
           </div>
 
           {/* 3. Fortuna (Center, Italic, Identity Colors) */}
-          <div className="ph-word-layer ph-word-center">
+          <div className="ph-word-layer ph-word-center" data-aos="zoom-in" data-aos-duration="1000">
             <span className="ph-highlight-identity">Fortuna</span>
           </div>
 
           {/* 4. Interwoven Message Block (Left side overlapping) */}
           <div className="ph-float-block ph-float-left">
             <div className="ph-message-card">
-              <h4 className="ph-message-title">
+              <h3 className="ph-message-title">
                 <Sparkles size={18} className="text-indigo-500" />
                 Be Bold.
-              </h4>
+              </h3>
               <p className="ph-desc-text">
                 Seni tertinggi dalam{" "}
                 <span className="font-semibold text-foreground">
@@ -73,6 +73,8 @@ export default function AboutQuotes() {
       </div>
 
       <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600&display=swap');
+
         /* ── Section Base ── */
         .ph-section {
           position: relative;
@@ -184,16 +186,16 @@ export default function AboutQuotes() {
           font-size: clamp(4rem, 11vw, 10rem);
           font-weight: 900;
           letter-spacing: -0.04em;
-          color: var(--foreground);
+          -webkit-text-stroke: 1.5px var(--foreground);
+          color: transparent;
           text-align: left;
         }
 
         /* Center aligned italic text */
         .ph-word-center {
-          font-family: Georgia, "Times New Roman", serif;
-          font-size: clamp(4.5rem, 13vw, 12rem);
-          font-weight: 400;
-          font-style: italic;
+          font-family: 'Caveat', cursive;
+          font-size: clamp(5.5rem, 15vw, 14rem);
+          font-weight: 600;
           text-align: center;
           margin-top: -2rem; /* Overlaps with the blocks */
           position: relative;
@@ -206,12 +208,13 @@ export default function AboutQuotes() {
           font-size: clamp(4rem, 11vw, 10rem);
           font-weight: 900;
           letter-spacing: -0.04em;
-          color: var(--foreground);
+          -webkit-text-stroke: 1.5px var(--foreground);
+          color: transparent;
           text-align: right;
           margin-top: -2rem;
         }
 
-        /* Identity Gradient Shimmer */
+        /* Identity Gradient Shimmer & Write Animation */
         .ph-highlight-identity {
           background: linear-gradient(110deg, #6366f1 20%, #38bdf8 40%, #38bdf8 60%, #4f46e5 80%);
           background-size: 200% auto;
@@ -219,9 +222,24 @@ export default function AboutQuotes() {
           -webkit-text-fill-color: transparent;
           background-clip: text;
           color: transparent;
-          animation: shimmer-identity 5s linear infinite;
           display: inline-block;
           padding-right: 2rem; /* Prevent italic cutoff */
+          
+          /* Mask for writing effect */
+          -webkit-mask-image: linear-gradient(to right, black 50%, transparent 50%);
+          -webkit-mask-size: 200% 100%;
+          -webkit-mask-position: 100% 0;
+        }
+
+        [data-aos].aos-animate .ph-highlight-identity,
+        .aos-animate .ph-highlight-identity {
+          animation: write-erase-text 10s ease-in-out infinite, shimmer-identity 5s linear infinite;
+        }
+
+        @keyframes write-erase-text {
+          0%, 5% { -webkit-mask-position: 100% 0; }
+          20%, 80% { -webkit-mask-position: 0 0; }
+          95%, 100% { -webkit-mask-position: 100% 0; }
         }
 
         @keyframes shimmer-identity {

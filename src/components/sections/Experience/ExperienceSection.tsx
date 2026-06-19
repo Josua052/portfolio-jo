@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { ArrowDown, Briefcase, MapPin, Calendar, Sparkles } from "lucide-react";
 
 import experiencesData from "@/data/experiences.json";
 import { Experience } from "@/types/experience";
@@ -8,9 +9,9 @@ import { Experience } from "@/types/experience";
 const EXPERIENCES = experiencesData as Experience[];
 
 /* ─────────────────────────────────────────────
-   Intersection hook
+   Intersection hook for scroll animations
 ───────────────────────────────────────────── */
-function useInView(threshold = 0.15) {
+function useInView(threshold = 0.4) {
   const ref = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(false);
   useEffect(() => {
@@ -18,101 +19,87 @@ function useInView(threshold = 0.15) {
     if (!el) return;
     const obs = new IntersectionObserver(
       ([e]) => {
-        if (e.isIntersecting) setInView(true);
+        setInView(e.isIntersecting);
       },
       { threshold },
     );
     obs.observe(el);
     return () => obs.disconnect();
-  }, []);
+  }, [threshold]);
   return { ref, inView };
 }
 
 /* ─────────────────────────────────────────────
-   Experience Card
+   Cinematic Slide Component
 ───────────────────────────────────────────── */
-function ExperienceCard({
-  item,
-  delay,
-}: {
-  item: (typeof EXPERIENCES)[0];
-  delay: number;
-}) {
-  const { ref, inView } = useInView();
-  const [expanded, setExpanded] = useState(false);
-  const PREVIEW = 3;
+function CinematicSlide({ exp, index }: { exp: Experience; index: number }) {
+  const { ref, inView } = useInView(0.5);
+  
+  // Extract a single year from period string (e.g. "Aug 2024 - Present" -> "2024")
+  const yearMatch = exp.period.match(/\d{4}/);
+  const watermarkText = yearMatch ? yearMatch[0] : (index + 1).toString().padStart(2, '0');
 
   return (
-    <div
-      ref={ref}
-      className="exp-card-wrapper"
-      style={{
-        opacity: inView ? 1 : 0,
-        transform: inView ? "translateX(0)" : "translateX(-32px)",
-        transition: `opacity 0.65s ${delay}ms ease, transform 0.65s ${delay}ms ease`,
-      }}
-    >
-      {/* Decorative index */}
-      <div className="exp-index" aria-hidden>
-        {item.index}
+    <div className="exp-slide" ref={ref}>
+      {/* Giant Watermark Background */}
+      <div className={`exp-watermark ${inView ? 'in-view' : ''}`}>
+        {watermarkText}
       </div>
 
-      <div className={`exp-card ${item.highlight ? "exp-card-highlight" : ""}`}>
-        {/* ── Header ── */}
-        <div className="exp-header">
-          <div className="exp-header-left">
-            {item.highlight && (
+      <div className="container-custom exp-slide-inner">
+        
+        {/* Left Side: Company & Year */}
+        <div className={`exp-slide-left ${inView ? 'in-view' : ''}`}>
+          <div className="exp-company-block">
+            {exp.highlight && (
               <span className="exp-current-badge">
                 <span className="exp-current-dot" />
-                Current
+                Current Role
               </span>
             )}
-            <h3 className="exp-role">{item.role}</h3>
-            <p className="exp-company">{item.company}</p>
-          </div>
-
-          <div className="exp-header-right">
-            <span className="exp-location">{item.location}</span>
-            <span className="exp-period">{item.period}</span>
+            <h2 className="exp-company-name">{exp.company}</h2>
+            <div className="exp-meta">
+              <span className="exp-meta-item">
+                <Calendar size={16} className="inline mr-2 opacity-70" />
+                {exp.period}
+              </span>
+              <span className="exp-meta-item">
+                <MapPin size={16} className="inline mr-2 opacity-70" />
+                {exp.location}
+              </span>
+            </div>
           </div>
         </div>
 
-        {/* ── Divider ── */}
-        <div className="exp-divider" />
+        {/* Right Side: Role & Details */}
+        <div className={`exp-slide-right ${inView ? 'in-view' : ''}`}>
+          <div className="exp-role-block">
+            <h3 className="exp-role-title">
+              {exp.highlight ? (
+                <Sparkles size={28} className="inline mr-3 text-green-500 mb-1" />
+              ) : (
+                <Briefcase size={28} className="inline mr-3 text-[var(--muted)] mb-1" />
+              )}
+              {exp.role}
+            </h3>
+            
+            <ul className="exp-points-list">
+              {exp.points.map((pt, i) => (
+                <li key={i} style={{ transitionDelay: `${(i * 0.1) + 0.4}s` }}>
+                  <span className="exp-point-arrow">→</span>
+                  <span>{pt}</span>
+                </li>
+              ))}
+            </ul>
 
-        {/* ── Points ── */}
-        <ul className="exp-points">
-          {(expanded ? item.points : item.points.slice(0, PREVIEW)).map(
-            (pt, i) => (
-              <li key={i} className="exp-point">
-                <span className="exp-point-icon" aria-hidden>
-                  →
-                </span>
-                <span>{pt}</span>
-              </li>
-            ),
-          )}
-        </ul>
-
-        {item.points.length > PREVIEW && (
-          <button
-            className="exp-expand-btn"
-            onClick={() => setExpanded((p) => !p)}
-          >
-            {expanded
-              ? "Show less ↑"
-              : `+${item.points.length - PREVIEW} more responsibilities`}
-          </button>
-        )}
-
-        {/* ── Tags ── */}
-        <div className="exp-tags">
-          {item.tags.map((t) => (
-            <span key={t} className="exp-tag">
-              {t}
-            </span>
-          ))}
+            <div className="exp-tags-cinematic">
+              {exp.tags.map((t, i) => (
+                <span key={t} style={{ transitionDelay: `${(i * 0.05) + 0.6}s` }}>{t}</span>
+              ))}
+            </div>
+          </div>
         </div>
+
       </div>
     </div>
   );
@@ -122,23 +109,16 @@ function ExperienceCard({
    Section
 ───────────────────────────────────────────── */
 export default function ExperienceSection() {
-  const { ref: headRef, inView: headIn } = useInView(0.3);
+  const { ref: introRef, inView: introInView } = useInView(0.5);
 
   return (
-    <section className="exp-section">
-      <div className="container-custom">
-        {/* ── Heading ── */}
-        <div
-          ref={headRef}
-          className="exp-heading-wrap"
-          style={{
-            opacity: headIn ? 1 : 0,
-            transform: headIn ? "translateY(0)" : "translateY(24px)",
-            transition: "opacity 0.6s ease, transform 0.6s ease",
-          }}
-        >
-          <p className="exp-eyebrow">/ experience</p>
-          <div className="exp-heading-row">
+    <section className="exp-snap-container">
+      
+      {/* ── Slide 1: Intro Heading ── */}
+      <div className="exp-slide exp-slide-intro" ref={introRef}>
+        <div className="container-custom">
+          <div className={`exp-intro-content ${introInView ? 'in-view' : ''}`}>
+            <p className="exp-eyebrow">/ experience</p>
             <h1 className="exp-heading">
               Profesional
               <br />
@@ -148,372 +128,365 @@ export default function ExperienceSection() {
               A journey through my professional growth, projects, and
               contributions in web development and design.
             </p>
-          </div>
-        </div>
-
-        {/* ── Timeline ── */}
-        <div className="exp-timeline">
-          {/* Vertical line */}
-          <div className="exp-timeline-line" aria-hidden />
-
-          {EXPERIENCES.map((exp, i) => (
-            <div key={exp.company} className="exp-timeline-row">
-              {/* Node */}
-              <div className="exp-node-wrap">
-                <div
-                  className={`exp-node ${exp.highlight ? "exp-node-active" : ""}`}
-                >
-                  {exp.highlight && <div className="exp-node-pulse" />}
-                </div>
+            
+            <div className="exp-scroll-indicator">
+              <div className="exp-mouse">
+                <div className="exp-wheel"></div>
               </div>
-
-              <ExperienceCard item={exp} delay={i * 120} />
+              <span>Scroll to explore</span>
+              <ArrowDown size={16} className="exp-arrow-bounce" />
             </div>
-          ))}
+          </div>
         </div>
       </div>
 
+      {/* ── Slides: Experiences ── */}
+      {EXPERIENCES.map((exp, i) => (
+        <CinematicSlide key={exp.company + i} exp={exp} index={i} />
+      ))}
+
       <style>{`
-        /* ── Section ── */
-        .exp-section {
+        /* ── Container ── */
+        .exp-snap-container {
+          height: 100vh;
+          width: 100%;
+          overflow-y: auto;
+          scroll-snap-type: y mandatory;
+          scroll-behavior: smooth;
           background: var(--background);
           color: var(--foreground);
-          padding: 5rem 1.5rem 6rem;
+          /* Hide scrollbar */
+          scrollbar-width: none;
+          -ms-overflow-style: none;
+          position: relative;
+          z-index: 20;
+        }
+        .exp-snap-container::-webkit-scrollbar {
+          display: none;
         }
 
-        /* ── Heading ── */
-        .exp-heading-wrap {
-          margin-bottom: 4rem;
+        /* ── Slides ── */
+        .exp-slide {
+          height: 100vh;
+          width: 100%;
+          scroll-snap-align: start;
+          scroll-snap-stop: always;
+          position: relative;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          overflow: hidden;
+        }
+
+        /* ── Intro Slide ── */
+        .exp-slide-intro {
+          background: radial-gradient(circle at bottom right, rgba(34, 197, 94, 0.05) 0%, transparent 50%);
+        }
+        
+        .exp-intro-content {
           display: flex;
           flex-direction: column;
-          gap: 1.25rem;
+          gap: 1.5rem;
+          opacity: 0;
+          transform: translateY(40px);
+          transition: all 1s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
+        .exp-intro-content.in-view {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
         .exp-eyebrow {
-          font-size: 0.7rem;
+          font-size: 0.85rem;
           font-weight: 700;
-          letter-spacing: 0.14em;
+          letter-spacing: 0.2em;
           text-transform: uppercase;
           color: var(--muted);
         }
-        .exp-heading-row {
-          display: flex;
-          align-items: flex-end;
-          justify-content: space-between;
-          gap: 2rem;
-          flex-wrap: wrap;
-        }
         .exp-heading {
           font-family: var(--font-montserrat), Georgia, serif;
-          font-size: clamp(2.5rem, 5vw, 4.5rem);
+          font-size: clamp(4rem, 8vw, 7rem);
           font-weight: 800;
-          letter-spacing: -0.035em;
+          letter-spacing: -0.04em;
           line-height: 0.95;
           color: var(--foreground);
           margin: 0;
         }
         .exp-heading-outline {
-          -webkit-text-stroke: 1.5px var(--foreground);
+          -webkit-text-stroke: 2px var(--foreground);
           color: transparent;
         }
         .exp-heading-sub {
-          max-width: 340px;
-          font-size: 0.875rem;
-          line-height: 1.75;
+          max-width: 450px;
+          font-size: 1.1rem;
+          line-height: 1.8;
           color: var(--muted);
-          padding-bottom: 0.25rem;
+          margin-top: 1rem;
         }
 
-        /* ── Timeline ── */
-        .exp-timeline {
-          position: relative;
-          padding-left: 2.5rem;
-          display: flex;
-          flex-direction: column;
-          gap: 0;
-        }
-        .exp-timeline-line {
-          position: absolute;
-          left: 7px;
-          top: 14px;
-          bottom: 14px;
-          width: 1px;
-          background: linear-gradient(
-            to bottom,
-            var(--foreground) 0%,
-            var(--border) 40%,
-            var(--border) 80%,
-            transparent 100%
-          );
-          opacity: 0.2;
-        }
-
-        /* ── Timeline row ── */
-        .exp-timeline-row {
-          position: relative;
-          padding-bottom: 2.5rem;
-        }
-        .exp-timeline-row:last-child { padding-bottom: 0; }
-
-        /* Node */
-        .exp-node-wrap {
-          position: absolute;
-          left: -2.5rem;
-          top: 1.85rem;
-          width: 16px;
+        .exp-scroll-indicator {
+          margin-top: 4rem;
           display: flex;
           align-items: center;
-          justify-content: center;
-        }
-        .exp-node {
-          position: relative;
-          width: 14px;
-          height: 14px;
-          border-radius: 50%;
-          border: 2px solid var(--foreground);
-          background: var(--background);
-          z-index: 1;
-          transition: background 0.3s;
-        }
-        .exp-node-active {
-          background: var(--foreground);
-        }
-        .exp-node-pulse {
-          position: absolute;
-          inset: -4px;
-          border-radius: 50%;
-          border: 1.5px solid var(--foreground);
-          opacity: 0.3;
-          animation: exp-pulse 2s ease-in-out infinite;
-        }
-        @keyframes exp-pulse {
-          0%, 100% { transform: scale(1); opacity: 0.3; }
-          50%       { transform: scale(1.4); opacity: 0; }
-        }
-
-        /* ── Card wrapper ── */
-        .exp-card-wrapper {
-          position: relative;
-          width: 100%;
-        }
-        .exp-index {
-          position: absolute;
-          top: -1.25rem;
-          right: 0;
-          font-family: var(--font-montserrat), serif;
-          font-size: 5rem;
-          font-weight: 900;
-          letter-spacing: -0.05em;
-          line-height: 1;
-          color: var(--border);
-          pointer-events: none;
-          user-select: none;
-          z-index: 0;
-          opacity: 0.5;
-        }
-
-        /* ── Card ── */
-        .exp-card {
-          position: relative;
-          z-index: 1;
-          background: var(--background);
-          border: 1px solid var(--border);
-          border-radius: 1.25rem;
-          padding: 2rem;
-          display: flex;
-          flex-direction: column;
-          gap: 1.25rem;
-          transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
-        }
-        .exp-card:hover {
-          border-color: var(--foreground);
-          box-shadow: 0 8px 32px rgba(0,0,0,0.08);
-          transform: translateY(-3px);
-        }
-
-        /* Highlight variant — uses CSS vars, no hardcoded colors */
-        .exp-card-highlight {
-          background: var(--secondary);
-          border-color: var(--border);
-        }
-        .exp-card-highlight::before {
-          content: '';
-          position: absolute;
-          inset: 0;
-          border-radius: inherit;
-          background: linear-gradient(
-            135deg,
-            rgba(99,102,241,0.06) 0%,
-            transparent 60%
-          );
-          pointer-events: none;
-        }
-
-        /* ── Header ── */
-        .exp-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: flex-start;
           gap: 1rem;
-          flex-wrap: wrap;
+          font-family: var(--font-mono), monospace;
+          font-size: 0.85rem;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          color: var(--muted);
         }
-        .exp-header-left {
-          display: flex;
-          flex-direction: column;
-          gap: 0.3rem;
+        .exp-mouse {
+          width: 24px;
+          height: 36px;
+          border: 2px solid var(--muted);
+          border-radius: 12px;
+          position: relative;
         }
-        .exp-header-right {
-          display: flex;
-          flex-direction: column;
-          align-items: flex-end;
-          gap: 0.3rem;
-          flex-shrink: 0;
+        .exp-wheel {
+          width: 4px;
+          height: 8px;
+          background: var(--muted);
+          border-radius: 2px;
+          position: absolute;
+          top: 6px;
+          left: 50%;
+          transform: translateX(-50%);
+          animation: mouseWheel 2s infinite ease-in-out;
+        }
+        @keyframes mouseWheel {
+          0% { top: 6px; opacity: 1; }
+          50% { top: 16px; opacity: 0; }
+          100% { top: 6px; opacity: 0; }
+        }
+        .exp-arrow-bounce {
+          animation: bounce 2s infinite ease-in-out;
+        }
+        @keyframes bounce {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(5px); }
         }
 
-        /* Current badge */
+        /* ── Cinematic Slide ── */
+        .exp-watermark {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%) scale(0.8);
+          font-family: var(--font-montserrat), sans-serif;
+          font-size: clamp(15rem, 35vw, 35rem);
+          font-weight: 900;
+          color: var(--foreground);
+          opacity: 0;
+          z-index: 0;
+          pointer-events: none;
+          transition: all 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+          white-space: nowrap;
+        }
+        .exp-watermark.in-view {
+          opacity: 0.02;
+          transform: translate(-50%, -50%) scale(1);
+        }
+        .dark .exp-watermark.in-view {
+          opacity: 0.03;
+        }
+
+        .exp-slide-inner {
+          position: relative;
+          z-index: 10;
+          display: flex;
+          align-items: center;
+          gap: 4rem;
+          width: 100%;
+          max-width: 1400px;
+          padding: 0 2rem;
+        }
+
+        /* Split Screen Left */
+        .exp-slide-left {
+          flex: 1;
+          display: flex;
+          justify-content: flex-end;
+          text-align: right;
+          opacity: 0;
+          transform: translateX(-50px);
+          transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.2s;
+        }
+        .exp-slide-left.in-view {
+          opacity: 1;
+          transform: translateX(0);
+        }
+
+        .exp-company-name {
+          font-family: var(--font-montserrat), Georgia, serif;
+          font-size: clamp(2rem, 4vw, 4.5rem);
+          font-weight: 800;
+          line-height: 1.1;
+          color: var(--foreground);
+          margin-bottom: 1rem;
+        }
+        .exp-meta {
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+          align-items: flex-end;
+        }
+        .exp-meta-item {
+          font-family: var(--font-mono), monospace;
+          font-size: 1rem;
+          color: var(--muted);
+          display: flex;
+          align-items: center;
+        }
+
         .exp-current-badge {
           display: inline-flex;
           align-items: center;
-          gap: 0.4rem;
-          padding: 0.2rem 0.65rem;
+          gap: 0.5rem;
+          padding: 0.4rem 1rem;
           border-radius: 999px;
-          font-size: 0.65rem;
+          font-size: 0.75rem;
           font-weight: 700;
-          letter-spacing: 0.08em;
+          letter-spacing: 0.1em;
           text-transform: uppercase;
-          border: 1px solid var(--border);
-          color: var(--foreground);
-          background: var(--background);
-          width: fit-content;
+          border: 1px solid rgba(34,197,94,0.3);
+          color: #22c55e;
+          background: rgba(34,197,94,0.05);
+          margin-bottom: 1.5rem;
         }
         .exp-current-dot {
-          width: 6px;
-          height: 6px;
+          width: 8px;
+          height: 8px;
           border-radius: 50%;
           background: #22c55e;
-          box-shadow: 0 0 0 3px rgba(34,197,94,0.2);
-          animation: exp-dot-pulse 2s infinite;
-          flex-shrink: 0;
+          box-shadow: 0 0 10px #22c55e;
+          animation: pulse-glow 2s infinite;
         }
-        @keyframes exp-dot-pulse {
-          0%, 100% { box-shadow: 0 0 0 3px rgba(34,197,94,0.2); }
-          50%       { box-shadow: 0 0 0 5px rgba(34,197,94,0.08); }
+        @keyframes pulse-glow {
+          0%, 100% { opacity: 1; transform: scale(1); }
+          50% { opacity: 0.5; transform: scale(1.2); }
         }
 
-        .exp-role {
-          font-family: var(--font-montserrat), Georgia, serif;
-          font-size: clamp(1.1rem, 2vw, 1.35rem);
-          font-weight: 800;
-          letter-spacing: -0.02em;
+        /* Split Screen Right */
+        .exp-slide-right {
+          flex: 1.2;
+          padding-left: 4rem;
+          border-left: 2px solid color-mix(in srgb, var(--border) 50%, transparent);
+          opacity: 0;
+          transform: translateX(50px);
+          transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.3s;
+        }
+        .exp-slide-right.in-view {
+          opacity: 1;
+          transform: translateX(0);
+        }
+
+        .exp-role-title {
+          font-family: var(--font-montserrat), sans-serif;
+          font-size: clamp(1.5rem, 2.5vw, 2.5rem);
+          font-weight: 700;
           color: var(--foreground);
-          margin: 0;
+          margin-bottom: 2.5rem;
           line-height: 1.2;
         }
-        .exp-company {
-          font-size: 0.85rem;
-          color: var(--muted);
-          margin: 0;
-        }
-        .exp-location {
-          font-size: 0.72rem;
-          font-weight: 600;
-          letter-spacing: 0.06em;
-          text-transform: uppercase;
-          color: var(--muted);
-        }
-        .exp-period {
-          font-size: 0.72rem;
-          font-weight: 600;
-          letter-spacing: 0.04em;
-          color: var(--muted);
-          white-space: nowrap;
-        }
 
-        /* ── Divider ── */
-        .exp-divider {
-          height: 1px;
-          background: var(--border);
-        }
-
-        /* ── Points ── */
-        .exp-points {
-          display: flex;
-          flex-direction: column;
-          gap: 0.6rem;
+        .exp-points-list {
           list-style: none;
           padding: 0;
-          margin: 0;
-        }
-        .exp-point {
+          margin: 0 0 3rem 0;
           display: flex;
-          gap: 0.625rem;
-          align-items: baseline;
+          flex-direction: column;
+          gap: 1.5rem;
         }
-        .exp-point-icon {
-          font-size: 0.65rem;
+        .exp-points-list li {
+          display: flex;
+          gap: 1.25rem;
+          align-items: flex-start;
+          font-size: 1.1rem;
+          line-height: 1.7;
           color: var(--muted);
-          flex-shrink: 0;
-          margin-top: 0.1rem;
-          transition: color 0.2s;
+          opacity: 0;
+          transform: translateY(15px);
+          transition: all 0.5s ease;
         }
-        .exp-card:hover .exp-point-icon {
-          color: var(--foreground);
+        .exp-slide-right.in-view .exp-points-list li {
+          opacity: 1;
+          transform: translateY(0);
         }
-        .exp-point span:last-child {
-          font-size: 0.875rem;
-          line-height: 1.75;
-          color: var(--muted);
+        .exp-point-arrow {
+          color: #22c55e;
+          font-weight: bold;
+          font-size: 1.25rem;
+          margin-top: -2px;
         }
 
-        /* Expand button */
-        .exp-expand-btn {
-          align-self: flex-start;
-          font-size: 0.75rem;
-          font-weight: 600;
-          letter-spacing: 0.02em;
-          color: var(--muted);
-          background: none;
-          border: none;
-          cursor: pointer;
-          padding: 0;
-          transition: color 0.2s;
-        }
-        .exp-expand-btn:hover {
-          color: var(--foreground);
-        }
-
-        /* ── Tags ── */
-        .exp-tags {
+        .exp-tags-cinematic {
           display: flex;
           flex-wrap: wrap;
-          gap: 0.4rem;
+          gap: 0.75rem;
         }
-        .exp-tag {
-          display: inline-flex;
-          padding: 0.2rem 0.65rem;
-          border-radius: 6px;
-          font-size: 0.7rem;
-          font-weight: 600;
-          letter-spacing: 0.02em;
-          border: 1px solid var(--border);
-          color: var(--muted);
-          background: var(--secondary);
-          transition: color 0.2s, border-color 0.2s;
-          cursor: default;
-        }
-        .exp-card:hover .exp-tag {
+        .exp-tags-cinematic span {
+          padding: 0.5rem 1.2rem;
+          border-radius: 100px;
+          background: color-mix(in srgb, var(--foreground) 5%, transparent);
           color: var(--foreground);
-          border-color: var(--foreground);
-          opacity: 0.6;
+          font-family: var(--font-mono), monospace;
+          font-size: 0.8rem;
+          font-weight: 600;
+          letter-spacing: 0.05em;
+          border: 1px solid color-mix(in srgb, var(--border) 50%, transparent);
+          opacity: 0;
+          transform: scale(0.9);
+          transition: all 0.4s ease;
+        }
+        .exp-slide-right.in-view .exp-tags-cinematic span {
+          opacity: 1;
+          transform: scale(1);
+        }
+        .exp-tags-cinematic span:hover {
+          background: var(--foreground);
+          color: var(--background);
+          transform: translateY(-3px) !important;
         }
 
-        /* ── Responsive ── */
-        @media (max-width: 640px) {
-          .exp-timeline { padding-left: 2rem; }
-          .exp-node-wrap { left: -2rem; }
-          .exp-index { font-size: 3.5rem; }
-          .exp-heading-row { flex-direction: column; align-items: flex-start; }
-          .exp-header { flex-direction: column; }
-          .exp-header-right { align-items: flex-start; }
+        /* ── Responsive Mobile ── */
+        @media (max-width: 1023px) {
+          .exp-slide-inner {
+            flex-direction: column;
+            text-align: left;
+            gap: 2.5rem;
+            justify-content: center;
+          }
+          
+          .exp-slide-left {
+            text-align: left;
+            justify-content: flex-start;
+            width: 100%;
+            transform: translateY(-30px);
+          }
+          .exp-slide-left.in-view {
+            transform: translateY(0);
+          }
+          .exp-meta {
+            align-items: flex-start;
+          }
+
+          .exp-slide-right {
+            padding-left: 0;
+            border-left: none;
+            width: 100%;
+            transform: translateY(30px);
+          }
+          .exp-slide-right.in-view {
+            transform: translateY(0);
+          }
+          
+          .exp-role-title {
+            margin-bottom: 1.5rem;
+          }
+          .exp-points-list li {
+            font-size: 0.95rem;
+            gap: 1rem;
+          }
         }
       `}</style>
     </section>

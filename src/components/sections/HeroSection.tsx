@@ -2,29 +2,24 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { Github, Instagram, Linkedin, ArrowUpRight, MapPin } from "lucide-react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { LifeSeconds } from "./LifeSeconds";
+import LiveTime from "@/components/ui/LiveTime";
 
 export default function HeroSection() {
-  const [time, setTime] = useState<string>("");
-  const [mounted, setMounted] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const timer = setTimeout(() => setMounted(true), 0);
-    const updateTime = () => {
-      const now = new Date();
-      const formatted = now.toLocaleTimeString("en-US", {
-        hour: "2-digit",
-        minute: "2-digit",
-      });
-      setTime(formatted + " WIB");
-    };
-    updateTime();
-    const interval = setInterval(updateTime, 60000);
-    return () => clearInterval(interval);
-  }, []);
+  const { scrollY } = useScroll();
+  const opacityScroll = useTransform(scrollY, [0, 600], [1, 0]);
+  const yUpScroll = useTransform(scrollY, [0, 600], [0, -100]);
+  const xLeftScroll = useTransform(scrollY, [0, 600], [0, -100]);
+  const xRightScroll = useTransform(scrollY, [0, 600], [0, 100]);
+  const yDownScroll = useTransform(scrollY, [0, 600], [0, 100]);
+  const scaleDownScroll = useTransform(scrollY, [0, 600], [1, 0.85]);
+
+
 
   // Parallax effect on mouse move
   useEffect(() => {
@@ -41,7 +36,6 @@ export default function HeroSection() {
     return () => window.removeEventListener("mousemove", handleMove);
   }, []);
 
-  if (!mounted) return null;
 
   return (
     <section
@@ -57,20 +51,34 @@ export default function HeroSection() {
 
       {/* ── Huge Background Name ── */}
       <div className="hero-bg-text-wrapper" aria-hidden>
-        <h1 className="hero-bg-text hero-bg-text-outline">Josua</h1>
-        <h1 className="hero-bg-text">Ronaldo</h1>
+        <motion.div style={{ opacity: opacityScroll, y: yUpScroll }} className="flex flex-col items-center">
+          <motion.div
+            className="flex flex-col items-center css-animate-fade-in"
+          >
+            <h1 className="flex flex-col items-center m-0">
+              <span className="hero-bg-text hero-bg-text-outline">Josua</span>
+              <span className="hero-bg-text">Ronaldo</span>
+            </h1>
+          </motion.div>
+        </motion.div>
       </div>
 
       {/* ── Central Character (Anchored to the very bottom) ── */}
       <div className="hero-character-anchor">
-        <Image
-          src="/images/dashboard/me.png"
-          alt="Josua Ronaldo"
-          width={600}
-          height={900}
-          className="hero-character-img"
-          priority
-        />
+        <motion.div style={{ opacity: opacityScroll, scale: scaleDownScroll, y: yDownScroll }} className="w-full h-full flex justify-center items-end">
+          <motion.div
+            className="w-full h-full flex justify-center items-end css-animate-slide-up"
+          >
+            <Image
+              src="/images/dashboard/me.png"
+              alt="Josua Ronaldo"
+              width={600}
+              height={900}
+              className="hero-character-img"
+              priority
+            />
+          </motion.div>
+        </motion.div>
         {/* Subtle fade at the absolute bottom edge just in case */}
         <div className="hero-character-bottom-fade" />
       </div>
@@ -79,8 +87,13 @@ export default function HeroSection() {
       <div className="hero-content-layer">
         
         {/* Left Side: About Panel */}
-        <div className="hero-panel-left">
-          <div className="hero-glass-panel">
+        <motion.div className="hero-panel-left" style={{ opacity: opacityScroll, x: xLeftScroll }}>
+          <motion.div
+            initial={{ opacity: 0, x: -40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+          >
+            <div className="hero-glass-panel">
             <div className="flex items-center justify-between mb-4 hero-about-header">
               <span className="hero-label">/ about</span>
             </div>
@@ -88,12 +101,19 @@ export default function HeroSection() {
               Currently <span className="hero-card-highlight"><LifeSeconds /></span> lifetime. 
               A software developer guided by a strong IT philosophy across <strong>UI/UX Design</strong>, <strong>Business Analysis</strong>, and <strong>Frontend Development</strong>.
             </p>
-          </div>
-        </div>
+            </div>
+          </motion.div>
+        </motion.div>
 
         {/* Right Side: Status & CTA */}
-        <div className="hero-panel-right">
-          <div className="hero-status-pill mb-8">
+        <motion.div className="hero-panel-right" style={{ opacity: opacityScroll, x: xRightScroll }}>
+          <motion.div
+            initial={{ opacity: 0, x: 40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
+            className="flex flex-col items-end w-full"
+          >
+            <div className="hero-status-pill mb-8">
             <span className="status-dot status-dot-green" /> Open to work
           </div>
           
@@ -106,34 +126,45 @@ export default function HeroSection() {
               Get Resume <ArrowUpRight size={16} className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
             </span>
             <div className="hero-cta-glow"></div>
-          </Link>
-        </div>
+            </Link>
+          </motion.div>
+        </motion.div>
 
       </div>
 
       {/* ── Bottom Floating Dock ── */}
-      <div className="hero-bottom-dock">
-        <div className="dock-item">
+      <motion.div 
+        style={{ opacity: opacityScroll, y: yDownScroll, position: 'absolute', bottom: '2.5rem', left: 0, right: 0, margin: '0 auto', width: 'max-content', zIndex: 30 }}
+      >
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
+          className="hero-bottom-dock"
+          style={{ position: 'relative', bottom: 'auto' }}
+        >
+          <div className="dock-item">
           <MapPin size={18} className="text-blue-500" />
           <span>Jakarta, ID</span>
         </div>
         <div className="dock-divider" />
         <div className="dock-item">
-          <span className="text-blue-500 font-medium">{time}</span>
+          <span className="text-blue-500 font-medium"><LiveTime /> WIB</span>
         </div>
         <div className="dock-divider" />
         <div className="dock-socials">
-          <Link href="https://www.instagram.com/josua_ronaldo_/" target="_blank" className="dock-social-link">
+          <Link href="https://www.instagram.com/josua_ronaldo_/" target="_blank" className="dock-social-link" aria-label="Instagram">
             <Instagram size={18} />
           </Link>
-          <Link href="https://www.linkedin.com/in/josua-ronaldo/" target="_blank" className="dock-social-link">
+          <Link href="https://www.linkedin.com/in/josua-ronaldo/" target="_blank" className="dock-social-link" aria-label="LinkedIn">
             <Linkedin size={18} />
           </Link>
-          <Link href="https://github.com/Josua052" target="_blank" className="dock-social-link">
+          <Link href="https://github.com/Josua052" target="_blank" className="dock-social-link" aria-label="GitHub">
             <Github size={18} />
           </Link>
         </div>
-      </div>
+        </motion.div>
+      </motion.div>
 
       <style>{`
         /* ── Base ── */
@@ -195,6 +226,23 @@ export default function HeroSection() {
           transition: transform 0.2s ease-out;
         }
 
+        .css-animate-fade-in {
+          animation: fadeInScale 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .css-animate-slide-up {
+          animation: slideUpScale 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes fadeInScale {
+          0% { opacity: 0; transform: scale(1.2); }
+          100% { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes slideUpScale {
+          0% { opacity: 0; transform: translateY(80px) scale(0.95); }
+          100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
         .hero-bg-text {
           font-family: var(--font-montserrat), sans-serif;
           font-size: clamp(6rem, 20vw, 22rem);
@@ -238,7 +286,6 @@ export default function HeroSection() {
           filter: drop-shadow(0 20px 40px rgba(0,0,0,0.6));
           transform: translate(calc(var(--mx) * 0.3), calc(var(--my) * 0.3));
           transition: transform 0.2s ease-out;
-          animation: fadeSlideUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) both;
         }
 
         .hero-character-bottom-fade {
@@ -270,8 +317,7 @@ export default function HeroSection() {
           pointer-events: auto;
           flex: 1;
           max-width: 460px;
-          animation: fadeSlideUp 0.8s 0.2s cubic-bezier(0.2, 0.8, 0.2, 1) both;
-          transform: translateY(20px); /* Slightly lower for asymmetrical look */
+          margin-top: 40px; /* Slightly lower for asymmetrical look */
         }
 
         .hero-panel-right {
@@ -280,8 +326,7 @@ export default function HeroSection() {
           display: flex;
           flex-direction: column;
           align-items: flex-end;
-          animation: fadeSlideUp 0.8s 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) both;
-          transform: translateY(-40px); /* Slightly higher */
+          margin-top: -80px; /* Slightly higher */
         }
 
         /* ── Left: About Panel ── */
@@ -379,12 +424,6 @@ export default function HeroSection() {
 
         /* ── Bottom Dock ── */
         .hero-bottom-dock {
-          position: absolute;
-          bottom: 2.5rem;
-          left: 50%;
-          /* We don't need transform here because the animation sets it, but keeping it for initial render before animation kicks in is good */
-          transform: translateX(-50%);
-          z-index: 30; /* Front-most element */
           display: flex;
           align-items: center;
           gap: 1.5rem;
@@ -394,7 +433,6 @@ export default function HeroSection() {
           background: color-mix(in srgb, var(--background) 75%, transparent);
           backdrop-filter: blur(24px);
           box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
-          animation: fadeSlideUpCenter 0.8s 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
           pointer-events: auto;
         }
 
@@ -449,22 +487,20 @@ export default function HeroSection() {
           .hero-panel-right {
             position: absolute;
             top: 7rem; /* Under header */
-            left: 50%;
+            left: 0; right: 0; margin: 0 auto;
             width: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
             z-index: 30;
-            animation: fadeSlideUpCenter 0.8s 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) both;
           }
           .hero-panel-left {
             position: absolute;
             bottom: 11rem; /* Safely above the dock */
-            left: 50%;
+            left: 0; right: 0; margin: 0 auto;
             width: 90%;
             max-width: 420px;
             z-index: 30;
-            animation: fadeSlideUpCenter 0.8s 0.2s cubic-bezier(0.2, 0.8, 0.2, 1) both;
           }
           .hero-character-anchor {
             height: 75vh;
@@ -504,8 +540,6 @@ export default function HeroSection() {
             line-height: 1.5;
           }
           .hero-bottom-dock {
-            bottom: 1.5rem;
-            left: 50%;
             flex-wrap: wrap;
             justify-content: center;
             border-radius: 24px;
@@ -513,21 +547,10 @@ export default function HeroSection() {
             gap: 1rem;
             width: calc(100% - 2rem);
             max-width: 340px;
-            animation: fadeSlideUpCenter 0.8s 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
           }
           .dock-divider {
             display: none;
           }
-        }
-
-        @keyframes fadeSlideUp {
-          from { opacity: 0; transform: translateY(40px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes fadeSlideUpCenter {
-          from { opacity: 0; transform: translate(-50%, 40px); }
-          to { opacity: 1; transform: translate(-50%, 0); }
         }
       `}</style>
     </section>
