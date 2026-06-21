@@ -152,7 +152,6 @@ export default function ContactForm() {
         }
 
         .brutal-field label {
-          font-family: 'Fira Code', monospace;
           font-size: 0.8rem;
           font-weight: 700;
           letter-spacing: 0.1em;
@@ -229,7 +228,6 @@ export default function ContactForm() {
         /* Error */
         .brutal-error {
           color: #ef4444;
-          font-family: 'Fira Code', monospace;
           font-size: 0.85rem;
           margin: 0;
         }
@@ -245,7 +243,7 @@ export default function ContactForm() {
           color: var(--background);
           border: none;
           border-radius: 0;
-          font-family: 'Fira Code', monospace;
+          font-family: var(--font-montserrat), sans-serif;
           font-size: 1rem;
           font-weight: 700;
           letter-spacing: 0.05em;
@@ -291,21 +289,20 @@ export default function ContactForm() {
         }
 
         .brutal-success p {
-          font-family: 'Fira Code', monospace;
           font-size: 1rem;
           color: var(--muted);
           margin: 0;
         }
 
         .brutal-success button {
-          margin-top: 2rem;
+          margin-top: 1rem;
           background: transparent;
-          border: 2px solid var(--foreground);
-          padding: 1rem 2rem;
-          font-family: 'Fira Code', monospace;
+          border: 1px solid var(--foreground);
+          color: var(--foreground);
+          padding: 1rem 1.5rem;
+          font-family: var(--font-montserrat), sans-serif;
           font-size: 0.9rem;
           font-weight: 700;
-          color: var(--foreground);
           cursor: pointer;
           transition: background 0.2s, color 0.2s;
         }

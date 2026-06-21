@@ -55,7 +55,6 @@ export default function ContactCard() {
         }
 
         .brutal-eyebrow {
-          font-family: 'Fira Code', monospace;
           font-size: 0.8rem;
           font-weight: 700;
           letter-spacing: 0.15em;
@@ -65,7 +64,7 @@ export default function ContactCard() {
         }
 
         .brutal-title {
-          font-family: var(--font-montserrat), Georgia, serif;
+          font-family: var(--font-montserrat), sans-serif;
           font-size: clamp(3.5rem, 6vw, 5rem);
           font-weight: 800;
           letter-spacing: -0.04em;
@@ -103,7 +102,7 @@ export default function ContactCard() {
         }
 
         .brutal-link-text {
-          font-family: 'Fira Code', monospace;
+          font-family: var(--font-montserrat), sans-serif;
           font-size: 1.5rem;
           font-weight: 700;
           letter-spacing: -0.02em;
@@ -127,7 +126,6 @@ export default function ContactCard() {
           display: flex;
           align-items: center;
           gap: 1rem;
-          font-family: 'Fira Code', monospace;
           font-size: 0.85rem;
           color: var(--muted);
           text-transform: uppercase;
