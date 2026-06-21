@@ -6,7 +6,7 @@ import { Plane, QrCode } from "lucide-react";
 
 export function AboutEducation() {
   const containerRef = useRef(null);
-  const inView = useInView(containerRef, { once: false, margin: "-100px" });
+  const inView = useInView(containerRef, { once: true, margin: "-100px" });
 
   // Generate a random-looking barcode pattern
   const barcodePattern = [

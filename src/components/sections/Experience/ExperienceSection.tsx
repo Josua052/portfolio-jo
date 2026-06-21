@@ -229,7 +229,7 @@ export default function ExperienceSection() {
           display: flex;
           align-items: center;
           gap: 1rem;
-          font-family: var(--font-mono), monospace;
+          font-family: var(--font-poppins), sans-serif;
           font-size: 0.85rem;
           letter-spacing: 0.1em;
           text-transform: uppercase;
@@ -331,7 +331,7 @@ export default function ExperienceSection() {
           align-items: flex-end;
         }
         .exp-meta-item {
-          font-family: var(--font-mono), monospace;
+          font-family: var(--font-poppins), sans-serif;
           font-size: 1rem;
           color: var(--muted);
           display: flex;
@@ -429,7 +429,7 @@ export default function ExperienceSection() {
           border-radius: 100px;
           background: color-mix(in srgb, var(--foreground) 5%, transparent);
           color: var(--foreground);
-          font-family: var(--font-mono), monospace;
+          font-family: var(--font-poppins), sans-serif;
           font-size: 0.8rem;
           font-weight: 600;
           letter-spacing: 0.05em;

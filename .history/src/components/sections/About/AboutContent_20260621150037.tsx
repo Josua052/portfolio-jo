@@ -2,12 +2,7 @@
 
 import Image from "next/image";
 import { useRef, useState, useEffect } from "react";
-import {
-  motion,
-  useScroll,
-  useTransform,
-  AnimatePresence,
-} from "framer-motion";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { gdriveProxyUrl } from "@/lib/gdrive";
 
 const SKILLS = [
@@ -28,51 +23,44 @@ const SKILLS = [
 const SCATTERED_PHOTOS = [
   {
     id: "1IkFybzJapMgsV8TG4sAcBuu_WGcgnwZM",
-    left: "60%",
-    top: "35%",
-    initial: { x: "-15vw", y: "15vh", rotate: -25 },
+    left: "60%", top: "35%",
+    initial: { x: "-15vw", y: "15vh", rotate: -25 }, 
     animate: { rotate: 12 },
   },
   {
     id: "1XAGEC4_5Cv5793ZFgrtNb7Zj5QmCkocr",
-    left: "15%",
-    top: "50%",
-    initial: { x: "15vw", y: "-15vh", rotate: 25 },
+    left: "15%", top: "50%",
+    initial: { x: "15vw", y: "-15vh", rotate: 25 }, 
     animate: { rotate: -10 },
   },
   {
     id: "1x8oRATWzzLXh6zeOBRtvHxFyj9pF4Bta",
-    left: "75%",
-    top: "60%",
-    initial: { x: "-15vw", y: "-15vh", rotate: -15 },
+    left: "75%", top: "60%",
+    initial: { x: "-15vw", y: "-15vh", rotate: -15 }, 
     animate: { rotate: 5 },
   },
   {
     id: "13aVvZ397mCf5V2G4SCeHLAS3RTcs4GIq",
-    left: "40%",
-    top: "15%",
-    initial: { x: 0, y: "20vh", rotate: 15 },
+    left: "40%", top: "15%",
+    initial: { x: 0, y: "20vh", rotate: 15 }, 
     animate: { rotate: -8 },
   },
   {
     id: "1Xotn3OSnnA5v6DzbizbU6MlR4WRsuiHH",
-    left: "10%",
-    top: "20%",
-    initial: { x: "15vw", y: "15vh", rotate: -15 },
+    left: "10%", top: "20%",
+    initial: { x: "15vw", y: "15vh", rotate: -15 }, 
     animate: { rotate: 15 },
   },
   {
     id: "1dQibdsid3vDKr7aiO9jekiIFF5bADoe9",
-    left: "80%",
-    top: "25%",
-    initial: { x: "-15vw", y: 0, rotate: 20 },
+    left: "80%", top: "25%",
+    initial: { x: "-15vw", y: 0, rotate: 20 }, 
     animate: { rotate: -15 },
   },
   {
     id: "11Bv5T2B4uPUHcTzCR8m7cDPh7YVvDVY_",
-    left: "25%",
-    top: "65%",
-    initial: { x: 0, y: "-20vh", rotate: -10 },
+    left: "25%", top: "65%",
+    initial: { x: 0, y: "-20vh", rotate: -10 }, 
     animate: { rotate: 8 },
   },
 ];
@@ -83,9 +71,9 @@ const BIO_DATA = [
     label: "Background",
     content: (
       <p className="accordion-text">
-        IT graduate from <strong>Universitas Sumatera Utara</strong> with 3+
-        years shaping digital products from pixel-perfect interfaces to
-        production ready systems.
+        IT graduate from <strong>Universitas Sumatera Utara</strong> with 3+ years
+        shaping digital products from pixel-perfect interfaces to production
+        ready systems.
       </p>
     ),
   },
@@ -112,7 +100,7 @@ const BIO_DATA = [
   },
   {
     id: "tech",
-    label: "Tech & Tools",
+    label: "04 // Tech & Tools",
     content: (
       <div className="unboxed-skills-list accordion-text">
         {SKILLS.map((sk) => (
@@ -152,29 +140,24 @@ export function AboutContent() {
 
   return (
     <section ref={containerRef} className="about-editorial-section">
+      
       {/* ── 1. Cinematic Memory Cycle ── */}
       <div className="about-scattered-wrapper" aria-hidden="true">
         <AnimatePresence>
           {SCATTERED_PHOTOS.map((photo, index) => {
             if (index !== currentPhoto) return null;
-
+            
             return (
               <motion.div
                 key={photo.id}
                 className="about-polaroid-frame absolute-polaroid"
                 style={{ left: photo.left, top: photo.top }}
                 initial={{ ...photo.initial, opacity: 0, scale: 0.9 }}
-                animate={{
-                  x: 0,
-                  y: 0,
-                  rotate: photo.animate.rotate,
-                  opacity: 1,
-                  scale: 1,
-                }}
+                animate={{ x: 0, y: 0, rotate: photo.animate.rotate, opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 1.05 }} // Dissolve perlahan ke depan
-                transition={{
+                transition={{ 
                   duration: 5.0, // Sangat lambat dan halus
-                  ease: "easeInOut",
+                  ease: "easeInOut" 
                 }}
               >
                 <img
@@ -194,13 +177,14 @@ export function AboutContent() {
 
       <div className="container-custom about-content-relative">
         <div className="about-grid-editorial">
+          
           {/* ── 2. LEFT: Name & Quote (Unboxed) ── */}
           <motion.div
             className="about-col-left"
             style={{ y: yContentLeft }}
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: false, margin: "-100px" }}
+            viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
             <div className="about-name-block">
@@ -210,10 +194,8 @@ export function AboutContent() {
               </div>
 
               <h2 className="about-name-huge">
-                Josua
-                <br />
+                Josua<br />
                 <span className="about-name-outline">Ronaldo</span>
-                Pandiangan
               </h2>
 
               <div className="about-quote-minimal">
@@ -239,12 +221,8 @@ export function AboutContent() {
               className="about-cutout-wrapper"
               initial={{ y: 150, opacity: 0 }}
               whileInView={{ y: 0, opacity: 1 }}
-              viewport={{ once: false, margin: "-100px" }}
-              transition={{
-                duration: 1.2,
-                ease: [0.16, 1, 0.3, 1],
-                delay: 0.5,
-              }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.5 }}
             >
               <Image
                 src="/images/dashboard/me.png"
@@ -257,47 +235,55 @@ export function AboutContent() {
             </motion.div>
           </div>
 
-          {/* ── 4. RIGHT: Interactive Glass Tabs ── */}
+          {/* ── 4. RIGHT: Interactive Glass Timeline ── */}
           <motion.div
             className="about-col-right"
             style={{ y: yContentRight }}
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: false, margin: "-50px" }}
+            viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.8, delay: 0.8 }}
           >
-            <div className="about-interactive-card">
-              <div className="about-card-tabs">
-                {BIO_DATA.map((item, index) => {
-                  const labelText = item.label.replace(/\d+\s*\/\/\s*/, '').trim();
-                  return (
-                    <button
-                      key={item.id}
-                      className={`about-tab-btn ${activeIndex === index ? "active" : ""}`}
-                      onClick={() => setActiveIndex(index)}
-                      onMouseEnter={() => setActiveIndex(index)}
-                    >
-                      {labelText}
-                    </button>
-                  );
-                })}
-              </div>
-              
-              <div className="about-card-content">
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={activeIndex}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.3, ease: "easeOut" }}
+            <div className="about-timeline-container">
+              {BIO_DATA.map((item, index) => {
+                const isActive = activeIndex === index;
+
+                return (
+                  <div
+                    key={item.id}
+                    className={`about-timeline-item ${isActive ? "active" : ""}`}
+                    onMouseEnter={() => setActiveIndex(index)}
+                    onClick={() => setActiveIndex(index)}
                   >
-                    {BIO_DATA[activeIndex].content}
-                  </motion.div>
-                </AnimatePresence>
-              </div>
+                    <div className="timeline-marker">
+                      <div className="timeline-dot" />
+                    </div>
+                    
+                    <div className="timeline-content">
+                      <h3 className="timeline-label">{item.label}</h3>
+                      
+                      <AnimatePresence initial={false}>
+                        {isActive && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: "auto", opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                            className="timeline-body-wrapper"
+                          >
+                            <div className="timeline-glass-card">
+                              {item.content}
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </motion.div>
+
         </div>
       </div>
 
@@ -305,13 +291,14 @@ export function AboutContent() {
         /* ── Base Section ── */
         .about-editorial-section {
           position: relative;
+          min-height: 100vh;
           width: 100%;
           background: var(--background);
           color: var(--foreground);
           overflow: hidden;
-          padding: 6rem 0 12rem; /* Reduced top space, added bottom space for image overflow */
+          padding: 8rem 0;
           display: flex;
-          flex-direction: column;
+          align-items: center;
         }
 
         /* ── Scattered Flying Photos ── */
@@ -369,15 +356,14 @@ export function AboutContent() {
           width: 100%;
           max-width: 1350px;
           margin: 0 auto;
-          padding: 0 2rem;
         }
 
         .about-grid-editorial {
           display: grid;
-          grid-template-columns: minmax(0, 1fr) 500px minmax(0, 1fr);
+          grid-template-columns: 1fr 500px 1fr;
           align-items: center;
           gap: 3rem;
-          min-height: 580px; /* Reduced to make the section tighter vertically */
+          min-height: 750px;
         }
 
         /* ── LEFT: Name & Quote ── */
@@ -385,8 +371,6 @@ export function AboutContent() {
           display: flex;
           flex-direction: column;
           justify-content: center;
-          justify-self: start;
-          max-width: 450px;
         }
 
         .about-name-block {
@@ -489,74 +473,111 @@ export function AboutContent() {
           transform-origin: bottom center;
         }
 
-        /* ── RIGHT: Interactive Glass Tabs ── */
+        /* ── RIGHT: Interactive Glass Timeline ── */
         .about-col-right {
           display: flex;
           flex-direction: column;
           justify-content: center;
-          justify-self: end;
-          max-width: 450px;
-          width: 100%;
         }
 
-        .about-interactive-card {
-          background: color-mix(in srgb, var(--background) 60%, transparent);
-          backdrop-filter: blur(20px);
-          -webkit-backdrop-filter: blur(20px);
-          border: 1px solid color-mix(in srgb, var(--foreground) 10%, transparent);
-          border-radius: 24px;
-          padding: 2.5rem;
-          box-shadow: 0 20px 40px -10px rgba(0,0,0,0.1);
+        .about-timeline-container {
           display: flex;
           flex-direction: column;
-          gap: 1.5rem;
-          width: 100%;
+          position: relative;
         }
 
-        .about-card-tabs {
+        .about-timeline-item {
           display: flex;
-          flex-wrap: wrap;
-          gap: 0.5rem;
-          border-bottom: 1px solid color-mix(in srgb, var(--foreground) 10%, transparent);
-          padding-bottom: 1rem;
+          gap: 1.5rem;
+          position: relative;
+          cursor: pointer;
+          padding-bottom: 1.5rem;
         }
 
-        .about-tab-btn {
-          background: transparent;
-          border: 1px solid transparent;
-          font-family: var(--font-poppins), sans-serif;
-          font-size: 0.75rem;
-          font-weight: 600;
-          letter-spacing: 0.1em;
-          text-transform: uppercase;
-          color: color-mix(in srgb, var(--foreground) 50%, transparent);
-          padding: 0.6rem 1.2rem;
-          border-radius: 50px;
-          cursor: pointer;
+        /* The vertical connecting line */
+        .about-timeline-item::before {
+          content: '';
+          position: absolute;
+          left: 5px; /* Centers the 2px line with the 12px dot */
+          top: 24px;
+          bottom: 0;
+          width: 2px;
+          background: color-mix(in srgb, var(--foreground) 10%, transparent);
+          transition: background 0.3s ease;
+        }
+        
+        .about-timeline-item:last-child::before {
+          display: none; /* No line after the last item */
+        }
+        
+        .about-timeline-item.active::before {
+          background: linear-gradient(to bottom, var(--foreground), color-mix(in srgb, var(--foreground) 10%, transparent));
+        }
+
+        .timeline-marker {
+          position: relative;
+          z-index: 2;
+          margin-top: 5px; /* Aligns dot with the text */
+        }
+
+        .timeline-dot {
+          width: 12px;
+          height: 12px;
+          border-radius: 50%;
+          background: color-mix(in srgb, var(--foreground) 20%, transparent);
+          border: 2px solid var(--background);
           transition: all 0.3s ease;
         }
 
-        .about-tab-btn:hover {
-          color: var(--foreground);
-          background: color-mix(in srgb, var(--foreground) 5%, transparent);
+        .about-timeline-item:hover .timeline-dot {
+          background: color-mix(in srgb, var(--foreground) 50%, transparent);
         }
 
-        .about-tab-btn.active {
-          color: var(--background);
+        .about-timeline-item.active .timeline-dot {
           background: var(--foreground);
-          box-shadow: 0 4px 15px color-mix(in srgb, var(--foreground) 30%, transparent);
+          transform: scale(1.4);
+          box-shadow: 0 0 10px color-mix(in srgb, var(--foreground) 50%, transparent);
         }
 
-        .about-card-content {
-          min-height: 180px;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
+        .timeline-content {
+          flex: 1;
+        }
+
+        .timeline-label {
+          font-family: var(--font-poppins), sans-serif;
+          font-size: 0.9rem;
+          font-weight: 700;
+          letter-spacing: 0.15em;
+          text-transform: uppercase;
+          color: color-mix(in srgb, var(--foreground) 40%, transparent);
+          margin: 0;
+          transition: color 0.3s ease;
+        }
+
+        .about-timeline-item:hover .timeline-label,
+        .about-timeline-item.active .timeline-label {
+          color: var(--foreground);
+        }
+
+        .timeline-body-wrapper {
+          overflow: hidden;
+        }
+
+        .timeline-glass-card {
+          margin-top: 1rem;
+          margin-bottom: 0.5rem;
+          padding: 1.25rem 1.5rem;
+          background: color-mix(in srgb, var(--background) 70%, transparent);
+          backdrop-filter: blur(16px);
+          -webkit-backdrop-filter: blur(16px);
+          border: 1px solid color-mix(in srgb, var(--foreground) 10%, transparent);
+          border-radius: 12px;
+          box-shadow: 0 10px 30px -10px rgba(0,0,0,0.1);
         }
 
         .accordion-text {
-          font-size: 1.05rem;
-          line-height: 1.7;
+          font-size: 1rem;
+          line-height: 1.6;
           color: var(--foreground);
           opacity: 0.9;
           margin: 0;
@@ -571,7 +592,7 @@ export function AboutContent() {
         .unboxed-skills-list {
           display: flex;
           flex-wrap: wrap;
-          justify-content: flex-start; 
+          justify-content: flex-start; /* Changed to start */
           gap: 0.6rem;
         }
 
@@ -580,7 +601,7 @@ export function AboutContent() {
           align-items: center;
           gap: 0.5rem;
           padding: 0.4rem 1rem;
-          border-radius: 50px; /* match tabs */
+          border-radius: 4px;
           font-size: 0.8rem;
           font-weight: 600;
           border: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
@@ -610,43 +631,26 @@ export function AboutContent() {
           .about-col-left {
             order: 1;
             align-items: flex-start;
-            justify-self: center;
           }
           .about-col-right {
             order: 2;
-            justify-self: center;
           }
           .about-col-center {
             order: 3;
             grid-column: span 2;
-            min-height: 450px; /* Reduced slightly */
+            min-height: 500px;
           }
         }
 
         @media (max-width: 768px) {
-          .about-editorial-section {
-            padding: 5rem 0 12rem; /* Ensure bottom padding on mobile too */
-          }
           .about-grid-editorial {
             grid-template-columns: 1fr;
-            gap: 0; /* Remove gap so we can control precise overlap */
-          }
-          .about-col-left {
-            order: 1;
-            margin-bottom: 2rem;
           }
           .about-col-center {
-            order: 2;
             grid-column: span 1;
             min-height: 450px;
           }
-          .about-col-right {
-            order: 3;
-            margin-top: -120px; /* Tarik bio ke atas agar menimpa setengah badan bawah objek */
-            position: relative;
-            z-index: 30; /* Pastikan Bio berada di atas gambar objek */
-          }
-          .about-name-huge { font-size: 2.5rem; }
+          .about-name-huge { font-size: 3rem; }
         }
       `}</style>
     </section>

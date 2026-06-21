@@ -6,25 +6,23 @@ import { Plane, QrCode } from "lucide-react";
 
 export function AboutEducation() {
   const containerRef = useRef(null);
-  const inView = useInView(containerRef, { once: false, margin: "-100px" });
+  const inView = useInView(containerRef, { once: true, margin: "-100px" });
 
   // Generate a random-looking barcode pattern
-  const barcodePattern = [
-    3, 1, 4, 2, 2, 6, 1, 3, 2, 1, 4, 5, 1, 2, 3, 2, 1, 4, 2, 3, 1, 2, 5, 2, 1,
-    4, 2,
-  ];
+  const barcodePattern = [3, 1, 4, 2, 2, 6, 1, 3, 2, 1, 4, 5, 1, 2, 3, 2, 1, 4, 2, 3, 1, 2, 5, 2, 1, 4, 2];
 
   return (
     <section className="about-edu-ticket-section" ref={containerRef}>
       <div className="container-custom">
+        
         {/* Section heading */}
-        <motion.div
+        <motion.div 
           className="about-edu-heading-wrap"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: inView ? 1 : 0, y: inView ? 0 : 30 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          <p className="about-edu-eyebrow">/ education</p>
+          <p className="about-edu-eyebrow">/ 01 . education</p>
           <div className="about-edu-heading-row">
             <h2 className="about-edu-heading">
               First Class
@@ -32,25 +30,21 @@ export function AboutEducation() {
               <span className="about-edu-heading-outline">Journey</span>
             </h2>
             <p className="about-edu-heading-sub">
-              A boarding pass to my academic foundation and future trajectory in
-              technology.
+              A boarding pass to my academic foundation and future trajectory in technology.
             </p>
           </div>
         </motion.div>
 
         {/* VIP BOARDING PASS */}
         <div className="ticket-wrapper-container">
-          <motion.div
+          <motion.div 
             className="ticket-container"
             initial={{ opacity: 0, rotateX: 20, y: 50 }}
-            animate={{
-              opacity: inView ? 1 : 0,
-              rotateX: inView ? 0 : 20,
-              y: inView ? 0 : 50,
-            }}
+            animate={{ opacity: inView ? 1 : 0, rotateX: inView ? 0 : 20, y: inView ? 0 : 50 }}
             transition={{ duration: 0.8, type: "spring", bounce: 0.4 }}
             whileHover={{ scale: 1.02, rotateZ: 0.5 }}
           >
+            
             {/* Left: Main Ticket Body */}
             <div className="ticket-main">
               <div className="ticket-header">
@@ -62,6 +56,7 @@ export function AboutEducation() {
               </div>
 
               <div className="ticket-body">
+                
                 {/* Row 1 */}
                 <div className="ticket-row">
                   <div className="data-group">
@@ -85,7 +80,7 @@ export function AboutEducation() {
                     <h2 className="airport-code">MED</h2>
                     <p className="airport-name">Medan, Indonesia</p>
                   </div>
-
+                  
                   <div className="flight-path-visual">
                     <div className="flight-dot"></div>
                     <div className="flight-line"></div>
@@ -105,17 +100,14 @@ export function AboutEducation() {
                 <div className="ticket-row bg-accent">
                   <div className="data-group">
                     <label>SEAT / HONORS</label>
-                    <p className="data-value highlight-value">
-                      GPA 3.57 (High Honors)
-                    </p>
+                    <p className="data-value highlight-value">GPA 3.57 (High Honors)</p>
                   </div>
                   <div className="data-group">
                     <label>CAPSTONE MISSION</label>
-                    <p className="data-value">
-                      AI Oral Cancer Detection via EfficientnetV2
-                    </p>
+                    <p className="data-value">AI Oral Cancer Detection via EfficientnetV2</p>
                   </div>
                 </div>
+
               </div>
             </div>
 
@@ -125,7 +117,7 @@ export function AboutEducation() {
             {/* Right: Ticket Stub */}
             <div className="ticket-stub">
               <div className="stub-header">BOARDING PASS</div>
-
+              
               <div className="stub-body">
                 <div className="data-group">
                   <label>PASSENGER</label>
@@ -135,25 +127,23 @@ export function AboutEducation() {
                   <label>DESTINATION</label>
                   <p className="data-value">B.IT @ USU</p>
                 </div>
-
+                
                 <div className="qr-container">
                   <QrCode size={64} strokeWidth={1} className="qr-icon" />
                 </div>
-
+                
                 {/* Fake Barcode */}
                 <div className="barcode">
                   {barcodePattern.map((width, idx) => (
-                    <div
-                      key={idx}
-                      className="bar"
-                      style={{ width: `${width}px` }}
-                    ></div>
+                    <div key={idx} className="bar" style={{ width: `${width}px` }}></div>
                   ))}
                 </div>
               </div>
             </div>
+
           </motion.div>
         </div>
+
       </div>
 
       <style>{`

@@ -6,7 +6,7 @@ import { Plane, QrCode } from "lucide-react";
 
 export function AboutEducation() {
   const containerRef = useRef(null);
-  const inView = useInView(containerRef, { once: false, margin: "-100px" });
+  const inView = useInView(containerRef, { once: true, margin: "-100px" });
 
   // Generate a random-looking barcode pattern
   const barcodePattern = [
@@ -24,7 +24,7 @@ export function AboutEducation() {
           animate={{ opacity: inView ? 1 : 0, y: inView ? 0 : 30 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          <p className="about-edu-eyebrow">/ education</p>
+          <p className="about-edu-eyebrow">/education</p>
           <div className="about-edu-heading-row">
             <h2 className="about-edu-heading">
               First Class
