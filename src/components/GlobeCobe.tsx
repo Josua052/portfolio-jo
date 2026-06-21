@@ -10,31 +10,22 @@ export default function GlobeCobe() {
 
   useEffect(() => {
     let phi = 0;
-    let width = 0;
     
     if (!canvasRef.current) return;
-    
-    const onResize = () => {
-      if (canvasRef.current) {
-        width = canvasRef.current.offsetWidth;
-      }
-    };
-    window.addEventListener("resize", onResize);
-    onResize();
 
     const globe = createGlobe(canvasRef.current, {
       devicePixelRatio: 2,
-      width: width * 2,
-      height: width * 2,
+      width: 1000,
+      height: 1000,
       phi: 0,
       theta: 0,
       dark: 1,
       diffuse: 1.2,
       mapSamples: 16000,
       mapBrightness: 6,
-      baseColor: [0.1, 0.15, 0.3], // Subtle dark blue base
+      baseColor: [1, 1, 1], // [1,1,1] in dark mode creates bright white dots
       markerColor: [0.133, 0.772, 0.368], // Tailwind Green-500
-      glowColor: [0.1, 0.15, 0.3], 
+      glowColor: [1, 1, 1], // Bright white glow to make the edge visible
       markers: [
         // Jakarta: lat, lng
         { location: [-6.2088, 106.8456], size: 0.1 },
@@ -46,14 +37,11 @@ export default function GlobeCobe() {
           phi += 0.005;
         }
         state.phi = phi + pointerInteractionMovement.current;
-        state.width = width * 2;
-        state.height = width * 2;
       },
     });
 
     return () => {
       globe.destroy();
-      window.removeEventListener("resize", onResize);
     };
   }, []);
 
@@ -89,15 +77,9 @@ export default function GlobeCobe() {
             canvasRef.current.style.cursor = "grab";
           }
         }}
-        onMouseMove={(e) => {
+        onPointerMove={(e) => {
           if (pointerInteracting.current !== null) {
             const delta = e.clientX - pointerInteracting.current;
-            pointerInteractionMovement.current = delta / 200;
-          }
-        }}
-        onTouchMove={(e) => {
-          if (pointerInteracting.current !== null && e.touches[0]) {
-            const delta = e.touches[0].clientX - pointerInteracting.current;
             pointerInteractionMovement.current = delta / 200;
           }
         }}
@@ -107,6 +89,7 @@ export default function GlobeCobe() {
           contain: "layout paint size",
           opacity: 1,
           transition: "opacity 1s ease",
+          touchAction: "none",
         }}
       />
     </div>

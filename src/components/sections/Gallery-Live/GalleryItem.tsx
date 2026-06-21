@@ -1,8 +1,7 @@
-// src/components/gallery/live/GalleryItem.tsx
 "use client";
 
 import Image from "next/image";
-import { Play, Calendar } from "lucide-react";
+import { Play, Calendar, ArrowUpRight } from "lucide-react";
 import { useEffect, useRef, useState, useCallback } from "react";
 import { GalleryItemType } from "@/types/gallery";
 
@@ -22,7 +21,6 @@ function useInView(threshold = 0.1) {
   return { ref, inView };
 }
 
-// ✅ Placeholder SVG sebagai fallback jika gambar gagal dimuat
 const FALLBACK_PLACEHOLDER =
   "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 400 400'%3E%3Crect fill='%23222' width='400' height='400'/%3E%3Ctext fill='%23666' font-family='sans-serif' font-size='14' text-anchor='middle' x='200' y='200'%3EImage unavailable%3C/text%3E%3C/svg%3E";
 
@@ -39,7 +37,6 @@ export default function GalleryItem({ item, onClick, delay = 0 }: Props) {
   );
   const [imgError, setImgError] = useState(false);
 
-  // ✅ Handle error: fallback jika Google Drive gagal
   const handleImageError = useCallback(() => {
     if (!imgError) {
       setImgError(true);
@@ -50,11 +47,11 @@ export default function GalleryItem({ item, onClick, delay = 0 }: Props) {
   return (
     <div
       ref={ref}
-      className="gitem-wrap"
+      className="gl-accordion-wrap"
       style={{
         opacity: inView ? 1 : 0,
-        transform: inView ? "translateY(0) scale(1)" : "translateY(20px) scale(0.97)",
-        transition: `opacity 0.5s ${delay}ms ease, transform 0.5s ${delay}ms ease`,
+        transform: inView ? "translateY(0)" : "translateY(30px)",
+        transition: `opacity 0.6s ${delay}ms ease, transform 0.6s ${delay}ms ease, flex 0.6s cubic-bezier(0.25, 1, 0.5, 1)`,
       }}
       onClick={() => onClick(item)}
       role="button"
@@ -62,167 +59,255 @@ export default function GalleryItem({ item, onClick, delay = 0 }: Props) {
       onKeyDown={(e) => { if (e.key === "Enter") onClick(item); }}
       aria-label={`View ${item.title}`}
     >
-      {/* Media thumbnail */}
-      <div className="gitem-media">
+      <div className="gl-accordion-inner">
         <Image
           src={imgSrc}
           alt={item.title}
           fill
-          className="gitem-img"
+          className="gl-accordion-img"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           onError={handleImageError}
-          // ✅ unoptimized untuk external URL dari Google Drive
-          // karena Next.js image optimization mungkin gagal dengan redirect Google
           unoptimized
         />
 
+        {/* Video badge top right */}
+        {item.type === "video" && (
+          <div className="gl-play-badge">
+            <Play size={16} fill="white" />
+          </div>
+        )}
+
         {/* Error indicator */}
         {imgError && (
-          <div className="gitem-error-badge">
-            ⚠️
-          </div>
+          <div className="gl-error-badge">⚠️</div>
         )}
 
-        {/* Video play overlay */}
-        {item.type === "video" && (
-          <div className="gitem-play-badge">
-            <Play size={14} fill="white" />
+        <div className="gl-accordion-overlay" />
+
+        {/* Content visible only on hover/expansion */}
+        <div className="gl-accordion-content">
+          <div className="gl-accordion-text">
+            <span className="gl-cat">{item.type.toUpperCase()}</span>
+            <h3 className="gl-title">{item.title}</h3>
+            {item.date && (
+              <span className="gl-date">
+                <Calendar size={12} style={{ display: 'inline', marginRight: '4px' }} />
+                {item.date}
+              </span>
+            )}
           </div>
-        )}
+          <div className="gl-icon-wrap">
+            <ArrowUpRight size={24} />
+          </div>
+        </div>
 
-        {/* Hover overlay */}
-        <div className="gitem-overlay" />
-
-        {/* Hover content */}
-        <div className="gitem-hover-content">
-          <h3 className="gitem-title">{item.title}</h3>
-          {item.date && (
-            <div className="gitem-date">
-              <Calendar size={11} />
-              {item.date}
-            </div>
-          )}
+        {/* Vertical title (visible when collapsed) */}
+        <div className="gl-vertical-title">
+          <span>{item.title}</span>
         </div>
       </div>
 
       <style>{`
-        .gitem-wrap {
-          break-inside: avoid;
-          margin-bottom: 1rem;
-          border-radius: 1rem;
+        .gl-accordion-wrap {
+          position: relative;
+          flex: 1 1 10%;
+          min-width: 80px;
+          height: 480px;
+          border-radius: 20px;
           overflow: hidden;
-          border: 1px solid var(--border);
-          background: var(--secondary);
           cursor: pointer;
-          position: relative;
-          transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
-        }
-        .gitem-wrap:hover {
-          border-color: var(--foreground);
-          transform: translateY(-3px);
-          box-shadow: 0 10px 32px rgba(0,0,0,0.12);
         }
 
-        .gitem-media {
-          position: relative;
+        .gl-accordion-wrap:hover {
+          flex: 1 1 60%;
+        }
+
+        .gl-accordion-inner {
+          position: absolute;
+          inset: 0;
           width: 100%;
-          aspect-ratio: 1 / 1;
-          overflow: hidden;
+          height: 100%;
+          background: var(--secondary);
         }
 
-        .gitem-img {
+        .gl-accordion-img {
           object-fit: cover;
-          transition: transform 0.55s ease;
-        }
-        .gitem-wrap:hover .gitem-img {
-          transform: scale(1.06);
+          transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), filter 0.5s ease;
+          filter: grayscale(80%) brightness(0.7);
         }
 
-        /* Video badge */
-        .gitem-play-badge {
-          position: absolute;
-          top: 0.75rem;
-          left: 0.75rem;
-          z-index: 3;
-          width: 30px;
-          height: 30px;
-          border-radius: 8px;
-          background: rgba(0,0,0,0.6);
-          border: 1px solid rgba(255,255,255,0.2);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          backdrop-filter: blur(4px);
+        .gl-accordion-wrap:hover .gl-accordion-img {
+          transform: scale(1.05);
+          filter: grayscale(0%) brightness(1);
         }
 
-        /* ✅ Error badge */
-        .gitem-error-badge {
-          position: absolute;
-          top: 0.75rem;
-          right: 0.75rem;
-          z-index: 3;
-          width: 28px;
-          height: 28px;
-          border-radius: 50%;
-          background: rgba(255, 80, 80, 0.8);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 0.75rem;
-          backdrop-filter: blur(4px);
-        }
-
-        /* Hover overlay */
-        .gitem-overlay {
+        .gl-accordion-overlay {
           position: absolute;
           inset: 0;
           background: linear-gradient(
             to top,
-            rgba(0,0,0,0.82) 0%,
-            rgba(0,0,0,0.25) 50%,
+            rgba(0,0,0,0.85) 0%,
+            rgba(0,0,0,0.2) 50%,
             transparent 100%
           );
           opacity: 0;
-          transition: opacity 0.3s ease;
-          z-index: 1;
+          transition: opacity 0.5s ease;
         }
-        .gitem-wrap:hover .gitem-overlay { opacity: 1; }
 
-        /* Hover content */
-        .gitem-hover-content {
+        .gl-accordion-wrap:hover .gl-accordion-overlay {
+          opacity: 1;
+        }
+
+        /* Top Right Badges */
+        .gl-play-badge, .gl-error-badge {
+          position: absolute;
+          top: 1rem;
+          right: 1rem;
+          width: 36px;
+          height: 36px;
+          border-radius: 50%;
+          background: rgba(0,0,0,0.5);
+          backdrop-filter: blur(8px);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: white;
+          z-index: 2;
+          transition: opacity 0.3s ease;
+        }
+        .gl-error-badge { background: rgba(255, 80, 80, 0.8); }
+        .gl-accordion-wrap:hover .gl-play-badge { opacity: 0; }
+
+        /* Vertical title shown when collapsed */
+        .gl-vertical-title {
+          position: absolute;
+          bottom: 2rem;
+          left: 50%;
+          transform: translateX(-50%) rotate(-90deg);
+          transform-origin: bottom center;
+          white-space: nowrap;
+          color: rgba(255, 255, 255, 0.6);
+          font-family: 'Fira Code', monospace;
+          font-size: 0.85rem;
+          font-weight: 600;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          transition: opacity 0.3s ease;
+          pointer-events: none;
+        }
+
+        .gl-accordion-wrap:hover .gl-vertical-title {
+          opacity: 0;
+        }
+
+        /* Expanded Content */
+        .gl-accordion-content {
           position: absolute;
           bottom: 0;
           left: 0;
           right: 0;
-          padding: 1rem;
-          z-index: 2;
-          transform: translateY(6px);
+          padding: 2rem;
+          display: flex;
+          align-items: flex-end;
+          justify-content: space-between;
           opacity: 0;
-          transition: transform 0.3s ease, opacity 0.3s ease;
+          transform: translateY(20px);
+          transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+          pointer-events: none;
+          min-width: 300px;
+        }
+
+        .gl-accordion-wrap:hover .gl-accordion-content {
+          opacity: 1;
+          transform: translateY(0);
+          transition-delay: 0.1s;
+        }
+
+        .gl-accordion-text {
           display: flex;
           flex-direction: column;
-          gap: 0.3rem;
+          gap: 0.4rem;
         }
-        .gitem-wrap:hover .gitem-hover-content {
-          transform: translateY(0);
-          opacity: 1;
-        }
-        .gitem-title {
-          font-family: var(--font-montserrat), serif;
-          font-size: 0.875rem;
+
+        .gl-cat {
+          font-family: var(--font-montserrat), sans-serif;
+          font-size: 0.7rem;
           font-weight: 700;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          color: var(--primary);
+        }
+
+        .gl-title {
+          font-family: var(--font-montserrat), serif;
+          font-size: 1.8rem;
+          font-weight: 800;
           color: white;
           margin: 0;
-          letter-spacing: -0.01em;
-          line-height: 1.3;
+          line-height: 1.1;
+          letter-spacing: -0.02em;
         }
-        .gitem-date {
+
+        .gl-date {
+          font-family: 'Fira Code', monospace;
+          font-size: 0.8rem;
+          color: rgba(255,255,255,0.6);
+        }
+
+        .gl-icon-wrap {
+          width: 50px;
+          height: 50px;
+          border-radius: 50%;
+          background: rgba(255,255,255,0.15);
+          backdrop-filter: blur(8px);
           display: flex;
           align-items: center;
-          gap: 0.3rem;
-          font-size: 0.7rem;
-          font-weight: 500;
-          color: rgba(255,255,255,0.55);
+          justify-content: center;
+          color: white;
+          flex-shrink: 0;
+          transition: background 0.3s, transform 0.3s;
+        }
+
+        .gl-accordion-wrap:hover .gl-icon-wrap {
+          transform: rotate(45deg);
+        }
+
+        /* Mobile Adjustments: Disable accordion, show standard stacked cards */
+        @media (max-width: 768px) {
+          .gl-accordion-wrap {
+            flex: none;
+            width: 100%;
+            height: 350px;
+          }
+
+          .gl-accordion-wrap:hover {
+            flex: none;
+            height: 350px;
+          }
+
+          .gl-accordion-img {
+            filter: grayscale(0%) brightness(1);
+          }
+
+          .gl-accordion-overlay {
+            opacity: 1;
+          }
+
+          .gl-accordion-content {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+            padding: 1.5rem;
+            min-width: unset;
+          }
+
+          .gl-vertical-title {
+            display: none;
+          }
+
+          .gl-title {
+            font-size: 1.4rem;
+          }
         }
       `}</style>
     </div>

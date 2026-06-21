@@ -1,213 +1,156 @@
-// src/components/contact/ContactCard.tsx
 "use client";
 
 import Link from "next/link";
-import { Github, Linkedin, Instagram, Mail, Phone, ArrowUpRight, MapPin } from "lucide-react";
 import contactsData from "@/data/contact.json";
-
-/* Map icon string → Lucide component */
-const ICON_MAP: Record<string, React.ComponentType<{ size?: number; className?: string; style?: React.CSSProperties; }>> = {
-  Github,
-  Linkedin,
-  Instagram,
-  Mail,
-  Phone,
-};
-
-/* Color accent per platform */
-const PLATFORM_COLOR: Record<string, string> = {
-  GitHub:    "#333",
-  LinkedIn:  "#0A66C2",
-  Instagram: "#E1306C",
-  Email:     "#6366f1",
-  WhatsApp:  "#22c55e",
-};
 
 export default function ContactCard() {
   return (
-    <div className="cc-wrap">
-
+    <div className="brutal-social-wrap">
       {/* Top text */}
-      <div className="cc-header">
-        <p className="cc-eyebrow">/ connect with me</p>
-        <h2 className="cc-title">
-          Find me<br />
-          <span className="cc-title-outline">online</span>
+      <div className="brutal-header">
+        <p className="brutal-eyebrow">/ connect with me</p>
+        <h2 className="brutal-title">
+          Let's build<br />
+          <span>something.</span>
         </h2>
-        <p className="cc-sub">
-          Whether it is a quick question or a long-term collaboration —
-          I am always open to a good conversation.
-        </p>
       </div>
 
       {/* Contact links */}
-      <div className="cc-links">
-        {contactsData.map((item) => {
-          const Icon = ICON_MAP[item.icon] ?? Mail;
-          const color = PLATFORM_COLOR[item.platform] ?? "#94a3b8";
-
-          return (
-            <Link
-              key={item.id}
-              href={item.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="cc-link"
-            >
-              {/* Icon badge */}
-              <div
-                className="cc-link-icon"
-                style={{ background: `${color}14`, borderColor: `${color}28` }}
-              >
-                <Icon size={17} style={{ color }} />
-              </div>
-
-              {/* Text */}
-              <div className="cc-link-text">
-                <span className="cc-link-platform">{item.platform}</span>
-                <span className="cc-link-value">{item.display}</span>
-              </div>
-
-              {/* Arrow */}
-              <ArrowUpRight size={14} className="cc-link-arrow" />
-            </Link>
-          );
-        })}
+      <div className="brutal-links">
+        {contactsData.map((item) => (
+          <Link
+            key={item.id}
+            href={item.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="brutal-link"
+          >
+            <span className="brutal-link-text">{item.platform}</span>
+            <span className="brutal-link-arrow">↗</span>
+          </Link>
+        ))}
       </div>
 
-      {/* Location badge */}
-      <div className="cc-location">
-        <MapPin size={13} />
-        <span>Jakarta, Indonesia · Open to remote</span>
+      {/* Location */}
+      <div className="brutal-location">
+        <span>Jakarta, ID</span>
+        <span className="brutal-dot"></span>
+        <span>Worldwide</span>
       </div>
 
       <style>{`
-        .cc-wrap {
+        .brutal-social-wrap {
           display: flex;
           flex-direction: column;
-          gap: 2rem;
+          gap: 4rem;
           height: 100%;
+          padding-right: 2rem;
         }
 
         /* Header */
-        .cc-header {
+        .brutal-header {
           display: flex;
           flex-direction: column;
-          gap: 0.75rem;
+          gap: 1rem;
         }
-        .cc-eyebrow {
-          font-size: 0.68rem;
+
+        .brutal-eyebrow {
+          font-family: 'Fira Code', monospace;
+          font-size: 0.8rem;
           font-weight: 700;
-          letter-spacing: 0.14em;
+          letter-spacing: 0.15em;
           text-transform: uppercase;
           color: var(--muted);
+          margin: 0;
         }
-        .cc-title {
+
+        .brutal-title {
           font-family: var(--font-montserrat), Georgia, serif;
-          font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+          font-size: clamp(3.5rem, 6vw, 5rem);
           font-weight: 800;
-          letter-spacing: -0.035em;
-          line-height: 1.05;
+          letter-spacing: -0.04em;
+          line-height: 0.9;
           color: var(--foreground);
           margin: 0;
         }
-        .cc-title-outline {
-          -webkit-text-stroke: 1.5px var(--foreground);
-          color: transparent;
-        }
-        .cc-sub {
-          font-size: 0.875rem;
-          line-height: 1.75;
-          color: var(--muted);
-          max-width: 320px;
+
+        .brutal-title span {
+          color: color-mix(in srgb, var(--foreground) 40%, transparent);
         }
 
-        /* Links list */
-        .cc-links {
+        /* Links */
+        .brutal-links {
           display: flex;
           flex-direction: column;
-          gap: 0.6rem;
+          gap: 1rem;
         }
-        .cc-link {
+
+        .brutal-link {
           display: flex;
           align-items: center;
-          gap: 0.875rem;
-          padding: 0.875rem 1rem;
-          border-radius: 12px;
-          border: 1px solid var(--border);
-          background: var(--background);
+          justify-content: space-between;
+          padding: 1.5rem 0;
+          border-bottom: 1px solid color-mix(in srgb, var(--foreground) 10%, transparent);
+          color: var(--foreground);
           text-decoration: none;
-          transition: border-color 0.2s, background 0.2s, transform 0.2s, box-shadow 0.2s;
-        }
-        .cc-link:hover {
-          border-color: var(--foreground);
-          background: var(--hover);
-          transform: translateX(4px);
-          box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+          transition: padding-left 0.3s ease, border-color 0.3s ease;
+          group: hover;
         }
 
-        .cc-link-icon {
-          width: 38px;
-          height: 38px;
-          border-radius: 10px;
-          border: 1px solid;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-shrink: 0;
+        .brutal-link:hover {
+          padding-left: 1.5rem;
+          border-bottom-color: var(--foreground);
         }
 
-        .cc-link-text {
-          display: flex;
-          flex-direction: column;
-          gap: 0.1rem;
-          flex: 1;
-          min-width: 0;
-        }
-        .cc-link-platform {
-          font-size: 0.68rem;
+        .brutal-link-text {
+          font-family: 'Fira Code', monospace;
+          font-size: 1.5rem;
           font-weight: 700;
-          letter-spacing: 0.08em;
+          letter-spacing: -0.02em;
           text-transform: uppercase;
-          color: var(--muted);
-          line-height: 1;
-        }
-        .cc-link-value {
-          font-size: 0.875rem;
-          font-weight: 600;
-          color: var(--foreground);
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
         }
 
-        .cc-link-arrow {
-          color: var(--muted);
-          flex-shrink: 0;
-          opacity: 0;
-          transform: translate(-3px, 3px);
-          transition: opacity 0.2s, transform 0.2s, color 0.2s;
+        .brutal-link-arrow {
+          font-size: 1.5rem;
+          font-weight: 300;
+          opacity: 0.5;
+          transition: opacity 0.3s ease, transform 0.3s ease;
         }
-        .cc-link:hover .cc-link-arrow {
+
+        .brutal-link:hover .brutal-link-arrow {
           opacity: 1;
-          transform: translate(0, 0);
-          color: var(--foreground);
+          transform: translate(4px, -4px);
         }
 
         /* Location */
-        .cc-location {
-          display: inline-flex;
+        .brutal-location {
+          display: flex;
           align-items: center;
-          gap: 0.4rem;
-          font-size: 0.75rem;
-          font-weight: 600;
+          gap: 1rem;
+          font-family: 'Fira Code', monospace;
+          font-size: 0.85rem;
           color: var(--muted);
-          padding: 0.4rem 0.875rem;
-          border-radius: 999px;
-          border: 1px solid var(--border);
-          background: var(--background);
-          width: fit-content;
-          letter-spacing: 0.02em;
+          text-transform: uppercase;
+          letter-spacing: 0.1em;
+          margin-top: auto;
+          padding-top: 2rem;
+        }
+
+        .brutal-dot {
+          width: 4px;
+          height: 4px;
+          background: var(--foreground);
+          border-radius: 50%;
+        }
+
+        @media (max-width: 1024px) {
+          .brutal-social-wrap {
+            padding-right: 0;
+            gap: 3rem;
+          }
+          .brutal-link-text {
+            font-size: 1.25rem;
+          }
         }
       `}</style>
     </div>

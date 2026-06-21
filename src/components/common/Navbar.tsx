@@ -433,7 +433,8 @@ export default function Navbar() {
 
         .navbar-dropdown {
           position: absolute;
-          top: calc(100% + 8px);
+          top: 100%;
+          padding-top: 8px;
           left: 50%;
           transform: translateX(-50%);
           pointer-events: none;

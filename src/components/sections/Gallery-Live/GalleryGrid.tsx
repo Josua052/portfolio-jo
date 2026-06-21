@@ -1,4 +1,3 @@
-// src/components/gallery/live/GalleryGrid.tsx
 "use client";
 
 import GalleryItem from "./GalleryItem";
@@ -12,7 +11,8 @@ interface Props {
 export default function GalleryGrid({ data, onClick }: Props) {
   return (
     <>
-      <div className="glive-masonry">
+      {/* Accordion Container */}
+      <div className="gl-accordion">
         {data.map((item, i) => (
           <GalleryItem
             key={item.id}
@@ -24,12 +24,20 @@ export default function GalleryGrid({ data, onClick }: Props) {
       </div>
 
       <style>{`
-        .glive-masonry {
-          columns: 1;
+        /* Accordion Layout */
+        .gl-accordion {
+          display: flex;
+          flex-wrap: wrap;
           gap: 1rem;
+          width: 100%;
         }
-        @media (min-width: 540px)  { .glive-masonry { columns: 2; } }
-        @media (min-width: 1024px) { .glive-masonry { columns: 3; } }
+
+        @media (max-width: 768px) {
+          .gl-accordion {
+            flex-direction: column;
+            flex-wrap: nowrap;
+          }
+        }
       `}</style>
     </>
   );

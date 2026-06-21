@@ -1,8 +1,7 @@
-// src/components/contact/ContactForm.tsx
 "use client";
 
 import { useState } from "react";
-import { Send, Loader2, CheckCircle2 } from "lucide-react";
+import { Send, CheckCircle2 } from "lucide-react";
 
 const PROJECT_OPTIONS = [
   "Website Development",
@@ -17,7 +16,7 @@ export default function ContactForm() {
   const [loading, setLoading]   = useState(false);
   const [success, setSuccess]   = useState(false);
   const [error, setError]       = useState("");
-  const [focused, setFocused]   = useState<string | null>(null);
+  const [selectedProject, setSelectedProject] = useState("");
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -26,6 +25,12 @@ export default function ContactForm() {
 
     const formData = new FormData(e.currentTarget);
 
+    if (!selectedProject) {
+      setError("Please select a project type.");
+      setLoading(false);
+      return;
+    }
+
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
@@ -33,7 +38,7 @@ export default function ContactForm() {
         body: JSON.stringify({
           name:    formData.get("name"),
           email:   formData.get("email"),
-          project: formData.get("project"),
+          project: formData.get("project"), // grabs from hidden input
           message: formData.get("message"),
         }),
       });
@@ -41,6 +46,7 @@ export default function ContactForm() {
       if (res.ok) {
         setSuccess(true);
         (e.target as HTMLFormElement).reset();
+        setSelectedProject("");
       } else {
         setError("Something went wrong. Please try again.");
       }
@@ -51,297 +57,273 @@ export default function ContactForm() {
     }
   }
 
-  const fieldClass = (name: string) =>
-    `cf-input ${focused === name ? "cf-input-focused" : ""}`;
-
   if (success) {
     return (
-      <div className="cf-success-wrap">
-        <div className="cf-success-icon">
-          <CheckCircle2 size={32} />
-        </div>
-        <h3 className="cf-success-title">Message sent!</h3>
-        <p className="cf-success-sub">
-          Thanks for reaching out. I will get back to you as soon as possible.
-        </p>
-        <button
-          className="cf-success-btn"
-          onClick={() => setSuccess(false)}
-        >
-          Send another message
-        </button>
-
-        <style>{`
-          .cf-success-wrap {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            gap: 1rem;
-            padding: 3rem 2rem;
-            border: 1px solid var(--border);
-            border-radius: 1.25rem;
-            background: var(--background);
-            min-height: 380px;
-          }
-          .cf-success-icon {
-            width: 64px;
-            height: 64px;
-            border-radius: 50%;
-            background: rgba(34,197,94,0.1);
-            border: 1px solid rgba(34,197,94,0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #22c55e;
-          }
-          .cf-success-title {
-            font-family: var(--font-montserrat), serif;
-            font-size: 1.375rem;
-            font-weight: 800;
-            letter-spacing: -0.03em;
-            color: var(--foreground);
-            margin: 0;
-          }
-          .cf-success-sub {
-            font-size: 0.875rem;
-            line-height: 1.7;
-            color: var(--muted);
-            max-width: 280px;
-          }
-          .cf-success-btn {
-            padding: 0.6rem 1.25rem;
-            border-radius: 10px;
-            border: 1px solid var(--border);
-            background: var(--background);
-            color: var(--muted);
-            font-size: 0.8rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: border-color 0.2s, color 0.2s;
-          }
-          .cf-success-btn:hover {
-            border-color: var(--foreground);
-            color: var(--foreground);
-          }
-        `}</style>
+      <div className="brutal-success">
+        <CheckCircle2 size={48} className="success-icon" />
+        <h2>MESSAGE SECURED.</h2>
+        <p>I'll be in touch shortly.</p>
+        <button onClick={() => setSuccess(false)}>← BACK TO FORM</button>
       </div>
     );
   }
 
   return (
-    <form onSubmit={handleSubmit} className="cf-form">
-      {/* Label */}
-      <div className="cf-form-header">
-        <p className="cf-form-eyebrow">/ project request</p>
-        <h2 className="cf-form-title">Let`s work together</h2>
-      </div>
-
-      {/* Name */}
-      <div className="cf-field">
-        <label className="cf-label" htmlFor="name">Full Name</label>
+    <form onSubmit={handleSubmit} className="brutal-form">
+      {/* 01. NAME */}
+      <div className="brutal-field">
+        <label htmlFor="name">01. WHAT'S YOUR NAME?</label>
         <input
           id="name"
           name="name"
-          placeholder="Josua Ronaldo"
-          className={fieldClass("name")}
-          onFocus={() => setFocused("name")}
-          onBlur={() => setFocused(null)}
+          type="text"
+          placeholder="Your Name"
           required
         />
       </div>
 
-      {/* Email */}
-      <div className="cf-field">
-        <label className="cf-label" htmlFor="email">Email Address</label>
+      {/* 02. EMAIL */}
+      <div className="brutal-field">
+        <label htmlFor="email">02. WHAT'S YOUR EMAIL?</label>
         <input
           id="email"
           name="email"
           type="email"
-          placeholder="you@example.com"
-          className={fieldClass("email")}
-          onFocus={() => setFocused("email")}
-          onBlur={() => setFocused(null)}
+          placeholder="Your Email"
           required
         />
       </div>
 
-      {/* Project type — select */}
-      <div className="cf-field">
-        <label className="cf-label" htmlFor="project">Project Type</label>
-        <select
-          id="project"
-          name="project"
-          className={fieldClass("project")}
-          onFocus={() => setFocused("project")}
-          onBlur={() => setFocused(null)}
-          defaultValue=""
-        >
-          <option value="" disabled>Select a project type...</option>
+      {/* 03. PROJECT TYPE (Chips instead of Select) */}
+      <div className="brutal-field">
+        <label>03. WHAT ARE YOU LOOKING FOR? *</label>
+        <input type="hidden" name="project" value={selectedProject} required />
+        <div className="brutal-chips">
           {PROJECT_OPTIONS.map((opt) => (
-            <option key={opt} value={opt}>{opt}</option>
+            <button
+              key={opt}
+              type="button"
+              className={`brutal-chip ${selectedProject === opt ? "active" : ""}`}
+              onClick={() => setSelectedProject(opt)}
+            >
+              {opt}
+            </button>
           ))}
-        </select>
+        </div>
       </div>
 
-      {/* Message */}
-      <div className="cf-field">
-        <label className="cf-label" htmlFor="message">Message</label>
+      {/* 04. MESSAGE */}
+      <div className="brutal-field">
+        <label htmlFor="message">04. TELL ME MORE ABOUT IT</label>
         <textarea
           id="message"
           name="message"
-          placeholder="Tell me about your project, timeline, and budget..."
-          rows={5}
-          className={fieldClass("message")}
-          onFocus={() => setFocused("message")}
-          onBlur={() => setFocused(null)}
+          placeholder="Timeline, budget, details... *"
+          rows={3}
           required
         />
       </div>
 
-      {/* Error */}
-      {error && <p className="cf-error">{error}</p>}
+      {error && <p className="brutal-error">{error}</p>}
 
-      {/* Submit */}
-      <button
-        type="submit"
-        className="cf-submit"
+      {/* SUBMIT */}
+      <button 
+        type="submit" 
+        className="brutal-submit"
         disabled={loading}
       >
-        {loading ? (
-          <>
-            <Loader2 size={15} className="cf-spin" />
-            Sending...
-          </>
-        ) : (
-          <>
-            Send Message
-            <Send size={14} />
-          </>
-        )}
+        {loading ? "SENDING..." : "SUBMIT REQUEST"}
+        {!loading && <Send size={20} />}
       </button>
 
       <style>{`
-        .cf-form {
+        /* Brutalist Form Styles */
+        .brutal-form {
+          display: flex;
+          flex-direction: column;
+          gap: 3.5rem;
+          width: 100%;
+        }
+
+        .brutal-field {
           display: flex;
           flex-direction: column;
           gap: 1.25rem;
-          background: var(--background);
-          border: 1px solid var(--border);
-          border-radius: 1.25rem;
-          padding: 2rem;
         }
 
-        .cf-form-header {
-          display: flex;
-          flex-direction: column;
-          gap: 0.4rem;
-          margin-bottom: 0.25rem;
-        }
-        .cf-form-eyebrow {
-          font-size: 0.68rem;
+        .brutal-field label {
+          font-family: 'Fira Code', monospace;
+          font-size: 0.8rem;
           font-weight: 700;
-          letter-spacing: 0.14em;
-          text-transform: uppercase;
+          letter-spacing: 0.1em;
           color: var(--muted);
+          text-transform: uppercase;
         }
-        .cf-form-title {
-          font-family: var(--font-montserrat), Georgia, serif;
-          font-size: 1.375rem;
-          font-weight: 800;
-          letter-spacing: -0.03em;
+
+        /* Inputs & Textareas */
+        .brutal-field input:not([type="hidden"]),
+        .brutal-field textarea {
+          width: 100%;
+          background: transparent;
+          border: none;
+          border-bottom: 2px solid color-mix(in srgb, var(--foreground) 15%, transparent);
+          border-radius: 0;
+          padding: 0.5rem 0 1rem;
+          font-family: var(--font-montserrat), sans-serif;
+          font-size: 1.5rem;
+          font-weight: 500;
           color: var(--foreground);
+          transition: border-color 0.3s ease;
+          appearance: none;
+        }
+
+        .brutal-field textarea {
+          resize: vertical;
+          min-height: 80px;
+        }
+
+        .brutal-field input:focus,
+        .brutal-field textarea:focus {
+          outline: none;
+          border-bottom-color: var(--foreground);
+        }
+
+        .brutal-field input::placeholder,
+        .brutal-field textarea::placeholder {
+          color: color-mix(in srgb, var(--foreground) 20%, transparent);
+          font-weight: 400;
+        }
+
+        /* Brutalist Chips (replaces Select) */
+        .brutal-chips {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.75rem;
+          margin-top: 0.5rem;
+        }
+
+        .brutal-chip {
+          padding: 0.75rem 1.25rem;
+          border: 1px solid color-mix(in srgb, var(--foreground) 20%, transparent);
+          background: transparent;
+          border-radius: 99px;
+          font-family: var(--font-montserrat), sans-serif;
+          font-size: 0.95rem;
+          font-weight: 600;
+          color: var(--muted);
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
+
+        .brutal-chip:hover {
+          border-color: var(--foreground);
+          color: var(--foreground);
+        }
+
+        .brutal-chip.active {
+          background: var(--foreground);
+          border-color: var(--foreground);
+          color: var(--background);
+        }
+
+        /* Error */
+        .brutal-error {
+          color: #ef4444;
+          font-family: 'Fira Code', monospace;
+          font-size: 0.85rem;
           margin: 0;
         }
 
-        .cf-field {
-          display: flex;
-          flex-direction: column;
-          gap: 0.45rem;
-        }
-        .cf-label {
-          font-size: 0.72rem;
-          font-weight: 700;
-          letter-spacing: 0.06em;
-          text-transform: uppercase;
-          color: var(--muted);
-        }
-
-        .cf-input {
-          width: 100%;
-          padding: 0.75rem 1rem;
-          border-radius: 10px;
-          border: 1px solid var(--border);
-          background: var(--secondary);
-          color: var(--foreground);
-          font-size: 0.875rem;
-          font-family: inherit;
-          outline: none;
-          transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
-          resize: vertical;
-          appearance: none;
-        }
-        .cf-input::placeholder { color: var(--muted); opacity: 0.6; }
-        .cf-input:hover { border-color: var(--foreground); opacity: 0.6; }
-        .cf-input-focused {
-          border-color: var(--foreground) !important;
-          background: var(--background) !important;
-          box-shadow: 0 0 0 3px rgba(15,23,42,0.06);
-        }
-        .dark .cf-input-focused {
-          box-shadow: 0 0 0 3px rgba(226,232,240,0.06);
-        }
-
-        select.cf-input {
-          cursor: pointer;
-          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
-          background-repeat: no-repeat;
-          background-position: right 1rem center;
-          padding-right: 2.5rem;
-        }
-
-        .cf-error {
-          font-size: 0.78rem;
-          font-weight: 500;
-          color: #ef4444;
-          padding: 0.6rem 0.875rem;
-          border-radius: 8px;
-          background: rgba(239,68,68,0.08);
-          border: 1px solid rgba(239,68,68,0.2);
-        }
-
-        .cf-submit {
-          display: flex;
+        /* Submit Button */
+        .brutal-submit {
+          display: inline-flex;
           align-items: center;
           justify-content: center;
-          gap: 0.5rem;
-          width: 100%;
-          padding: 0.85rem;
-          border-radius: 10px;
-          border: none;
-          background: var(--primary);
+          gap: 1rem;
+          padding: 1.5rem 2rem;
+          background: var(--foreground);
           color: var(--background);
-          font-size: 0.875rem;
+          border: none;
+          border-radius: 0;
+          font-family: 'Fira Code', monospace;
+          font-size: 1rem;
           font-weight: 700;
-          font-family: inherit;
-          letter-spacing: 0.01em;
+          letter-spacing: 0.05em;
           cursor: pointer;
-          transition: opacity 0.2s, transform 0.2s;
+          transition: transform 0.2s ease, opacity 0.2s ease;
+          margin-top: 1rem;
         }
-        .cf-submit:hover:not(:disabled) {
-          opacity: 0.88;
-          transform: translateY(-1px);
+
+        .brutal-submit:hover:not(:disabled) {
+          transform: translateY(-4px);
+          box-shadow: 0 10px 0 color-mix(in srgb, var(--foreground) 20%, transparent);
         }
-        .cf-submit:disabled {
-          opacity: 0.6;
+
+        .brutal-submit:active:not(:disabled) {
+          transform: translateY(0);
+          box-shadow: 0 0 0 transparent;
+        }
+
+        .brutal-submit:disabled {
+          opacity: 0.7;
           cursor: not-allowed;
         }
 
-        @keyframes cf-spin {
-          to { transform: rotate(360deg); }
+        /* Success State */
+        .brutal-success {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 1.5rem;
+          padding: 4rem 0;
         }
-        .cf-spin { animation: cf-spin 0.8s linear infinite; }
+
+        .success-icon {
+          color: var(--foreground);
+        }
+
+        .brutal-success h2 {
+          font-size: 3rem;
+          font-weight: 800;
+          letter-spacing: -0.04em;
+          margin: 0;
+          line-height: 1;
+        }
+
+        .brutal-success p {
+          font-family: 'Fira Code', monospace;
+          font-size: 1rem;
+          color: var(--muted);
+          margin: 0;
+        }
+
+        .brutal-success button {
+          margin-top: 2rem;
+          background: transparent;
+          border: 2px solid var(--foreground);
+          padding: 1rem 2rem;
+          font-family: 'Fira Code', monospace;
+          font-size: 0.9rem;
+          font-weight: 700;
+          color: var(--foreground);
+          cursor: pointer;
+          transition: background 0.2s, color 0.2s;
+        }
+
+        .brutal-success button:hover {
+          background: var(--foreground);
+          color: var(--background);
+        }
+
+        @media (max-width: 640px) {
+          .brutal-field input:not([type="hidden"]),
+          .brutal-field textarea {
+            font-size: 1.25rem;
+          }
+          .brutal-submit {
+            padding: 1.2rem;
+          }
+        }
       `}</style>
     </form>
   );

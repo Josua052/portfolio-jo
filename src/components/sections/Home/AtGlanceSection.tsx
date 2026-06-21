@@ -2,7 +2,7 @@ import Card from "@/components/ui/Card";
 import AnimatedElement from "@/components/ui/AnimatedElement";
 import LiveTime from "@/components/ui/LiveTime";
 import { MapPin, Github, Clock, Zap, ArrowUpRight } from "lucide-react";
-import GlobeCobe from "@/components/GlobeCobe";
+import Map2D from "@/components/Map2D";
 import {
   Atom,
   Globe,
@@ -122,12 +122,7 @@ export default function AtGlanceSection() {
               </div>
 
               <div className="ags-globe-wrap">
-                <GlobeCobe />
-                <div className="ags-globe-overlay">
-                  <span className="ags-pulse-dot" />
-                  <span className="text-white">Jakarta, Indonesia</span>
-                </div>
-                <div className="ags-globe-hint text-white/50">drag to rotate</div>
+                <Map2D />
               </div>
 
               {/* Live time */}
