@@ -2,8 +2,12 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    domains: ["mir-s3-cdn-cf.behance.net"],
     remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "mir-s3-cdn-cf.behance.net",
+        pathname: "/**",
+      },
       {
         protocol: "https",
         hostname: "drive.google.com",

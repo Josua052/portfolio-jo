@@ -3,6 +3,8 @@
 import { useRef, useState } from "react";
 import { Play, Pause } from "lucide-react";
 
+import SocialLowerThird from "./SocialLowerThird";
+
 export default function MusicPlayer() {
   const audioRef = useRef<HTMLAudioElement>(null);
   const [playing, setPlaying] = useState(false);
@@ -22,6 +24,9 @@ export default function MusicPlayer() {
   return (
     <>
       <audio ref={audioRef} loop src="/music/bg.mp3" />
+      
+      {/* Lower Third loops social media info behind the play button */}
+      <SocialLowerThird />
 
       <button
         onClick={toggleMusic}
