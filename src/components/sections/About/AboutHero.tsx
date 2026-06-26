@@ -80,7 +80,7 @@ export default function AboutHero() {
           font-weight: 800;
           letter-spacing: -0.035em;
           line-height: 0.95;
-          font-size: clamp(3rem, 7vw, 6rem);
+          font-size: clamp(2.2rem, 7vw, 6rem);
         }
 
         .about-hero-title-solid {
@@ -98,6 +98,10 @@ export default function AboutHero() {
           color: var(--muted);
           max-width: 480px;
           animation: fadeSlideUp 0.65s 0.16s ease both;
+        }
+
+        @media (max-width: 768px) {
+          .about-hero-sub { font-size: 0.85rem; }
         }
 
         .about-hero-line {

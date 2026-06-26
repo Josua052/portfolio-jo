@@ -205,7 +205,7 @@ export default function ExperienceSection() {
         }
         .exp-heading {
           font-family: var(--font-montserrat), Georgia, serif;
-          font-size: clamp(4rem, 8vw, 7rem);
+          font-size: clamp(2.5rem, 8vw, 7rem);
           font-weight: 800;
           letter-spacing: -0.04em;
           line-height: 0.95;
@@ -273,7 +273,7 @@ export default function ExperienceSection() {
           left: 50%;
           transform: translate(-50%, -50%) scale(0.8);
           font-family: var(--font-montserrat), sans-serif;
-          font-size: clamp(15rem, 35vw, 35rem);
+          font-size: clamp(8rem, 35vw, 35rem);
           font-weight: 900;
           color: var(--foreground);
           opacity: 0;
@@ -318,7 +318,7 @@ export default function ExperienceSection() {
 
         .exp-company-name {
           font-family: var(--font-montserrat), Georgia, serif;
-          font-size: clamp(2rem, 4vw, 4.5rem);
+          font-size: clamp(1.5rem, 4vw, 4.5rem);
           font-weight: 800;
           line-height: 1.1;
           color: var(--foreground);
@@ -382,7 +382,7 @@ export default function ExperienceSection() {
 
         .exp-role-title {
           font-family: var(--font-montserrat), sans-serif;
-          font-size: clamp(1.5rem, 2.5vw, 2.5rem);
+          font-size: clamp(1.2rem, 2.5vw, 2.5rem);
           font-weight: 700;
           color: var(--foreground);
           margin-bottom: 2.5rem;
@@ -484,9 +484,10 @@ export default function ExperienceSection() {
             margin-bottom: 1.5rem;
           }
           .exp-points-list li {
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             gap: 1rem;
           }
+          .exp-heading-sub { font-size: 0.85rem; }
         }
       `}</style>
     </section>

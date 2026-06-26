@@ -266,7 +266,7 @@ export default function EventExperienceSection() {
         }
         .ev-heading {
           font-family: var(--font-montserrat), Georgia, serif;
-          font-size: clamp(3rem, 5vw, 5rem);
+          font-size: clamp(2rem, 5vw, 5rem);
           font-weight: 800;
           letter-spacing: -0.035em;
           line-height: 0.95;
@@ -417,7 +417,7 @@ export default function EventExperienceSection() {
 
         .ev-acc-title {
           font-family: var(--font-montserrat), sans-serif;
-          font-size: clamp(1.5rem, 3.5vw, 2.5rem);
+          font-size: clamp(1.2rem, 3.5vw, 2.5rem);
           font-weight: 700;
           letter-spacing: -0.02em;
           color: var(--muted);
@@ -591,6 +591,11 @@ export default function EventExperienceSection() {
           .ev-accordion-item:hover .ev-acc-org,
           .ev-accordion-item.active .ev-acc-org { transform: translateX(0); }
           .ev-accordion-content-inner { padding: 0; }
+        }
+
+        @media (max-width: 768px) {
+          .ev-acc-points li { font-size: 0.85rem; }
+          .ev-heading-sub { font-size: 0.85rem; }
         }
       `}</style>
     </section>

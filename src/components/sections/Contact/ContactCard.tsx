@@ -65,7 +65,7 @@ export default function ContactCard() {
 
         .brutal-title {
           font-family: var(--font-montserrat), sans-serif;
-          font-size: clamp(3.5rem, 6vw, 5rem);
+          font-size: clamp(2.5rem, 6vw, 5rem);
           font-weight: 800;
           letter-spacing: -0.04em;
           line-height: 0.9;

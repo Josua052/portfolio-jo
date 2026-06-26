@@ -163,7 +163,7 @@ export default function AboutHobbies() {
 
         .hobbies-title {
           font-family: var(--font-montserrat), Georgia, serif;
-          font-size: clamp(2.5rem, 5vw, 4.5rem);
+          font-size: clamp(2rem, 5vw, 4.5rem);
           font-weight: 800;
           letter-spacing: -0.035em;
           line-height: 0.95;
@@ -224,7 +224,7 @@ export default function AboutHobbies() {
 
         .row-title {
           font-family: var(--font-montserrat), sans-serif;
-          font-size: clamp(2rem, 6vw, 5rem);
+          font-size: clamp(1.75rem, 6vw, 5rem);
           font-weight: 800;
           text-transform: uppercase;
           letter-spacing: -0.04em;
@@ -350,6 +350,7 @@ export default function AboutHobbies() {
         }
 
         @media (max-width: 768px) {
+          .hobbies-desc { font-size: 0.85rem; }
           .editorial-row-header {
             padding: 2.5rem 0;
           }

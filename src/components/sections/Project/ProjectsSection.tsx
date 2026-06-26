@@ -429,7 +429,7 @@ export default function ProjectsSection() {
 
         .proj-curve-title {
           font-family: var(--font-montserrat), sans-serif;
-          font-size: clamp(1.8rem, 2.5vw, 2.5rem);
+          font-size: clamp(1.3rem, 2.5vw, 2.5rem);
           font-weight: 800;
           letter-spacing: -0.02em;
           color: var(--foreground);
@@ -525,6 +525,10 @@ export default function ProjectsSection() {
         }
 
         @media (max-width: 768px) {
+          .proj-heading-sub { font-size: 0.85rem; }
+          .proj-curve-subtitle { font-size: 0.85rem; }
+          .proj-curve-points li { font-size: 0.85rem; }
+
           /* Swap SVGs */
           .proj-svg-desktop { display: none; }
           .proj-svg-mobile { display: block; }

@@ -163,6 +163,9 @@ export default function AboutQuotes() {
           color: var(--muted);
           margin: 0;
         }
+        @media (max-width: 768px) {
+          .ph-subtitle { font-size: 0.85rem; }
+        }
 
         /* ── Typographic Poster Layout ── */
         .ph-poster {
@@ -183,7 +186,7 @@ export default function AboutQuotes() {
         /* Left aligned massive text */
         .ph-word-left {
           font-family: var(--font-montserrat), sans-serif;
-          font-size: clamp(4rem, 11vw, 10rem);
+          font-size: clamp(2.5rem, 11vw, 10rem);
           font-weight: 900;
           letter-spacing: -0.04em;
           -webkit-text-stroke: 1.5px var(--foreground);
@@ -194,7 +197,7 @@ export default function AboutQuotes() {
         /* Center aligned italic text */
         .ph-word-center {
           font-family: 'Caveat', cursive;
-          font-size: clamp(5.5rem, 15vw, 14rem);
+          font-size: clamp(3.5rem, 15vw, 14rem);
           font-weight: 600;
           text-align: center;
           margin-top: -2rem; /* Overlaps with the blocks */
@@ -205,7 +208,7 @@ export default function AboutQuotes() {
         /* Right aligned massive text */
         .ph-word-right {
           font-family: var(--font-montserrat), sans-serif;
-          font-size: clamp(4rem, 11vw, 10rem);
+          font-size: clamp(2.5rem, 11vw, 10rem);
           font-weight: 900;
           letter-spacing: -0.04em;
           -webkit-text-stroke: 1.5px var(--foreground);
@@ -339,6 +342,8 @@ export default function AboutQuotes() {
           .ph-message-card {
             padding: 1.25rem 1.5rem;
           }
+          .ph-desc-text { font-size: 0.85rem; }
+          .ph-quote-text { font-size: 1.25rem; }
         }
       `}</style>
     </section>

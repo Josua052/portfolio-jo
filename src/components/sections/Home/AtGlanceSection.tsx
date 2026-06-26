@@ -259,7 +259,7 @@ export default function AtGlanceSection() {
         }
         .ags-heading {
           font-family: var(--font-montserrat), Georgia, serif;
-          font-size: clamp(2.5rem, 5vw, 4.5rem);
+          font-size: clamp(2rem, 5vw, 4.5rem);
           font-weight: 800; letter-spacing: -0.035em;
           line-height: 0.95; color: var(--foreground); margin: 0;
         }
@@ -270,6 +270,9 @@ export default function AtGlanceSection() {
         .ags-heading-sub {
           max-width: 340px; font-size: 0.875rem;
           line-height: 1.75; color: var(--muted);
+        }
+        @media (max-width: 768px) {
+          .ags-heading-sub { font-size: 0.8rem; }
         }
 
         /* ── Bento Grid ── */

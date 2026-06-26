@@ -191,7 +191,7 @@ export function AboutEducation() {
 
         .about-edu-heading {
           font-family: var(--font-montserrat), Georgia, serif;
-          font-size: clamp(2.5rem, 5vw, 4.5rem);
+          font-size: clamp(2rem, 5vw, 4.5rem);
           font-weight: 800;
           letter-spacing: -0.035em;
           line-height: 0.95;
@@ -467,6 +467,7 @@ export function AboutEducation() {
         }
 
         @media (max-width: 768px) {
+          .about-edu-heading-sub { font-size: 0.85rem; }
           .ticket-container {
             flex-direction: column;
           }

@@ -419,7 +419,7 @@ export function AboutContent() {
 
         .about-name-huge {
           font-family: var(--font-montserrat), Georgia, serif;
-          font-size: clamp(3rem, 5vw, 4.5rem);
+          font-size: clamp(2rem, 5vw, 4.5rem);
           font-weight: 900;
           letter-spacing: -0.04em;
           line-height: 1;
@@ -646,7 +646,8 @@ export function AboutContent() {
             position: relative;
             z-index: 30; /* Pastikan Bio berada di atas gambar objek */
           }
-          .about-name-huge { font-size: 2.5rem; }
+          .about-quote-minimal p { font-size: 0.95rem; }
+          .accordion-text { font-size: 0.95rem; }
         }
       `}</style>
     </section>
