@@ -118,7 +118,7 @@ export default function HeroSection() {
           </div>
           
           <Link
-            href="https://drive.google.com/file/d/1-hPatZG7Z5nBtNB8ryKW3V9PdFhSFeLE/preview"
+            href="https://drive.google.com/file/d/1Tyqtqpr_NVBmf9WHje12vDTNDUm8aovW/preview"
             target="_blank"
             className="hero-cta-button group"
           >
