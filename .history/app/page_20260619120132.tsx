@@ -17,7 +17,7 @@ export const metadata = {
     siteName: "Josua Ronaldo Portfolio",
     images: [
       {
-        url: "https://www.josuaronaldo.my.id/cover1.png",
+        url: "https://www.josuaronaldo.my.id/cover.png",
         width: 1200,
         height: 630,
         alt: "Josua Ronaldo Portfolio",
