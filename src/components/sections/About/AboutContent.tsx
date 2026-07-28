@@ -9,6 +9,7 @@ import {
   AnimatePresence,
 } from "framer-motion";
 import { gdriveProxyUrl } from "@/lib/gdrive";
+import { IconQuote } from "@tabler/icons-react";
 
 const SKILLS = [
   { name: "React.js", color: "#61DAFB" },
@@ -82,11 +83,14 @@ const BIO_DATA = [
     id: "bg",
     label: "Background",
     content: (
-      <p className="accordion-text">
-        IT graduate from <strong>Universitas Sumatera Utara</strong> with 3+
-        years shaping digital products from pixel-perfect interfaces to
-        production ready systems.
-      </p>
+      <div className="accordion-text" style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem', fontSize: '0.95rem', lineHeight: '1.6' }}>
+        <p>
+          Frontend Engineer experienced in building user-focused web apps with <strong>React.js</strong> and <strong>Next.js</strong>, honed through roles at <strong>PT Global Service Indonesia</strong> and <strong>Apple Developer Academy</strong>.
+        </p>
+        <p>
+          Beyond writing production-ready code, I bridge the gap between technical execution and business strategy—translating complex requirements into clear digital solutions that deliver tangible business outcomes.
+        </p>
+      </div>
     ),
   },
   {
@@ -217,17 +221,9 @@ export function AboutContent() {
               </h2>
 
               <div className="about-quote-minimal">
-                <svg
-                  className="quote-icon-minimal"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                >
-                  <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
-                </svg>
+                <IconQuote className="quote-icon-minimal" stroke={1.5} />
                 <p>
-                  Full-stack developer & UI/UX designer from the land of Batak
-                  where we code as hard as we talk, and ship products faster
-                  than we finish a plate of <em>saksang</em>.
+                  Frontend Engineer from the land of Batak where we code as hard as we talk, and ship digital solutions faster than we finish a plate of <em>saksang</em>.
                 </p>
               </div>
             </div>
@@ -515,13 +511,23 @@ export function AboutContent() {
 
         .about-card-tabs {
           display: flex;
-          flex-wrap: wrap;
+          flex-wrap: nowrap;
+          overflow-x: auto;
+          overflow-y: hidden;
           gap: 0.5rem;
           border-bottom: 1px solid color-mix(in srgb, var(--foreground) 10%, transparent);
           padding-bottom: 1rem;
+          scrollbar-width: none;
+          -webkit-overflow-scrolling: touch;
+        }
+        
+        .about-card-tabs::-webkit-scrollbar {
+          display: none;
         }
 
         .about-tab-btn {
+          white-space: nowrap;
+          flex-shrink: 0;
           background: transparent;
           border: 1px solid transparent;
           font-family: var(--font-poppins), sans-serif;
@@ -548,10 +554,11 @@ export function AboutContent() {
         }
 
         .about-card-content {
-          min-height: 180px;
+          min-height: 250px;
           display: flex;
           flex-direction: column;
-          justify-content: center;
+          justify-content: flex-start;
+          padding-top: 0.5rem;
         }
 
         .accordion-text {

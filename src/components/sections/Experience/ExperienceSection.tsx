@@ -34,22 +34,23 @@ function useInView(threshold = 0.4) {
 ───────────────────────────────────────────── */
 function CinematicSlide({ exp, index }: { exp: Experience; index: number }) {
   const { ref, inView } = useInView(0.5);
-  
+
   // Extract a single year from period string (e.g. "Aug 2024 - Present" -> "2024")
   const yearMatch = exp.period.match(/\d{4}/);
-  const watermarkText = yearMatch ? yearMatch[0] : (index + 1).toString().padStart(2, '0');
+  const watermarkText = yearMatch
+    ? yearMatch[0]
+    : (index + 1).toString().padStart(2, "0");
 
   return (
     <div className="exp-slide" ref={ref}>
       {/* Giant Watermark Background */}
-      <div className={`exp-watermark ${inView ? 'in-view' : ''}`}>
+      <div className={`exp-watermark ${inView ? "in-view" : ""}`}>
         {watermarkText}
       </div>
 
       <div className="container-custom exp-slide-inner">
-        
         {/* Left Side: Company & Year */}
-        <div className={`exp-slide-left ${inView ? 'in-view' : ''}`}>
+        <div className={`exp-slide-left ${inView ? "in-view" : ""}`}>
           <div className="exp-company-block">
             {exp.highlight && (
               <span className="exp-current-badge">
@@ -72,20 +73,21 @@ function CinematicSlide({ exp, index }: { exp: Experience; index: number }) {
         </div>
 
         {/* Right Side: Role & Details */}
-        <div className={`exp-slide-right ${inView ? 'in-view' : ''}`}>
+        <div className={`exp-slide-right ${inView ? "in-view" : ""}`}>
           <div className="exp-role-block">
             <h3 className="exp-role-title">
-              {exp.highlight ? (
-                <Sparkles size={28} className="inline mr-3 text-green-500 mb-1" />
-              ) : (
-                <Briefcase size={28} className="inline mr-3 text-[var(--muted)] mb-1" />
-              )}
+              <Briefcase
+                size={28}
+                className={`inline mr-3 mb-1 ${
+                  exp.highlight ? "text-green-500" : "text-[var(--muted)]"
+                }`}
+              />
               {exp.role}
             </h3>
-            
+
             <ul className="exp-points-list">
               {exp.points.map((pt, i) => (
-                <li key={i} style={{ transitionDelay: `${(i * 0.1) + 0.4}s` }}>
+                <li key={i} style={{ transitionDelay: `${i * 0.1 + 0.4}s` }}>
                   <span className="exp-point-arrow">→</span>
                   <span>{pt}</span>
                 </li>
@@ -94,12 +96,13 @@ function CinematicSlide({ exp, index }: { exp: Experience; index: number }) {
 
             <div className="exp-tags-cinematic">
               {exp.tags.map((t, i) => (
-                <span key={t} style={{ transitionDelay: `${(i * 0.05) + 0.6}s` }}>{t}</span>
+                <span key={t} style={{ transitionDelay: `${i * 0.05 + 0.6}s` }}>
+                  {t}
+                </span>
               ))}
             </div>
           </div>
         </div>
-
       </div>
     </div>
   );
@@ -113,11 +116,10 @@ export default function ExperienceSection() {
 
   return (
     <section className="exp-snap-container">
-      
       {/* ── Slide 1: Intro Heading ── */}
       <div className="exp-slide exp-slide-intro" ref={introRef}>
         <div className="container-custom">
-          <div className={`exp-intro-content ${introInView ? 'in-view' : ''}`}>
+          <div className={`exp-intro-content ${introInView ? "in-view" : ""}`}>
             <p className="exp-eyebrow">/ experience</p>
             <h1 className="exp-heading">
               Profesional
@@ -128,7 +130,7 @@ export default function ExperienceSection() {
               A journey through my professional growth, projects, and
               contributions in web development and design.
             </p>
-            
+
             <div className="exp-scroll-indicator">
               <div className="exp-mouse">
                 <div className="exp-wheel"></div>

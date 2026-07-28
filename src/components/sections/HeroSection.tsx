@@ -3,7 +3,13 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useRef } from "react";
-import { Github, Instagram, Linkedin, ArrowUpRight, MapPin } from "lucide-react";
+import {
+  Github,
+  Instagram,
+  Linkedin,
+  ArrowUpRight,
+  MapPin,
+} from "lucide-react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { LifeSeconds } from "./LifeSeconds";
 import LiveTime from "@/components/ui/LiveTime";
@@ -18,8 +24,6 @@ export default function HeroSection() {
   const xRightScroll = useTransform(scrollY, [0, 600], [0, 100]);
   const yDownScroll = useTransform(scrollY, [0, 600], [0, 100]);
   const scaleDownScroll = useTransform(scrollY, [0, 600], [1, 0.85]);
-
-
 
   // Parallax effect on mouse move
   useEffect(() => {
@@ -36,7 +40,6 @@ export default function HeroSection() {
     return () => window.removeEventListener("mousemove", handleMove);
   }, []);
 
-
   return (
     <section
       ref={containerRef}
@@ -51,10 +54,11 @@ export default function HeroSection() {
 
       {/* ── Huge Background Name ── */}
       <div className="hero-bg-text-wrapper" aria-hidden>
-        <motion.div style={{ opacity: opacityScroll, y: yUpScroll }} className="flex flex-col items-center">
-          <motion.div
-            className="flex flex-col items-center css-animate-fade-in"
-          >
+        <motion.div
+          style={{ opacity: opacityScroll, y: yUpScroll }}
+          className="flex flex-col items-center"
+        >
+          <motion.div className="flex flex-col items-center css-animate-fade-in">
             <h1 className="flex flex-col items-center m-0">
               <span className="hero-bg-text hero-bg-text-outline">Josua</span>
               <span className="hero-bg-text">Ronaldo</span>
@@ -65,10 +69,25 @@ export default function HeroSection() {
 
       {/* ── Central Character (Anchored to the very bottom) ── */}
       <div className="hero-character-anchor">
-        <motion.div style={{ opacity: opacityScroll, scale: scaleDownScroll, y: yDownScroll }} className="w-full h-full flex justify-center items-end">
-          <motion.div
-            className="w-full h-full flex justify-center items-end css-animate-slide-up"
-          >
+        <motion.div
+          style={{
+            opacity: opacityScroll,
+            scale: scaleDownScroll,
+            y: yDownScroll,
+          }}
+          className="w-full h-full flex justify-center items-end"
+        >
+          <motion.div className="w-full h-full flex justify-center items-end css-animate-slide-up relative">
+            {/* Background shape behind the character */}
+            <Image
+              src="/images/dashboard/bg-hero-pict.png"
+              alt="Background decoration"
+              width={800}
+              height={1000}
+              className="hero-character-bg-img"
+              priority
+            />
+            {/* Main Character */}
             <Image
               src="/images/dashboard/me.png"
               alt="Josua Ronaldo"
@@ -85,28 +104,40 @@ export default function HeroSection() {
 
       {/* ── Dynamic Content Layer ── */}
       <div className="hero-content-layer">
-        
         {/* Left Side: About Panel */}
-        <motion.div className="hero-panel-left" style={{ opacity: opacityScroll, x: xLeftScroll }}>
+        <motion.div
+          className="hero-panel-left"
+          style={{ opacity: opacityScroll, x: xLeftScroll }}
+        >
           <motion.div
             initial={{ opacity: 0, x: -40 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
           >
             <div className="hero-glass-panel">
-            <div className="flex items-center justify-between mb-4 hero-about-header">
-              <span className="hero-label">/ about</span>
-            </div>
-            <p className="hero-about-text">
-              Currently <span className="hero-card-highlight"><LifeSeconds /></span> lifetime. 
-              A software developer guided by a strong IT philosophy across <strong>UI/UX Design</strong>, <strong>Business Analysis</strong>, and <strong>Frontend Development</strong>.
-            </p>
+              <div className="flex items-center justify-between mb-4 hero-about-header">
+                <span className="hero-label">/ about</span>
+              </div>
+              <p className="hero-about-text">
+                Currently{" "}
+                <span className="hero-card-highlight">
+                  <LifeSeconds />
+                </span>{" "}
+                lifetime. Transforming business needs into scalable,
+                user-centric digital solutions through{" "}
+                <strong>Business Analysis</strong> and{" "}
+                <strong>UI/UX Design</strong> to final{" "}
+                <strong>Frontend Development</strong>.
+              </p>
             </div>
           </motion.div>
         </motion.div>
 
         {/* Right Side: Status & CTA */}
-        <motion.div className="hero-panel-right" style={{ opacity: opacityScroll, x: xRightScroll }}>
+        <motion.div
+          className="hero-panel-right"
+          style={{ opacity: opacityScroll, x: xRightScroll }}
+        >
           <motion.div
             initial={{ opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}
@@ -114,55 +145,85 @@ export default function HeroSection() {
             className="flex flex-col items-end w-full"
           >
             <div className="hero-status-pill mb-8">
-            <span className="status-dot status-dot-green" /> Open to work
-          </div>
-          
-          <Link
-            href="https://drive.google.com/file/d/1-hPatZG7Z5nBtNB8ryKW3V9PdFhSFeLE/preview"
-            target="_blank"
-            className="hero-cta-button group"
-          >
-            <span className="relative z-10 flex items-center gap-2">
-              Get Resume <ArrowUpRight size={16} className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
-            </span>
-            <div className="hero-cta-glow"></div>
+              <span className="status-dot status-dot-green" /> Open to work
+            </div>
+
+            <Link
+              href="https://drive.google.com/file/d/1-hPatZG7Z5nBtNB8ryKW3V9PdFhSFeLE/preview"
+              target="_blank"
+              className="hero-cta-button group"
+            >
+              <span className="relative z-10 flex items-center gap-2">
+                Get Resume{" "}
+                <ArrowUpRight
+                  size={16}
+                  className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"
+                />
+              </span>
+              <div className="hero-cta-glow"></div>
             </Link>
           </motion.div>
         </motion.div>
-
       </div>
 
       {/* ── Bottom Floating Dock ── */}
-      <motion.div 
-        style={{ opacity: opacityScroll, y: yDownScroll, position: 'absolute', bottom: '2.5rem', left: 0, right: 0, margin: '0 auto', width: 'max-content', zIndex: 30 }}
+      <motion.div
+        style={{
+          opacity: opacityScroll,
+          y: yDownScroll,
+          position: "absolute",
+          bottom: "4rem",
+          left: 0,
+          right: 0,
+          margin: "0 auto",
+          width: "max-content",
+          zIndex: 30,
+        }}
       >
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
           className="hero-bottom-dock"
-          style={{ position: 'relative', bottom: 'auto' }}
+          style={{ position: "relative", bottom: "auto" }}
         >
           <div className="dock-item">
-          <MapPin size={18} className="text-blue-500" />
-          <span>Jakarta, ID</span>
-        </div>
-        <div className="dock-divider" />
-        <div className="dock-item">
-          <span className="text-blue-500 font-medium"><LiveTime /> WIB</span>
-        </div>
-        <div className="dock-divider" />
-        <div className="dock-socials">
-          <Link href="https://www.instagram.com/josua_ronaldo_/" target="_blank" className="dock-social-link" aria-label="Instagram">
-            <Instagram size={18} />
-          </Link>
-          <Link href="https://www.linkedin.com/in/josua-ronaldo/" target="_blank" className="dock-social-link" aria-label="LinkedIn">
-            <Linkedin size={18} />
-          </Link>
-          <Link href="https://github.com/Josua052" target="_blank" className="dock-social-link" aria-label="GitHub">
-            <Github size={18} />
-          </Link>
-        </div>
+            <MapPin size={18} className="text-blue-500" />
+            <span>Jakarta, ID</span>
+          </div>
+          <div className="dock-divider" />
+          <div className="dock-item">
+            <span className="text-blue-500 font-medium">
+              <LiveTime /> WIB
+            </span>
+          </div>
+          <div className="dock-divider" />
+          <div className="dock-socials">
+            <Link
+              href="https://www.instagram.com/josua_ronaldo_/"
+              target="_blank"
+              className="dock-social-link"
+              aria-label="Instagram"
+            >
+              <Instagram size={18} />
+            </Link>
+            <Link
+              href="https://www.linkedin.com/in/josua-ronaldo/"
+              target="_blank"
+              className="dock-social-link"
+              aria-label="LinkedIn"
+            >
+              <Linkedin size={18} />
+            </Link>
+            <Link
+              href="https://github.com/Josua052"
+              target="_blank"
+              className="dock-social-link"
+              aria-label="GitHub"
+            >
+              <Github size={18} />
+            </Link>
+          </div>
         </motion.div>
       </motion.div>
 
@@ -224,6 +285,7 @@ export default function HeroSection() {
           z-index: 2;
           transform: translate(calc(var(--mx) * -0.4), calc(var(--my) * -0.4));
           transition: transform 0.2s ease-out;
+          margin-top: -10vh; /* Lift up */
         }
 
         .css-animate-fade-in {
@@ -271,10 +333,24 @@ export default function HeroSection() {
           z-index: 10; /* Behind content but in front of background */
           width: 100%;
           max-width: 600px;
-          height: 85vh; /* Extends from bottom up to 85% of screen */
+          height: 78vh; /* Scale down slightly to fit better */
           display: flex;
           justify-content: center;
           align-items: flex-end;
+          pointer-events: none;
+        }
+
+        .hero-character-bg-img {
+          position: absolute;
+          width: 150%;
+          height: 150%;
+          top: 50%;
+          left: 50%;
+          object-fit: contain;
+          object-position: center;
+          transform: translate(calc(-50% + var(--mx) * 0.1), calc(-50% + var(--my) * 0.1));
+          transition: transform 0.2s ease-out;
+          z-index: 1;
           pointer-events: none;
         }
 
@@ -286,6 +362,8 @@ export default function HeroSection() {
           filter: drop-shadow(0 20px 40px rgba(0,0,0,0.6));
           transform: translate(calc(var(--mx) * 0.3), calc(var(--my) * 0.3));
           transition: transform 0.2s ease-out;
+          position: relative;
+          z-index: 10;
         }
 
         .hero-character-bottom-fade {
@@ -306,6 +384,7 @@ export default function HeroSection() {
           max-width: 1400px;
           height: 100vh;
           margin: 0 auto;
+          margin-top: -8vh; /* Lift panels closer to navbar */
           padding: 0 4rem;
           display: flex;
           justify-content: space-between;

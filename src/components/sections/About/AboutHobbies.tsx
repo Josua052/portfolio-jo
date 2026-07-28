@@ -2,11 +2,16 @@
 
 import { useRef, useState } from "react";
 import { motion, AnimatePresence, useInView } from "framer-motion";
-import hobbiesData from "@/data/hobbies.json";
-import { Plus, Minus } from "lucide-react";
+import { 
+  IconPlus, IconMinus, 
+  IconBuildingStadium, IconBolt, IconTarget, IconDeviceTv,
+  IconTrophy, IconActivity, IconMedal, IconCast,
+  IconMountain, IconTree, IconDroplet, IconBackpack,
+  IconMap, IconSoup, IconCamera, IconWorld
+} from "@tabler/icons-react";
 
 export interface HobbyHighlight {
-  icon: string;
+  icon: React.ReactNode;
   text: string;
 }
 export interface HobbyStat {
@@ -24,7 +29,68 @@ export interface HobbyData {
   stat: HobbyStat;
 }
 
-const HOBBIES = hobbiesData as HobbyData[];
+const HOBBIES: HobbyData[] = [
+  {
+    id: "football",
+    label: "Football",
+    emoji: "⚽",
+    tagline: "Every match tells a story",
+    color: "#f59e0b",
+    description: "Football adalah bahasa universal yang melampaui batas. Menonton laga setiap pekan adalah ritual yang tak pernah terlewat — dari liga domestik hingga panggung Eropa.",
+    highlights: [
+      { icon: <IconBuildingStadium size={20} stroke={1.5} />, text: "Liga Eropa Favorit" },
+      { icon: <IconBolt size={20} stroke={1.5} />, text: "Klub Favorit sejak kecil" },
+      { icon: <IconTarget size={20} stroke={1.5} />, text: "Selalu pantau statistik pemain" },
+      { icon: <IconDeviceTv size={20} stroke={1.5} />, text: "Nonton live setiap pekan" }
+    ],
+    stat: { value: "10+", label: "Tahun mengikuti sepakbola" }
+  },
+  {
+    id: "badminton",
+    label: "Badminton",
+    emoji: "🏸",
+    tagline: "Smash harder every day",
+    color: "#22c55e",
+    description: "Bulutangkis mengajarkan refleks, strategi, dan mental tangguh. Olahraga ini sudah jadi bagian dari rutinitas mingguan — baik bermain maupun menonton turnamen internasional.",
+    highlights: [
+      { icon: <IconTrophy size={20} stroke={1.5} />, text: "Bangga dengan prestasi Indonesia" },
+      { icon: <IconActivity size={20} stroke={1.5} />, text: "Rutin bermain mingguan" },
+      { icon: <IconMedal size={20} stroke={1.5} />, text: "Ikuti turnamen lokal" },
+      { icon: <IconCast size={20} stroke={1.5} />, text: "Pantau BWF World Tour" }
+    ],
+    stat: { value: "3×", label: "Per minggu main badminton" }
+  },
+  {
+    id: "hiking",
+    label: "Hiking",
+    emoji: "🏔",
+    tagline: "Summit fever, always",
+    color: "#06B6D4",
+    description: "Mendaki gunung memberi perspektif berbeda. Setiap langkah menuju puncak adalah latihan mental dan fisik yang luar biasa — dan pemandangan dari atas selalu sepadan.",
+    highlights: [
+      { icon: <IconMountain size={20} stroke={1.5} />, text: "Sudah mendaki beberapa gunung" },
+      { icon: <IconTree size={20} stroke={1.5} />, text: "Suka jalur hutan tropis" },
+      { icon: <IconDroplet size={20} stroke={1.5} />, text: "Air terjun jadi destinasi favorit" },
+      { icon: <IconBackpack size={20} stroke={1.5} />, text: "Selalu siap perlengkapan lengkap" }
+    ],
+    stat: { value: "5+", label: "Gunung & destinasi didaki" }
+  },
+  {
+    id: "travelling",
+    label: "Travelling",
+    emoji: "✈️",
+    tagline: "Every city, a new story",
+    color: "#6366f1",
+    description: "Travelling memperluas cara pandang dan inspirasi. Setiap kota punya karakter, kuliner, dan cerita unik yang tidak bisa ditemukan dari balik layar laptop.",
+    highlights: [
+      { icon: <IconMap size={20} stroke={1.5} />, text: "Eksplorasi kota-kota baru" },
+      { icon: <IconSoup size={20} stroke={1.5} />, text: "Kuliner lokal jadi prioritas" },
+      { icon: <IconCamera size={20} stroke={1.5} />, text: "Dokumentasi setiap momen" },
+      { icon: <IconWorld size={20} stroke={1.5} />, text: "Rencana jelajah Asia Tenggara" }
+    ],
+    stat: { value: "10+", label: "Kota yang pernah dikunjungi" }
+  }
+];
 
 export default function AboutHobbies() {
   const containerRef = useRef(null);
@@ -85,7 +151,7 @@ export default function AboutHobbies() {
                   <div className="header-right">
                     <span className="row-tagline">{hobby.tagline}</span>
                     <div className="row-toggle">
-                      {isActive ? <Minus size={20} strokeWidth={1.5} /> : <Plus size={20} strokeWidth={1.5} />}
+                      {isActive ? <IconMinus size={20} stroke={1.5} /> : <IconPlus size={20} stroke={1.5} />}
                     </div>
                   </div>
                 </div>
