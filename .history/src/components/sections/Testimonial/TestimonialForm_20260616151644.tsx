@@ -297,6 +297,7 @@ export default function TestimonialForm() {
         }
         .tf-input::placeholder { color: var(--muted); opacity: 0.5; }
         .tf-input-focus {
+          border-color: var(--foreground) !important;
           background: var(--background) !important;
           box-shadow: 0 0 0 3px rgba(15,23,42,0.06);
         }

@@ -95,6 +95,7 @@ export default function HeroSection() {
               height={900}
               className="hero-character-img"
               priority
+              style={{ width: "auto", height: "auto" }}
             />
           </motion.div>
         </motion.div>

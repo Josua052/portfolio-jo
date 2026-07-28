@@ -31,7 +31,7 @@ export default function AnimatedElement({
   const y = useTransform(scrollYProgress, [0, 1], [0, exitY]);
 
   return (
-    <motion.div ref={ref} style={{ opacity, x, y }} className={className}>
+    <motion.div ref={ref} style={{ position: "relative", opacity, x, y }} className={className}>
       <motion.div
         initial={{ opacity: 0, x: initialX, y: initialY }}
         whileInView={{ opacity: 1, x: 0, y: 0 }}

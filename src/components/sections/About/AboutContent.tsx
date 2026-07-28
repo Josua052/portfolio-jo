@@ -249,6 +249,7 @@ export function AboutContent() {
                 height={900}
                 className="about-cutout-img"
                 priority
+                style={{ width: "auto", height: "auto" }}
               />
             </motion.div>
           </div>
