@@ -29,7 +29,7 @@ export const PROJECTS: Project[] = [
     period: "Aug - Sep 2026",
     role: "Sole Technical Partner & Full-Stack Architect",
     url: null,
-    demoUrl: "https://workshop-ims-web.vercel.app//dashboard",
+    demoUrl: "https://workshop-ims-web-fs7j.vercel.app/dashboard",
     detailRoute: "/project/AutomotiveAftermarketSupplyChainEnterprise",
     status: "ongoing",
     description: [

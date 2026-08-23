@@ -18,6 +18,21 @@ const nextConfig: NextConfig = {
         hostname: "lh3.googleusercontent.com",
         pathname: "/d/**",
       },
+      {
+        protocol: "https",
+        hostname: "s0.wp.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "api.microlink.io",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "image.thum.io",
+        pathname: "/**",
+      },
     ],
   },
   /* config options here */

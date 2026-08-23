@@ -1,12 +1,48 @@
 [
   {
+    "company": "Sinar Sakti Motor",
+    "location": "Jakarta · Remote",
+    "role": "Full-Stack Developer & Technical Consultant",
+    "period": "Aug 2026 – Sep 2026",
+    "index": "01",
+    "highlight": true,
+    "tags": [
+      "Go",
+      "Gin",
+      "GORM",
+      "PostgreSQL",
+      "Redis",
+      "Asynq",
+      "React 19",
+      "TypeScript",
+      "Vite",
+      "Tailwind CSS v4",
+      "TanStack Query v5",
+      "Zod"
+    ],
+    "points": [
+      "Led end-to-end engineering and architectural design as the sole technical partner, owning the complete SDLC from BRD/PRD requirements analysis and database schema modeling (23+ domain tables) to full-stack implementation and security hardening.",
+      "Architected a high-concurrency backend ecosystem using Go (Gin, GORM) and PostgreSQL multi-schema architecture, integrating Redis for session rate-limiting/caching and Asynq for asynchronous background job processing.",
+      "Engineered critical financial algorithms, including dynamic Dollar-Cost Averaging (DCA / Moving Average Cost) recalculation and a 2-phase stock reservation mechanism with pessimistic database locking to eliminate race conditions and stock overselling across multi-warehouse channels.",
+      "Developed a modular, type-safe frontend dashboard using React 19, TypeScript (strict mode), Vite, and Tailwind CSS v4, delivering responsive multi-role interfaces with zero layout shift, skeleton loaders, and schema-first form validation via Zod.",
+      "Implemented enterprise-grade security and privacy controls, including dual-token JWT authentication via httpOnly cookies, strict RBAC with automated cost-price masking for non-executive roles, CSRF protection, and append-only audit logging for all financial operations."
+    ]
+  },
+  {
     "company": "PT. Global Service Indonesia",
     "location": "Jakarta · Onsite",
     "role": "Web Developer",
-    "period": "Dec 2025 – Present",
-    "index": "01",
-    "highlight": true,
-    "tags": ["React.js", "Vue.js", "Laravel", "RESTful API", "Git", "Scrum"],
+    "period": "Nov 2025 – Jun 2026",
+    "index": "02",
+    "highlight": false,
+    "tags": [
+      "React.js",
+      "Vue.js",
+      "Laravel",
+      "RESTful API",
+      "Git",
+      "Scrum"
+    ],
     "points": [
       "Developed responsive web interfaces using React.js and Vue.js",
       "Implemented UI/UX designs into reusable component systems",
@@ -22,9 +58,15 @@
     "location": "Batam · Hybrid",
     "role": "Web Developer Intern",
     "period": "Sep 2022 – Jan 2023",
-    "index": "02",
+    "index": "03",
     "highlight": false,
-    "tags": ["React.js", "Node.js", "MongoDB", "Figma", "Project Management"],
+    "tags": [
+      "React.js",
+      "Node.js",
+      "MongoDB",
+      "Figma",
+      "Project Management"
+    ],
     "points": [
       "Completed intensive Web Development mentorship covering React, Node, and MongoDB",
       "Shipped 3 real-world projects: OneClick Dokter, Freedom, and Unicate",
